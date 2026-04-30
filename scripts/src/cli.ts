@@ -8,6 +8,7 @@ import { resolveThemePath, type PathContext } from './lib/paths.ts';
 import { runDoctorChecks, defaultWhich } from './doctor.ts';
 import { loadEnv } from './lib/env.ts';
 import { bootstrapProject } from './new.ts';
+import { listThemes, addTheme, updateTheme, removeTheme } from './theme.ts';
 
 function context(): { paths: PathContext; pluginDir: string } {
   const projectDir = env.SLIDESMITH_PROJECT_DIR ?? cwd();
@@ -81,6 +82,49 @@ const commands: Record<string, (args: string[]) => Promise<void>> = {
       userHome: paths.userHome,
     });
     console.log(JSON.stringify({ created: targetDir }));
+  },
+  theme: async (args) => {
+    const sub = args[0];
+    const rest = args.slice(1);
+    const { paths } = context();
+    switch (sub) {
+      case 'list': {
+        const result = await listThemes(paths);
+        console.log(JSON.stringify(result, null, 2));
+        return;
+      }
+      case 'add': {
+        const url = rest[0];
+        const flags = parseFlags(rest.slice(1));
+        if (!url) throw new Error('theme add requires <git-url>');
+        const target = await addTheme(url, paths, { name: flags.name });
+        console.log(JSON.stringify({ added: target }));
+        return;
+      }
+      case 'update': {
+        const name = rest[0];
+        if (!name) throw new Error('theme update requires <name>');
+        await updateTheme(name, paths);
+        console.log(JSON.stringify({ updated: name }));
+        return;
+      }
+      case 'remove': {
+        const name = rest[0];
+        if (!name) throw new Error('theme remove requires <name>');
+        await removeTheme(name, paths);
+        console.log(JSON.stringify({ removed: name }));
+        return;
+      }
+      case 'info': {
+        const name = rest[0];
+        if (!name) throw new Error('theme info requires <name>');
+        // delegate to existing theme-info handler
+        await commands['theme-info']([name]);
+        return;
+      }
+      default:
+        throw new Error(`unknown theme subcommand: ${sub}`);
+    }
   },
   doctor: async () => {
     const { paths, pluginDir } = context();
