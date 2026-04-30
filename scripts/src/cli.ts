@@ -12,6 +12,7 @@ import { listThemes, addTheme, updateTheme, removeTheme } from './theme.ts';
 import { detectPlaceholders } from './detect.ts';
 import { injectReplacements, type Replacement } from './inject.ts';
 import { invokeBackend } from './lib/proc.ts';
+import { combineThemeCss, buildExportArgs, runMarpExports, type ExportFormat } from './export.ts';
 
 function context(): { paths: PathContext; pluginDir: string } {
   const projectDir = env.SLIDESMITH_PROJECT_DIR ?? cwd();
@@ -215,6 +216,30 @@ const commands: Record<string, (args: string[]) => Promise<void>> = {
       await fs.writeFile(flags.out, result.stdout);
     }
     console.log(JSON.stringify({ ok: true, out: flags.out }));
+  },
+  export: async (args) => {
+    const flags = parseFlags(args);
+    const { paths } = context();
+    const input = flags.input ?? path.join(paths.projectDir, 'build', '.cache', 'prerendered.md');
+    const themeCss = flags['theme-css'];
+    const overrides = flags.overrides;
+    const outBasename = flags['out-basename'] ?? path.join(paths.projectDir, 'build', 'deck');
+    const formats = (flags.formats ?? 'pdf,html').split(',') as ExportFormat[];
+
+    if (!themeCss) throw new Error('export requires --theme-css <path>');
+
+    const combinedCss = path.join(paths.projectDir, 'build', '.cache', '_combined-theme.css');
+    await combineThemeCss(themeCss, overrides ?? null, combinedCss);
+
+    const invocations = buildExportArgs({
+      input,
+      themeCss: combinedCss,
+      outBasename,
+      formats,
+    });
+
+    await runMarpExports('marp', invocations, paths.projectDir);
+    console.log(JSON.stringify({ ok: true, outBasename, formats }));
   },
 };
 
