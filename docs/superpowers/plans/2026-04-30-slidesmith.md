@@ -927,7 +927,9 @@ describe('detectPlaceholders', () => {
     const result = detectPlaceholders(md);
     expect(result).toHaveLength(1);
     expect(result[0].kind).toBe('image');
-    expect(result[0].path).toBe('assets/images/hero.png');
+    if (result[0].kind === 'image') {
+      expect(result[0].path).toBe('assets/images/hero.png');
+    }
   });
 
   it('classifies image with .mmd extension as kind=file-ref', () => {
