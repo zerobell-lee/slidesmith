@@ -5,6 +5,8 @@ import fs from 'fs-extra';
 import { listCapabilities, loadProcessors } from './dispatch.ts';
 import { parseThemeManifest } from './lib/manifest.ts';
 import { resolveThemePath, type PathContext } from './lib/paths.ts';
+import { runDoctorChecks, defaultWhich } from './doctor.ts';
+import { loadEnv } from './lib/env.ts';
 
 function context(): { paths: PathContext; pluginDir: string } {
   const projectDir = env.SLIDESMITH_PROJECT_DIR ?? cwd();
@@ -44,6 +46,21 @@ const commands: Record<string, (args: string[]) => Promise<void>> = {
         2,
       ),
     );
+  },
+  doctor: async () => {
+    const { paths, pluginDir } = context();
+    const procs = loadProcessors(processorRoots(paths, pluginDir));
+    const env = loadEnv(paths.projectDir, process.env);
+    const report = await runDoctorChecks({
+      processors: procs,
+      env,
+      whichBinary: defaultWhich,
+    });
+    for (const c of report.checks) {
+      const icon = c.status === 'pass' ? '✅' : c.status === 'warn' ? '⚠️ ' : '❌';
+      console.log(`${icon}  ${c.label}${c.detail ? `\n   ${c.detail}` : ''}`);
+    }
+    if (!report.ok) exit(1);
   },
 };
 
