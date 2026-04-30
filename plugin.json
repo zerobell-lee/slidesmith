@@ -1,0 +1,6 @@
+{
+  "name": "slidesmith",
+  "version": "0.1.0",
+  "description": "Marp-based slide deck generator for Claude Code",
+  "commandsDir": "commands"
+}
