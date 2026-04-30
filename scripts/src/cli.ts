@@ -2,13 +2,16 @@
 import { argv, env, exit, cwd } from 'node:process';
 import path from 'node:path';
 import fs from 'fs-extra';
-import { listCapabilities, loadProcessors } from './dispatch.ts';
+import { listCapabilities, loadProcessors, matchFileRef, type UserConfig } from './dispatch.ts';
 import { parseThemeManifest } from './lib/manifest.ts';
 import { resolveThemePath, type PathContext } from './lib/paths.ts';
 import { runDoctorChecks, defaultWhich } from './doctor.ts';
 import { loadEnv } from './lib/env.ts';
 import { bootstrapProject } from './new.ts';
 import { listThemes, addTheme, updateTheme, removeTheme } from './theme.ts';
+import { detectPlaceholders } from './detect.ts';
+import { injectReplacements, type Replacement } from './inject.ts';
+import { invokeBackend } from './lib/proc.ts';
 
 function context(): { paths: PathContext; pluginDir: string } {
   const projectDir = env.SLIDESMITH_PROJECT_DIR ?? cwd();
@@ -140,6 +143,78 @@ const commands: Record<string, (args: string[]) => Promise<void>> = {
       console.log(`${icon}  ${c.label}${c.detail ? `\n   ${c.detail}` : ''}`);
     }
     if (!report.ok) exit(1);
+  },
+  detect: async (args) => {
+    const file = args[0];
+    if (!file) throw new Error('detect requires <markdown-file>');
+    const md = await fs.promises.readFile(file, 'utf-8');
+    console.log(JSON.stringify(detectPlaceholders(md), null, 2));
+  },
+  'dispatch-file-ref': async (args) => {
+    const ext = args[0];
+    if (!ext) throw new Error('dispatch-file-ref requires <extension>');
+    const { paths, pluginDir } = context();
+    const procs = loadProcessors(processorRoots(paths, pluginDir));
+    const userConfigPath = path.join(paths.userHome, '.slidesmith', 'config.yaml');
+    let userConfig: UserConfig = {};
+    if (await fs.pathExists(userConfigPath)) {
+      const { parse } = await import('yaml');
+      userConfig = (parse(await fs.readFile(userConfigPath, 'utf-8')) ?? {}) as UserConfig;
+    }
+    const match = matchFileRef(ext, procs, userConfig);
+    console.log(JSON.stringify(match, null, 2));
+  },
+  inject: async (args) => {
+    const file = args[0];
+    const flags = parseFlags(args.slice(1));
+    if (!file) throw new Error('inject requires <markdown-file>');
+    if (!flags.replacements || !flags.out) throw new Error('inject requires --replacements <json> --out <path>');
+    const md = await fs.readFile(file, 'utf-8');
+    const replacements: Replacement[] = JSON.parse(await fs.readFile(flags.replacements, 'utf-8'));
+    const result = injectReplacements(md, replacements);
+    await fs.ensureDir(path.dirname(flags.out));
+    await fs.writeFile(flags.out, result);
+    console.log(JSON.stringify({ written: flags.out, replacements: replacements.length }));
+  },
+  'run-processor': async (args) => {
+    const flags = parseFlags(args);
+    const procName = flags.name;
+    if (!procName) throw new Error('run-processor requires --name <processor>');
+    if (!flags.out) throw new Error('run-processor requires --out <output-path>');
+    const { paths, pluginDir } = context();
+    const procs = loadProcessors(processorRoots(paths, pluginDir));
+    const proc = procs.find((p) => p.name === procName);
+    if (!proc) throw new Error(`processor not found: ${procName}`);
+    const env = loadEnv(paths.projectDir, process.env);
+
+    let input = '';
+    if (flags['input-file']) {
+      input = await fs.readFile(flags['input-file'], 'utf-8');
+    } else if (flags.input) {
+      input = flags.input;
+    }
+
+    const result = await invokeBackend({
+      backend: proc.backend,
+      input,
+      env,
+      cwd: paths.projectDir,
+      httpRequestPath: flags['http-path'],
+      httpMethod: (flags['http-method'] as 'GET' | 'POST') ?? 'GET',
+    });
+
+    if (result.kind === 'error') {
+      console.error(`run-processor error: ${result.message}`);
+      exit(2);
+    }
+
+    await fs.ensureDir(path.dirname(flags.out));
+    if (result.bytes) {
+      await fs.writeFile(flags.out, result.bytes);
+    } else {
+      await fs.writeFile(flags.out, result.stdout);
+    }
+    console.log(JSON.stringify({ ok: true, out: flags.out }));
   },
 };
 
