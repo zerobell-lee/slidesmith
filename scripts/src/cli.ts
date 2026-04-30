@@ -7,6 +7,7 @@ import { parseThemeManifest } from './lib/manifest.ts';
 import { resolveThemePath, type PathContext } from './lib/paths.ts';
 import { runDoctorChecks, defaultWhich } from './doctor.ts';
 import { loadEnv } from './lib/env.ts';
+import { bootstrapProject } from './new.ts';
 
 function context(): { paths: PathContext; pluginDir: string } {
   const projectDir = env.SLIDESMITH_PROJECT_DIR ?? cwd();
@@ -16,6 +17,24 @@ function context(): { paths: PathContext; pluginDir: string } {
     paths: { projectDir, pluginDir, userHome },
     pluginDir,
   };
+}
+
+function parseFlags(args: string[]): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (let i = 0; i < args.length; i++) {
+    const a = args[i];
+    if (a.startsWith('--')) {
+      const key = a.slice(2);
+      const next = args[i + 1];
+      if (next && !next.startsWith('--')) {
+        out[key] = next;
+        i++;
+      } else {
+        out[key] = 'true';
+      }
+    }
+  }
+  return out;
 }
 
 function processorRoots(ctx: PathContext, pluginDir: string): string[] {
@@ -46,6 +65,22 @@ const commands: Record<string, (args: string[]) => Promise<void>> = {
         2,
       ),
     );
+  },
+  'new-project': async (args) => {
+    const name = args[0];
+    const flags = parseFlags(args.slice(1));
+    if (!name) throw new Error('new-project requires <name>');
+    const { paths, pluginDir } = context();
+    const targetDir = path.resolve(paths.projectDir, name);
+    await bootstrapProject({
+      name,
+      targetDir,
+      themeName: flags.theme ?? 'default',
+      lang: flags.lang ?? 'ko',
+      pluginDir,
+      userHome: paths.userHome,
+    });
+    console.log(JSON.stringify({ created: targetDir }));
   },
   doctor: async () => {
     const { paths, pluginDir } = context();
