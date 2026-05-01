@@ -1,0 +1,17 @@
+name: default
+displayName: Default
+version: 0.1.0
+author: slidesmith
+description: 깔끔한 일반 발표용 — 어떤 주제에든 무난하게 어울리는 중립 톤.
+tags: [neutral, clean, general]
+fits: [general-talk, internal-update]
+constraints:
+  - "h1은 슬라이드 제목으로 사용 (한 슬라이드당 1개)"
+  - "h2는 슬라이드 내 섹션 헤더"
+  - "리스트는 3~5 항목 권장 (텍스트 과밀 방지)"
+samples:
+  default: samples/sample.md
+  en: samples/sample.en.md
+  jp: samples/sample.jp.md
+recommendedPrerenders:
+  - mermaid-cli
