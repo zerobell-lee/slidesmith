@@ -1,0 +1,10 @@
+name: pexels
+provides: [stock.photo]
+matches: {}
+backend:
+  type: http
+  base: https://api.pexels.com/v1
+  auth: header:Authorization:{env.PEXELS_API_KEY}
+requires:
+  env: [PEXELS_API_KEY]
+priority: 60

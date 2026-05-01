@@ -56,7 +56,17 @@ JSON 배열을 받습니다. 각 항목은 `{id, kind, line, ...}`.
      - "일러스트/생성/추상" → `image.generate`
   3. 그 능력의 등록된 프로세서 중 하나 선택 (`list-capabilities`의 `providers[0]` 추천).
   4. 능력별로 호출 인자 구성:
-     - `stock.photo` (pexels): `--http-path "/search?query=<encoded query>"` + 결과 JSON에서 첫 번째 사진 URL 다운로드 (별도 단계). 또는 직접 다운로드 호출.
+     - `stock.photo` via pexels:
+       1. 검색:
+          ```bash
+          cd "$CLAUDE_PLUGIN_ROOT/scripts" && \
+            SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts run-processor \
+              --name pexels \
+              --http-path "/search?query=$(echo '<alt 자연어>' | jq -sRr @uri)&per_page=1" \
+              --out "/tmp/pexels-<id>.json"
+          ```
+       2. 결과 JSON 읽고 `photos[0].src.large` URL 추출.
+       3. 그 URL을 다운로드 (Bash `curl -L "$URL" -o build/.cache/img/<id>.jpg` 또는 별도 fetch). 인증 헤더는 다운로드엔 불필요.
      - `image.generate` (gemini-image): `--http-method POST --input "<prompt>"` + 응답 디코딩.
      - `diagram.*` (mermaid-cli): 먼저 LLM이 mermaid 소스 문자열을 만들어 `assets/diagrams/auto-<id>.mmd`에 저장 → 그 다음 file-ref와 동일한 흐름으로 SVG 변환. 사용자가 나중에 output.md에서 `![alt](assets/diagrams/auto-<id>.mmd)`로 락인할 수 있음.
   5. 호출 결과(이미지 또는 SVG)를 `build/.cache/img/<id>.<ext>` 또는 `build/.cache/svg/<id>.svg`에 저장.
