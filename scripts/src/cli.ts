@@ -245,8 +245,12 @@ const commands: Record<string, (args: string[]) => Promise<void>> = {
 
     if (!themeCss) throw new Error('export requires --theme-css <path>');
 
-    const combinedCss = path.join(paths.projectDir, 'build', '.cache', '_combined-theme.css');
+    const combinedCss = path.join(path.dirname(outBasename), '.cache', '_combined-theme.css');
     await combineThemeCss(themeCss, overrides ?? null, combinedCss);
+
+    if (formats.includes('html')) {
+      await fs.ensureDir(path.join(path.dirname(outBasename), 'html'));
+    }
 
     const invocations = buildExportArgs({
       input,

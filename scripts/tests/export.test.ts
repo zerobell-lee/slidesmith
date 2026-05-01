@@ -40,14 +40,14 @@ describe('combineThemeCss', () => {
 describe('buildExportArgs', () => {
   it('produces one invocation per requested format', () => {
     const result = buildExportArgs({
-      input: 'build/.cache/prerendered.md',
+      input: 'build/html/prerendered.md',
       themeCss: 'build/.cache/_theme.css',
       outBasename: 'build/deck',
       formats: ['pdf', 'html', 'pptx'],
     });
     expect(result).toHaveLength(3);
     expect(result[0]).toEqual([
-      'build/.cache/prerendered.md',
+      'build/html/prerendered.md',
       '--theme',
       'build/.cache/_theme.css',
       '--pdf',
@@ -56,6 +56,9 @@ describe('buildExportArgs', () => {
       'build/deck.pdf',
     ]);
     expect(result[1][3]).toBe('--html');
+    // HTML output goes into a subfolder so its relative asset paths resolve.
+    expect(result[1][6]).toBe(path.join('build', 'html', 'deck.html'));
     expect(result[2][3]).toBe('--pptx');
+    expect(result[2][6]).toBe('build/deck.pptx');
   });
 });

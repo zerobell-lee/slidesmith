@@ -27,15 +27,21 @@ export interface ExportArgsOptions {
 }
 
 export function buildExportArgs(opts: ExportArgsOptions): string[][] {
-  return opts.formats.map((fmt) => [
-    opts.input,
-    '--theme',
-    opts.themeCss,
-    `--${fmt}`,
-    '--allow-local-files',
-    '-o',
-    `${opts.outBasename}.${fmt}`,
-  ]);
+  return opts.formats.map((fmt) => {
+    const outPath =
+      fmt === 'html'
+        ? path.join(path.dirname(opts.outBasename), 'html', `${path.basename(opts.outBasename)}.html`)
+        : `${opts.outBasename}.${fmt}`;
+    return [
+      opts.input,
+      '--theme',
+      opts.themeCss,
+      `--${fmt}`,
+      '--allow-local-files',
+      '-o',
+      outPath,
+    ];
+  });
 }
 
 export async function runMarpExports(

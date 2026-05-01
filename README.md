@@ -26,21 +26,24 @@ A Marp-based Claude Code plugin. Generates presentations (PDF/HTML/PPTX) from na
 # 1. Create a new project
 /slidesmith:new my-deck --theme midnight-tech --lang ko
 
-# 2. Edit blueprint.md (or use the sample as-is)
+# 2. (Optional) Refine the spec interactively with Claude
+/slidesmith:plan
 
 # 3. Build in one shot
 /slidesmith:build
 
-# Output: my-deck/build/deck.pdf
+# Output: my-deck/build/deck.pdf  (HTML version + assets in my-deck/build/html/)
 ```
 
-## Step-by-step build
+## Commands
 
-```
-/slidesmith:plan         # blueprint → output.md
-/slidesmith:prerender    # convert placeholders → build/.cache/prerendered.md
-/slidesmith:export       # marp-cli → build/deck.pdf
-```
+The plugin exposes 5 slash commands:
+
+- `/slidesmith:new` — bootstrap a new project directory.
+- `/slidesmith:plan` — interactive brainstorm; Claude asks questions and updates `blueprint.md` (the spec). Does NOT generate slides.
+- `/slidesmith:build` — runs the full pipeline (draft → prerender → export). Use `--from <output|prerendered>` or `--to <output|prerendered>` for partial runs.
+- `/slidesmith:theme` — manage themes (`list`, `add`, `update`, `remove`, `info`).
+- `/slidesmith:doctor` — verify the environment.
 
 ## Themes
 

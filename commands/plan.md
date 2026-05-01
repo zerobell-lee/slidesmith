@@ -1,76 +1,32 @@
 ---
-description: Generate output.md from blueprint, assets, and conversation
-argument-hint: [--no-blueprint] [--from "raw text"]
+description: Interactive brainstorm with Claude to refine the blueprint (deck spec)
 ---
 
 # /slidesmith:plan
 
-The plan stage from spec §6.2. Combines the blueprint, assets, and conversation context into Marp markdown (`output.md`).
+Talk through your deck idea with Claude. The output is a refined `blueprint.md` (the spec) — NOT slides. To generate slides afterwards, run `/slidesmith:build`.
 
-## Pre-flight
+## What you should do
 
-Gather this information first:
+1. Read the current `blueprint.md` and `deck.yaml`.
+2. Identify the gaps — sections that are blank, contain `<...>` placeholders left over from the seed template, or are obviously stub-level.
+3. Have a short Q&A with the user, **one question at a time**:
+   - Topic — what is this deck about, in one sentence?
+   - Audience — who is listening, and what do they already know?
+   - Key messages — 3 to 5 things they should walk away with.
+   - Source material — links, files in `assets/`, prior decks, references.
+   - Tone — formal · casual · persuasive · didactic · etc.
+   - Slide outline — rough sequence (optional; if blank, propose one once the rest is clear).
+4. After each answer, update `blueprint.md` in place — fill in the section the user just spoke to. Keep the structure (`## Topic`, `## Audience`, etc.). Replace `<placeholder>` text; don't add new sections unless the user asks.
+5. Stop asking when:
+   - All the major sections (Topic, Audience, Key messages, Tone) have content the user is happy with.
+   - The user signals they want to move on ("good", "그만", "됐어", "ㄱㄱ", etc.).
+6. When done, summarize what's now in `blueprint.md` (one or two sentences per section) and tell the user: "Spec is ready. Run `/slidesmith:build` to generate the deck."
 
-1. **Prerender capabilities available in the current environment**:
-   ```bash
-   USER_DIR="$PWD"
-   SLIDESMITH_ROOT=$(ls -d ~/.claude/plugins/cache/slidesmith/slidesmith/*/ 2>/dev/null | sort -V | tail -1 | sed 's:/*$::')
-   [ -d "$SLIDESMITH_ROOT/scripts/node_modules" ] || (cd "$SLIDESMITH_ROOT/scripts" && npm install --silent)
-   cd "$SLIDESMITH_ROOT/scripts" && SLIDESMITH_PLUGIN_DIR="$SLIDESMITH_ROOT" SLIDESMITH_PROJECT_DIR="$USER_DIR" npx tsx src/cli.ts list-capabilities
-   ```
-   From the resulting JSON, see which capabilities (e.g. `diagram.mermaid`, `stock.photo`) are available.
+## Rules
 
-2. **Theme information**:
-   ```bash
-   USER_DIR="$PWD"
-   SLIDESMITH_ROOT=$(ls -d ~/.claude/plugins/cache/slidesmith/slidesmith/*/ 2>/dev/null | sort -V | tail -1 | sed 's:/*$::')
-   [ -d "$SLIDESMITH_ROOT/scripts/node_modules" ] || (cd "$SLIDESMITH_ROOT/scripts" && npm install --silent)
-   cd "$SLIDESMITH_ROOT/scripts" && SLIDESMITH_PLUGIN_DIR="$SLIDESMITH_ROOT" SLIDESMITH_PROJECT_DIR="$USER_DIR" npx tsx src/cli.ts theme-info "$(cat "$USER_DIR/deck.yaml" | grep '^theme:' | awk '{print $2}')"
-   ```
-   You must follow every entry in `manifest.constraints`. Use `manifest.samples.default` as a format reference.
-
-3. **Input sources (precedence per spec §5.4)**:
-   - `blueprint.md` exists → master. **It's a SPEC document the user wrote — topic, audience, key messages, tone, optional outline. It is NOT finished slides; do not copy it verbatim into output.md.** Read it as a brief, then write the actual Marp slides yourself.
-   - Otherwise → infer from the contents of `assets/` plus the chat context.
-   - If `--no-blueprint` is supplied, ignore the blueprint.
-   - If `--from "text"` is supplied, that text is the master spec.
-
-   The blueprint may contain placeholders like `<one or two sentences: ...>` left over from the seed template. If you see those, the user hasn't filled in that section — ask them before guessing, or skip that section in the deck.
-
-## Generation rules
-
-1. **Honor the theme constraints** — apply the `manifest.constraints` you fetched above when writing slides.
-
-2. **All prerender content must live in external files** (spec §6.2):
-   - Diagrams: create `assets/diagrams/<slug>.mmd` (or `.excalidraw`); in output.md, only reference it via `![description](assets/diagrams/<slug>.mmd)`.
-   - Charts: `assets/charts/<slug>.vl.json` (when vega-lite is supported).
-   - If an image already lives in `assets/images/`, reference it directly.
-   - If no image exists and one needs to be generated or sourced, use a semantic placeholder: `![alt natural-language description]()` (empty src). The prerender stage dispatches it through `image.generate` or `stock.photo`.
-   - **Do not put diagram source inside an inline code block** (e.g. ` ```mermaid `). Detection ignores them, so they won't be rendered.
-
-3. **Language**: follow the `language` field in `deck.yaml` (Korean by default). Slide body, titles, and alt text should all be in that language.
-
-4. **Marp frontmatter** (top of output.md):
-   ```yaml
-   ---
-   marp: true
-   theme: <theme-name from deck.yaml>
-   paginate: true
-   ---
-   ```
-
-5. **Ambiguous input** — if the blueprint and materials are too thin for a reasonable inference, ask the user 1–2 short clarifying questions. When proceeding on assumptions, leave a `# TODO: <assumption>` HTML comment in the slide frontmatter.
-
-## Write rules
-
-1. If `output.md` already exists, explicitly ask the user before overwriting (spec §2.1, user-area protection).
-
-2. Write the new content to `output.md` (with the Write tool).
-
-3. Write the diagram source files at the same time (Write tool).
-
-4. When you're done, report to the user:
-   - Slide count
-   - List of diagram/source files created
-   - Number of semantic placeholders used (these will be filled in during prerender)
-   - Next step: "Run `/slidesmith:prerender` to convert the placeholders."
+- One question per message. Don't dump a checklist.
+- Don't write slides. Don't fabricate `output.md`. The plan stage produces refined spec only.
+- If the user gives a one-word answer, follow up — don't put a one-word answer into the spec.
+- If `blueprint.md` is already fully populated and the user says "looks fine", skip Q&A and just confirm the spec is ready.
+- When updating `blueprint.md`, use the Write tool. Preserve the H1 (`# <project> — deck spec`) and the section headers; only the body of each section changes.

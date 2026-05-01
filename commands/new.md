@@ -36,6 +36,6 @@ Creates a new slidesmith project directory (spec §5.3).
 
 4. On success, tell the user:
    - Which directory was created.
-   - Next steps: "cd into `<name>` and edit `blueprint.md`. Then run `/slidesmith:build` to build in one shot, or step through `/slidesmith:plan` → `/slidesmith:prerender` → `/slidesmith:export`."
+   - Next steps: "cd into `<name>` and edit `blueprint.md` (or run `/slidesmith:plan` for an interactive Q&A that fills it in). Then run `/slidesmith:build` to render the deck."
 
 5. On failure, show the error message verbatim (in particular, if it says "non-empty", confirm the user really meant that directory).

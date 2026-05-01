@@ -89,7 +89,7 @@ function blueprintTemplate(
 ): string {
   return `# ${name} — deck spec
 
-> This file is a **spec, not slides**. Describe what you want; \`/slidesmith:plan\` will read this and write \`output.md\` (the actual Marp slides) for you.
+> This file is a **spec, not slides**. Describe what you want here. Run \`/slidesmith:plan\` for an interactive Q&A that refines this spec, then \`/slidesmith:build\` to render the actual Marp slides.
 
 ## Topic
 

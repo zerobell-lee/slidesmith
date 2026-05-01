@@ -76,14 +76,14 @@
 slidesmith/                            # 플러그인 루트 (배포 단위)
 ├── README.md
 ├── plugin.json                        # Claude Code 플러그인 매니페스트
-├── commands/                          # 슬래시 커맨드 (.md)
-│   ├── plan.md                        # /slidesmith:plan
-│   ├── prerender.md                   # /slidesmith:prerender
-│   ├── export.md                      # /slidesmith:export
-│   ├── build.md                       # /slidesmith:build (wrapper)
+├── commands/                          # 슬래시 커맨드 (.md) — 5개로 축소 (v0.1.4)
+│   ├── plan.md                        # /slidesmith:plan (interactive brainstorm; refines blueprint.md only)
+│   ├── build.md                       # /slidesmith:build (unified pipeline: draft → prerender → export)
 │   ├── theme.md                       # /slidesmith:theme add/list/remove/update
 │   ├── new.md                         # /slidesmith:new (프로젝트 부트스트랩)
 │   └── doctor.md                      # /slidesmith:doctor
+│   # NOTE: /slidesmith:prerender, /slidesmith:export 슬래시는 v0.1.4에서 제거됨.
+│   #       내부 cli subcommand (detect, dispatch-file-ref, run-processor, inject, export)는 유지 — build가 인라인으로 호출.
 ├── scripts/                           # Node/TS 헬퍼 (tsx 런타임)
 │   ├── package.json
 │   ├── tsconfig.json
@@ -263,6 +263,8 @@ plan:
 ---
 
 ## 6. 빌드 파이프라인
+
+> **v0.1.4 변경:** 사용자 노출 슬래시 커맨드는 5개 (`new` · `plan` · `build` · `doctor` · `theme`)로 축소. `plan`은 더 이상 `output.md`를 생성하지 않는다 — 사용자와의 짧은 Q&A로 `blueprint.md`(스펙)를 다듬는 **interactive brainstorm** 단계다. 슬라이드를 만들려면 `build`를 실행한다. `build`는 내부적으로 **draft → prerender → export** 3단계를 실행한다 (`draft`는 옛 `plan` 단계의 새 이름 — blueprint를 읽고 `output.md`를 작성). `prerender`/`export` 슬래시는 제거됐고 cli subcommand로만 남는다.
 
 ### 6.1 4-스테이지 흐름
 
