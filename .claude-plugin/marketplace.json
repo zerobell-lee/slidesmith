@@ -1,0 +1,14 @@
+{
+  "name": "slidesmith",
+  "description": "Marketplace for the slidesmith plugin: Marp-based slide deck generator for Claude Code with bundled themes, extensible prerender pipeline, and LLM-driven slide planning.",
+  "owner": {
+    "name": "zerobell-lee"
+  },
+  "plugins": [
+    {
+      "name": "slidesmith",
+      "source": "./",
+      "description": "Marp-based slide deck generator for Claude Code — bundled themes, extensible prerender pipeline, LLM-driven slide planning."
+    }
+  ]
+}

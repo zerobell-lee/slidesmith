@@ -1,0 +1,11 @@
+{
+  "name": "slidesmith",
+  "version": "0.1.0",
+  "description": "Marp-based slide deck generator for Claude Code — bundled themes, extensible prerender pipeline, LLM-driven slide planning.",
+  "author": {
+    "name": "zerobell-lee"
+  },
+  "homepage": "https://github.com/zerobell-lee/slidesmith",
+  "repository": "https://github.com/zerobell-lee/slidesmith",
+  "license": "MIT"
+}
