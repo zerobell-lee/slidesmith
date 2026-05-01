@@ -1,0 +1,5 @@
+title: multilang-test
+theme: default
+language: en
+formats: [html]
+output: { basename: deck }

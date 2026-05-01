@@ -1,0 +1,6 @@
+title: overrides-test
+theme: default
+language: ko
+formats: [html]
+output: { basename: deck }
+overrides: { css: overrides.css }

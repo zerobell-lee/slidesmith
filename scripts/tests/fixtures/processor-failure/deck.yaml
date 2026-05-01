@@ -1,0 +1,5 @@
+title: processor-failure-test
+theme: default
+language: ko
+formats: [html]
+output: { basename: deck }

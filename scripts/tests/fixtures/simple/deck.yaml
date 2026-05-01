@@ -1,0 +1,9 @@
+title: simple-test
+theme: default
+language: ko
+formats: [html]
+output:
+  basename: deck
+plan:
+  blueprint: blueprint.md
+  assets: assets

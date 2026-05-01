@@ -1,0 +1,6 @@
+title: missing-secret-test
+theme: default
+language: ko
+formats: [pdf]
+output:
+  basename: deck
