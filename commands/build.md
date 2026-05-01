@@ -7,10 +7,6 @@ argument-hint: [--from plan|prerender|export]
 
 Run `/slidesmith:plan` → `/slidesmith:prerender` → `/slidesmith:export` in order.
 
-!`SLIDESMITH_ROOT="$(cd "${CLAUDE_SKILL_DIR}/../.." && pwd)"; [ -d "$SLIDESMITH_ROOT/scripts/node_modules" ] || (cd "$SLIDESMITH_ROOT/scripts" && npm install --silent 2>&1 | tail -5); echo "SLIDESMITH_ROOT=$SLIDESMITH_ROOT"`
-
-The line above prints `SLIDESMITH_ROOT=<path>`. **In all bash commands below, replace `<SLIDESMITH_ROOT>` with that absolute path.** Each bash call should also pass `SLIDESMITH_PROJECT_DIR="$PWD"` to point cli at the user's current project.
-
 ## Arguments
 
 - `--from <stage>` (optional): which stage to restart from. Default is `plan`. Values: `plan`, `prerender`, `export`.
@@ -26,7 +22,14 @@ The line above prints `SLIDESMITH_ROOT=<path>`. **In all bash commands below, re
    - "🔧 Starting prerender stage..."
    - "📦 Starting export stage..."
 
-4. Each stage runs the body procedure of its slash command directly. (That is, build doesn't *invoke* other commands — it inlines those procedures.)
+4. Each stage runs the body procedure of its slash command directly. (That is, build doesn't *invoke* other commands — it inlines those procedures.) Each bash invocation in those inlined procedures uses the same self-discovery preamble:
+
+   ```bash
+   USER_DIR="$PWD"
+   SLIDESMITH_ROOT=$(ls -d ~/.claude/plugins/cache/slidesmith/slidesmith/*/ 2>/dev/null | sort -V | tail -1 | sed 's:/*$::')
+   [ -d "$SLIDESMITH_ROOT/scripts/node_modules" ] || (cd "$SLIDESMITH_ROOT/scripts" && npm install --silent)
+   cd "$SLIDESMITH_ROOT/scripts" && SLIDESMITH_PLUGIN_DIR="$SLIDESMITH_ROOT" SLIDESMITH_PROJECT_DIR="$USER_DIR" npx tsx src/cli.ts <subcommand> [args]
+   ```
 
 5. If any stage fails, stop immediately. State clearly which stage failed and follow that stage's failure handling.
 
