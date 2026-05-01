@@ -6,20 +6,18 @@ description: Detect placeholders in output.md, dispatch processors, write build/
 
 The prerender stage from spec §6.3. `output.md` → `build/.cache/prerendered.md` (with placeholders converted).
 
+## Path convention for replacements
+
+`prerendered.md` lives at `<project>/build/.cache/prerendered.md`. Marp resolves image refs **relative to that file's location**, not the project root. So when you build a replacement string, the path must be relative to `build/.cache/`:
+
+- ✅ `![alt](svg/p1.svg)` (resolves to `<project>/build/.cache/svg/p1.svg`)
+- ❌ `![alt](build/.cache/svg/p1.svg)` (Marp would resolve this to `<project>/build/.cache/build/.cache/svg/p1.svg` — file not found)
+
+The `--out` argument to `run-processor`, however, is an absolute path on disk. Use `$USER_DIR/build/.cache/svg/<id>.svg` for `--out`, and `svg/<id>.svg` (or `img/<id>.<ext>`) for the replacement string.
+
 ## Process
 
-### 1. Pre-flight check
-
-```bash
-USER_DIR="$PWD"
-SLIDESMITH_ROOT=$(ls -d ~/.claude/plugins/cache/slidesmith/slidesmith/*/ 2>/dev/null | sort -V | tail -1 | sed 's:/*$::')
-[ -d "$SLIDESMITH_ROOT/scripts/node_modules" ] || (cd "$SLIDESMITH_ROOT/scripts" && npm install --silent)
-cd "$SLIDESMITH_ROOT/scripts" && SLIDESMITH_PLUGIN_DIR="$SLIDESMITH_ROOT" SLIDESMITH_PROJECT_DIR="$USER_DIR" npx tsx src/cli.ts doctor
-```
-
-If any check is at `fail`, stop immediately and tell the user. `warn` items (e.g. MCP) can proceed, but notify the user.
-
-### 2. Detect placeholders
+### 1. Detect placeholders
 
 ```bash
 USER_DIR="$PWD"
@@ -30,7 +28,11 @@ cd "$SLIDESMITH_ROOT/scripts" && SLIDESMITH_PLUGIN_DIR="$SLIDESMITH_ROOT" SLIDES
 
 You'll receive a JSON array. Each entry is `{id, kind, line, ...}`.
 
-### 3. Dispatch each placeholder
+If the array is empty, skip directly to step 4 (no replacements needed; just copy `output.md` to `prerendered.md` via inject).
+
+### 2. Dispatch each placeholder
+
+**No upfront doctor check** — per-placeholder soft-fail (spec §10.1) handles missing deps. If a processor invocation fails (binary missing, env key missing, etc.), retry once, then leave that placeholder in place and continue. Doctor was the wrong tool here because it flags processors the deck doesn't even use.
 
 Read `/tmp/placeholders.json` (JSON parse) and handle each entry by these rules:
 
@@ -53,10 +55,10 @@ Read `/tmp/placeholders.json` (JSON parse) and handle each entry by these rules:
     --input-file "<placeholder.path>" \
     --out "$USER_DIR/build/.cache/svg/<placeholder.id>.svg"
   ```
-  On success, the replacement rewrites the original `![alt](path)` to `![alt](build/.cache/svg/<id>.svg)`.
+  On success, the replacement rewrites the original `![alt](path)` to **`![alt](svg/<id>.svg)`** (path relative to `prerendered.md`, not project root — see "Path convention" above).
 
 - **`kind: semantic`** → LLM-judgment dispatch:
-  1. Check the `list-capabilities` results (already verified by doctor in step 1).
+  1. Run `list-capabilities` if you haven't already; it tells you which processors are registered.
   2. Inspect the placeholder's `alt` text and pick a suitable capability:
      - "chart" / "graph" → `chart.*`
      - "diagram" / "flow" → `diagram.*`
@@ -99,8 +101,8 @@ Read `/tmp/placeholders.json` (JSON parse) and handle each entry by these rules:
        3. Decode the base64 image data from the response JSON → save to `build/.cache/img/<id>.png` (decoding can be done in Bash or by the LLM).
        4. On call failure, retry once and then preserve the placeholder (spec §10.1).
      - `diagram.*` (mermaid-cli): the LLM first writes the mermaid source string into `assets/diagrams/auto-<id>.mmd`, then converts it to SVG using the same flow as file-ref. The user can later lock it in by writing `![alt](assets/diagrams/auto-<id>.mmd)` in output.md.
-  5. Save the result (image or SVG) to `build/.cache/img/<id>.<ext>` or `build/.cache/svg/<id>.svg`.
-  6. The replacement rewrites the original `![alt]()` to `![alt](build/.cache/img/<id>.<ext>)`.
+  5. Save the result on disk to `$USER_DIR/build/.cache/img/<id>.<ext>` or `$USER_DIR/build/.cache/svg/<id>.svg`.
+  6. The replacement rewrites the original `![alt]()` to **`![alt](img/<id>.<ext>)`** or **`![alt](svg/<id>.svg)`** (path relative to `prerendered.md`).
 
 ### Special handling for MCP backends
 
@@ -108,12 +110,12 @@ If a matched processor has `backend.type: mcp` (e.g. excalidraw-mcp), the `run-p
 
 1. Check the `backend` field in the `dispatch-file-ref` result.
 2. If `backend.type === 'mcp'`, call the MCP tool directly via Claude Code (e.g. the `render_to_svg` tool on the excalidraw server) using the specified `server`/`tool`.
-3. Save the resulting SVG bytes to `build/.cache/svg/<id>.svg`.
-4. The rest of the flow is identical to the cli backend (add the replacement).
+3. Save the resulting SVG bytes on disk to `$USER_DIR/build/.cache/svg/<id>.svg`.
+4. The rest of the flow is identical to the cli backend (add the replacement using `svg/<id>.svg`).
 
-If the MCP server isn't running in the current session, doctor will have already raised a ⚠️; remind the user about that warning and skip (preserve) that placeholder.
+If the MCP server isn't running in the current session, the call will fail; preserve that placeholder and tell the user the MCP server is unavailable.
 
-### 4. Inject
+### 3. Inject
 
 Collect all successful replacements into a JSON array, then:
 
@@ -126,7 +128,7 @@ cd "$SLIDESMITH_ROOT/scripts" && SLIDESMITH_PLUGIN_DIR="$SLIDESMITH_ROOT" SLIDES
   --out "$USER_DIR/build/.cache/prerendered.md"
 ```
 
-### 5. Report
+### 4. Report
 
 Report to the user:
 - Placeholders processed: N
@@ -138,5 +140,4 @@ Report to the user:
 
 - If an individual placeholder fails, retry once → if it still fails, leave the placeholder as-is (don't add a replacement) and continue.
 - Never silently skip when zero processors match — print a warning.
-- If the doctor light check fails, stop before prerender starts.
 - output.md / blueprint.md / assets/ must never be modified (semantic dispatch *creating* a new `assets/diagrams/auto-<id>.mmd` is allowed — overwriting an existing file is not).
