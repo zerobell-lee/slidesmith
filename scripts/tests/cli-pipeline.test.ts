@@ -75,3 +75,31 @@ describe('cli inject', () => {
     expect(result).toBe('![a](r1.png) ![b](r2.png)\n');
   });
 });
+
+describe('cli run-processor (cli backend with token args)', () => {
+  it('substitutes {output} token in args', async () => {
+    const tmp2 = await fs.mkdtemp(path.join(os.tmpdir(), 'slidesmith-rp-'));
+    const pluginDir = path.join(tmp2, 'plugin');
+    const procDir = path.join(pluginDir, 'prerenders', 'echoer');
+    await fs.ensureDir(procDir);
+    await fs.writeFile(
+      path.join(procDir, 'manifest.yaml'),
+      `name: echoer
+provides: [test.echo]
+matches: {}
+backend:
+  type: cli
+  cmd: node
+  args: ["-e", "require('fs').writeFileSync(process.argv[1], 'hello')", "{output}"]
+priority: 50
+`,
+    );
+    const outFile = path.join(tmp2, 'out.txt');
+    await execa('npx', ['tsx', cliPath, 'run-processor', '--name', 'echoer', '--out', outFile], {
+      env: { ...process.env, SLIDESMITH_PLUGIN_DIR: pluginDir, SLIDESMITH_PROJECT_DIR: tmp2, SLIDESMITH_USER_HOME: tmp2 },
+    });
+    const content = await fs.readFile(outFile, 'utf-8');
+    expect(content).toBe('hello');
+    await fs.remove(tmp2);
+  });
+});

@@ -195,8 +195,23 @@ const commands: Record<string, (args: string[]) => Promise<void>> = {
       input = flags.input;
     }
 
+    let backend = proc.backend;
+    let outputTokenUsed = false;
+    if (backend.type === 'cli' && backend.args) {
+      const tokens: Record<string, string> = {
+        '{input-file}': flags['input-file'] ?? '',
+        '{output}': flags.out,
+        '{input}': flags.input ?? '',
+      };
+      outputTokenUsed = backend.args.includes('{output}');
+      backend = {
+        ...backend,
+        args: backend.args.map((a) => (tokens[a] !== undefined ? tokens[a] : a)),
+      };
+    }
+
     const result = await invokeBackend({
-      backend: proc.backend,
+      backend,
       input,
       env,
       cwd: paths.projectDir,
@@ -210,7 +225,9 @@ const commands: Record<string, (args: string[]) => Promise<void>> = {
     }
 
     await fs.ensureDir(path.dirname(flags.out));
-    if (result.bytes) {
+    if (outputTokenUsed) {
+      // CLI tool wrote the file directly via {output} token; don't overwrite.
+    } else if (result.bytes) {
       await fs.writeFile(flags.out, result.bytes);
     } else {
       await fs.writeFile(flags.out, result.stdout);

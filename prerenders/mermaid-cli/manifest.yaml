@@ -1,0 +1,16 @@
+name: mermaid-cli
+provides: [diagram.mermaid]
+matches:
+  extensions: [.mmd, .mermaid]
+backend:
+  type: cli
+  cmd: mmdc
+  args:
+    - "-i"
+    - "{input-file}"
+    - "-o"
+    - "{output}"
+    - "--quiet"
+requires:
+  binaries: [mmdc]
+priority: 50
