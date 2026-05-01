@@ -54,7 +54,7 @@ describe('bootstrapProject', () => {
     expect(await fs.pathExists(path.join(projectPath, '.gitignore'))).toBe(true);
   });
 
-  it('uses sample mapped by lang when present', async () => {
+  it('seeds blueprint.md as a spec template carrying the project name', async () => {
     const projectPath = path.join(tmp, 'mydeck');
     await bootstrapProject({
       name: 'mydeck',
@@ -65,10 +65,30 @@ describe('bootstrapProject', () => {
       userHome: tmp,
     });
     const blueprint = await fs.readFile(path.join(projectPath, 'blueprint.md'), 'utf-8');
-    expect(blueprint).toBe('# english sample');
+    // Spec template, not a Marp file.
+    expect(blueprint).toMatch(/^# mydeck — deck spec/m);
+    expect(blueprint).toMatch(/spec, not slides/);
+    expect(blueprint).toMatch(/## Topic/);
+    expect(blueprint).toMatch(/## Key messages/);
+    expect(blueprint).not.toMatch(/^marp:\s*true/m);
   });
 
-  it('falls back to default sample when lang key missing', async () => {
+  it('points the README at the theme sample for style reference', async () => {
+    const projectPath = path.join(tmp, 'mydeck');
+    await bootstrapProject({
+      name: 'mydeck',
+      targetDir: projectPath,
+      themeName: 'default',
+      lang: 'en',
+      pluginDir,
+      userHome: tmp,
+    });
+    const readme = await fs.readFile(path.join(projectPath, 'README.md'), 'utf-8');
+    expect(readme).toMatch(/Theme: default/);
+    expect(readme).toMatch(/sample\.en\.md/);
+  });
+
+  it('falls back to default sample reference when lang key missing', async () => {
     const projectPath = path.join(tmp, 'mydeck');
     await bootstrapProject({
       name: 'mydeck',
@@ -78,8 +98,8 @@ describe('bootstrapProject', () => {
       pluginDir,
       userHome: tmp,
     });
-    const blueprint = await fs.readFile(path.join(projectPath, 'blueprint.md'), 'utf-8');
-    expect(blueprint).toBe('# default sample');
+    const readme = await fs.readFile(path.join(projectPath, 'README.md'), 'utf-8');
+    expect(readme).toMatch(/sample\.md/);
   });
 
   it('writes deck.yaml with the requested theme and lang', async () => {

@@ -30,10 +30,12 @@ Gather this information first:
    You must follow every entry in `manifest.constraints`. Use `manifest.samples.default` as a format reference.
 
 3. **Input sources (precedence per spec §5.4)**:
-   - `blueprint.md` exists → master. Other inputs are supplementary.
+   - `blueprint.md` exists → master. **It's a SPEC document the user wrote — topic, audience, key messages, tone, optional outline. It is NOT finished slides; do not copy it verbatim into output.md.** Read it as a brief, then write the actual Marp slides yourself.
    - Otherwise → infer from the contents of `assets/` plus the chat context.
    - If `--no-blueprint` is supplied, ignore the blueprint.
-   - If `--from "text"` is supplied, that text is the master.
+   - If `--from "text"` is supplied, that text is the master spec.
+
+   The blueprint may contain placeholders like `<one or two sentences: ...>` left over from the seed template. If you see those, the user hasn't filled in that section — ask them before guessing, or skip that section in the deck.
 
 ## Generation rules
 

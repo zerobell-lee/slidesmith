@@ -97,24 +97,35 @@ describe('fixture: overrides — combined CSS contains both theme and override',
   });
 });
 
-describe('fixture: multilang — bootstrap copies correct sample', () => {
-  it('uses en sample when --lang en', async () => {
+describe('fixture: multilang — bootstrap seeds spec template + readme references the right sample', () => {
+  it('seeds blueprint as a spec template carrying the project name', async () => {
     const target = path.join(workDir, 'newproj');
     await execa('npx', ['tsx', cliPath, 'new-project', 'newproj', '--theme', 'default', '--lang', 'en'], {
       cwd: workDir,
       env: { ...process.env, SLIDESMITH_PLUGIN_DIR: pluginDir, SLIDESMITH_PROJECT_DIR: workDir, SLIDESMITH_USER_HOME: workDir },
     });
     const blueprint = await fs.readFile(path.join(target, 'blueprint.md'), 'utf-8');
-    expect(blueprint).toMatch(/Presentation Title/);
+    expect(blueprint).toMatch(/^# newproj — deck spec/m);
+    expect(blueprint).toMatch(/spec, not slides/);
   });
 
-  it('falls back to default sample when no lang mapping', async () => {
-    const target = path.join(workDir, 'newproj-jp');
-    await execa('npx', ['tsx', cliPath, 'new-project', 'newproj-jp', '--theme', 'default', '--lang', 'fr'], {
+  it('readme references the en sample when --lang en', async () => {
+    const target = path.join(workDir, 'newproj-en');
+    await execa('npx', ['tsx', cliPath, 'new-project', 'newproj-en', '--theme', 'default', '--lang', 'en'], {
       cwd: workDir,
       env: { ...process.env, SLIDESMITH_PLUGIN_DIR: pluginDir, SLIDESMITH_PROJECT_DIR: workDir, SLIDESMITH_USER_HOME: workDir },
     });
-    const blueprint = await fs.readFile(path.join(target, 'blueprint.md'), 'utf-8');
-    expect(blueprint).toMatch(/발표 제목/);
+    const readme = await fs.readFile(path.join(target, 'README.md'), 'utf-8');
+    expect(readme).toMatch(/sample\.en\.md/);
+  });
+
+  it('readme falls back to default sample when --lang has no mapping', async () => {
+    const target = path.join(workDir, 'newproj-fr');
+    await execa('npx', ['tsx', cliPath, 'new-project', 'newproj-fr', '--theme', 'default', '--lang', 'fr'], {
+      cwd: workDir,
+      env: { ...process.env, SLIDESMITH_PLUGIN_DIR: pluginDir, SLIDESMITH_PROJECT_DIR: workDir, SLIDESMITH_USER_HOME: workDir },
+    });
+    const readme = await fs.readFile(path.join(target, 'README.md'), 'utf-8');
+    expect(readme).toMatch(/sample\.md/);
   });
 });
