@@ -4,7 +4,7 @@ description: Detect placeholders in output.md, dispatch processors, write build/
 
 # /slidesmith:prerender
 
-스펙 §6.3의 prerender 단계. `output.md` → `build/.cache/prerendered.md` (placeholder들 변환됨).
+The prerender stage from spec §6.3. `output.md` → `build/.cache/prerendered.md` (with placeholders converted).
 
 ## Process
 
@@ -15,29 +15,29 @@ cd "$CLAUDE_PLUGIN_ROOT/scripts" && \
   SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts doctor
 ```
 
-`fail` 항목이 있으면 즉시 중단하고 사용자에게 안내. `warn`(예: MCP)는 계속 진행하되 사용자에게 알림.
+If any check is at `fail`, stop immediately and tell the user. `warn` items (e.g. MCP) can proceed, but notify the user.
 
-### 2. Placeholder 탐지
+### 2. Detect placeholders
 
 ```bash
 cd "$CLAUDE_PLUGIN_ROOT/scripts" && \
   SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts detect output.md > /tmp/placeholders.json
 ```
 
-JSON 배열을 받습니다. 각 항목은 `{id, kind, line, ...}`.
+You'll receive a JSON array. Each entry is `{id, kind, line, ...}`.
 
-### 3. 각 placeholder별 dispatch
+### 3. Dispatch each placeholder
 
-`/tmp/placeholders.json`을 읽고 (JSON parse), 다음 규칙으로 처리:
+Read `/tmp/placeholders.json` (JSON parse) and handle each entry by these rules:
 
-- **`kind: image`** → 통과 (변환 없음). replacements 배열에 추가하지 않음.
+- **`kind: image`** → pass through (no conversion). Don't add it to the replacements array.
 
-- **`kind: file-ref`** → 결정적 dispatch:
+- **`kind: file-ref`** → deterministic dispatch:
   ```bash
   cd "$CLAUDE_PLUGIN_ROOT/scripts" && \
     SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts dispatch-file-ref "<ext>"
   ```
-  결과 JSON이 `null`이면 매칭 프로세서 없음 → 경고 출력 + 그 placeholder 보존(replacement 안 만듦). 결과가 객체면 그 프로세서 이름으로 호출:
+  If the result JSON is `null`, no processor matched → print a warning and preserve the placeholder (don't add a replacement). If the result is an object, invoke that processor by name:
   ```bash
   cd "$CLAUDE_PLUGIN_ROOT/scripts" && \
     SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts run-processor \
@@ -45,63 +45,63 @@ JSON 배열을 받습니다. 각 항목은 `{id, kind, line, ...}`.
       --input-file "<placeholder.path>" \
       --out "build/.cache/svg/<placeholder.id>.svg"
   ```
-  성공 시 replacement: 원래 `![alt](path)`를 `![alt](build/.cache/svg/<id>.svg)`로 바꿈.
+  On success, the replacement rewrites the original `![alt](path)` to `![alt](build/.cache/svg/<id>.svg)`.
 
-- **`kind: semantic`** → LLM judgment dispatch:
-  1. `list-capabilities` 결과 확인 (1단계에서 이미 doctor가 검증).
-  2. placeholder의 `alt` 텍스트를 보고 적합한 능력 결정:
-     - "차트", "그래프" → `chart.*`
-     - "다이어그램", "플로우" → `diagram.*`
-     - "고양이/사진/실사" → `stock.photo`
-     - "일러스트/생성/추상" → `image.generate`
-  3. 그 능력의 등록된 프로세서 중 하나 선택 (`list-capabilities`의 `providers[0]` 추천).
-  4. 능력별로 호출 인자 구성:
+- **`kind: semantic`** → LLM-judgment dispatch:
+  1. Check the `list-capabilities` results (already verified by doctor in step 1).
+  2. Inspect the placeholder's `alt` text and pick a suitable capability:
+     - "차트" / "그래프" / "chart" / "graph" → `chart.*`
+     - "다이어그램" / "플로우" / "diagram" / "flow" → `diagram.*`
+     - "고양이/사진/실사" / "cat / photo / realistic" → `stock.photo`
+     - "일러스트/생성/추상" / "illustration / generated / abstract" → `image.generate`
+  3. Pick one of the capability's registered processors (recommend `providers[0]` from `list-capabilities`).
+  4. Build the call arguments per capability:
      - `stock.photo` via pexels:
-       1. 검색:
+       1. Search:
           ```bash
           cd "$CLAUDE_PLUGIN_ROOT/scripts" && \
             SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts run-processor \
               --name pexels \
-              --http-path "/search?query=$(echo '<alt 자연어>' | jq -sRr @uri)&per_page=1" \
+              --http-path "/search?query=$(echo '<alt natural language>' | jq -sRr @uri)&per_page=1" \
               --out "/tmp/pexels-<id>.json"
           ```
-       2. 결과 JSON 읽고 `photos[0].src.large` URL 추출.
-       3. 그 URL을 다운로드 (Bash `curl -L "$URL" -o build/.cache/img/<id>.jpg` 또는 별도 fetch). 인증 헤더는 다운로드엔 불필요.
+       2. Read the result JSON and extract the `photos[0].src.large` URL.
+       3. Download that URL (Bash `curl -L "$URL" -o build/.cache/img/<id>.jpg` or a separate fetch). The download itself doesn't need an auth header.
      - `image.generate` via gemini-image:
-       1. POST 요청 페이로드를 LLM이 구성 (Gemini 이미지 생성 API 스펙 따라 — Imagen 또는 Gemini 2.x image preview 모델):
+       1. The LLM builds the POST request payload (per the Gemini image-generation API spec — Imagen or Gemini 2.x image preview models):
           ```json
-          {"contents":[{"parts":[{"text":"<alt 자연어>"}]}]}
+          {"contents":[{"parts":[{"text":"<alt natural language>"}]}]}
           ```
-       2. 호출:
+       2. Invoke:
           ```bash
           cd "$CLAUDE_PLUGIN_ROOT/scripts" && \
             SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts run-processor \
               --name gemini-image \
               --http-method POST \
               --http-path "/models/<model>:generateContent" \
-              --input '<위 JSON>' \
+              --input '<JSON above>' \
               --out "/tmp/gemini-<id>.json"
           ```
-       3. 응답 JSON에서 base64 이미지 데이터 디코딩 → `build/.cache/img/<id>.png` 저장 (디코딩은 Bash 또는 LLM이 처리).
-       4. 호출 실패 시 retry 1회 후 placeholder 보존 (스펙 §10.1).
-     - `diagram.*` (mermaid-cli): 먼저 LLM이 mermaid 소스 문자열을 만들어 `assets/diagrams/auto-<id>.mmd`에 저장 → 그 다음 file-ref와 동일한 흐름으로 SVG 변환. 사용자가 나중에 output.md에서 `![alt](assets/diagrams/auto-<id>.mmd)`로 락인할 수 있음.
-  5. 호출 결과(이미지 또는 SVG)를 `build/.cache/img/<id>.<ext>` 또는 `build/.cache/svg/<id>.svg`에 저장.
-  6. replacement: 원래 `![alt]()`를 `![alt](build/.cache/img/<id>.<ext>)`로 바꿈.
+       3. Decode the base64 image data from the response JSON → save to `build/.cache/img/<id>.png` (decoding can be done in Bash or by the LLM).
+       4. On call failure, retry once and then preserve the placeholder (spec §10.1).
+     - `diagram.*` (mermaid-cli): the LLM first writes the mermaid source string into `assets/diagrams/auto-<id>.mmd`, then converts it to SVG using the same flow as file-ref. The user can later lock it in by writing `![alt](assets/diagrams/auto-<id>.mmd)` in output.md.
+  5. Save the result (image or SVG) to `build/.cache/img/<id>.<ext>` or `build/.cache/svg/<id>.svg`.
+  6. The replacement rewrites the original `![alt]()` to `![alt](build/.cache/img/<id>.<ext>)`.
 
-### MCP 백엔드 특수 처리
+### Special handling for MCP backends
 
-`backend.type: mcp`인 프로세서가 매칭되면 (예: excalidraw-mcp) `run-processor` 스크립트는 그 호출을 처리하지 못합니다. 대신 LLM이 Claude Code의 해당 MCP 도구를 직접 호출:
+If a matched processor has `backend.type: mcp` (e.g. excalidraw-mcp), the `run-processor` script can't handle that call. Instead, the LLM directly invokes the corresponding Claude Code MCP tool:
 
-1. `dispatch-file-ref` 결과의 `backend` 필드 확인.
-2. `backend.type === 'mcp'`이면 → 그 `server`/`tool`을 Claude Code의 MCP 도구로 직접 호출 (예: excalidraw 서버의 `render_to_svg` 도구).
-3. 결과 SVG 바이트를 `build/.cache/svg/<id>.svg`에 저장.
-4. 이후 흐름은 cli 백엔드와 동일 (replacement 추가).
+1. Check the `backend` field in the `dispatch-file-ref` result.
+2. If `backend.type === 'mcp'`, call the MCP tool directly via Claude Code (e.g. the `render_to_svg` tool on the excalidraw server) using the specified `server`/`tool`.
+3. Save the resulting SVG bytes to `build/.cache/svg/<id>.svg`.
+4. The rest of the flow is identical to the cli backend (add the replacement).
 
-MCP 서버가 현재 세션에 떠있지 않으면 doctor가 ⚠️로 경고했을 것이므로 그 경고를 사용자에게 환기하고 해당 placeholder는 보존(스킵).
+If the MCP server isn't running in the current session, doctor will have already raised a ⚠️; remind the user about that warning and skip (preserve) that placeholder.
 
 ### 4. Inject
 
-성공한 replacement들을 모아 JSON 배열로 만든 뒤:
+Collect all successful replacements into a JSON array, then:
 
 ```bash
 cd "$CLAUDE_PLUGIN_ROOT/scripts" && \
@@ -112,15 +112,15 @@ cd "$CLAUDE_PLUGIN_ROOT/scripts" && \
 
 ### 5. Report
 
-사용자에게 보고:
-- 처리된 placeholder 수: N
-- 통과한 일반 이미지: M
-- 실패/스킵된 placeholder: K (각각 어떤 ID, line, 이유)
-- 다음 단계 안내: "`/slidesmith:export`로 PDF/HTML 생성하세요."
+Report to the user:
+- Placeholders processed: N
+- Plain images passed through: M
+- Failed/skipped placeholders: K (with each ID, line, and reason)
+- Next step: "Run `/slidesmith:export` to produce the PDF/HTML."
 
-## Failure policy (스펙 §10.1)
+## Failure policy (spec §10.1)
 
-- 개별 placeholder 실패 시 retry 1회 → 그래도 실패하면 그 placeholder는 그대로 두고 (replacement 추가 안 함) 계속 진행.
-- 매칭 프로세서 0건이면 silent skip 절대 금지 — 경고 출력.
-- doctor light check가 실패하면 prerender 시작 전에 중단.
-- output.md / blueprint.md / assets/ 는 절대 수정 안 함 (semantic dispatch에서 새로 만드는 `assets/diagrams/auto-<id>.mmd`는 *생성*이므로 허용, 기존 파일 덮어쓰기는 금지).
+- If an individual placeholder fails, retry once → if it still fails, leave the placeholder as-is (don't add a replacement) and continue.
+- Never silently skip when zero processors match — print a warning.
+- If the doctor light check fails, stop before prerender starts.
+- output.md / blueprint.md / assets/ must never be modified (semantic dispatch *creating* a new `assets/diagrams/auto-<id>.mmd` is allowed — overwriting an existing file is not).

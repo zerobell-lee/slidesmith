@@ -1,66 +1,66 @@
 # slidesmith
 
-Marp 기반 Claude Code 플러그인. 자연어 입력만으로 발표 자료(PDF/HTML/PPTX)를 생성합니다.
+A Marp-based Claude Code plugin. Generates presentations (PDF/HTML/PPTX) from natural-language input.
 
-## 설치
+## Installation
 
-1. **의존성**:
+1. **Dependencies**:
    ```bash
    npm i -g @marp-team/marp-cli
-   npm i -g @mermaid-js/mermaid-cli   # mermaid 사용 시
+   npm i -g @mermaid-js/mermaid-cli   # if you use mermaid
    ```
 
-2. **플러그인 의존성 설치**:
+2. **Install plugin dependencies**:
    ```bash
    cd <plugin-root>/scripts && npm install
    ```
 
-3. **doctor로 환경 확인**:
+3. **Verify your environment with doctor**:
    ```
    /slidesmith:doctor
    ```
 
-## 빠른 시작
+## Quick start
 
 ```
-# 1. 새 프로젝트
+# 1. Create a new project
 /slidesmith:new my-deck --theme midnight-tech --lang ko
 
-# 2. blueprint.md 편집 (또는 그대로 sample 사용)
+# 2. Edit blueprint.md (or use the sample as-is)
 
-# 3. 한 번에 빌드
+# 3. Build in one shot
 /slidesmith:build
 
-# 결과: my-deck/build/deck.pdf
+# Output: my-deck/build/deck.pdf
 ```
 
-## 단계별 빌드
+## Step-by-step build
 
 ```
 /slidesmith:plan         # blueprint → output.md
-/slidesmith:prerender    # placeholder 변환 → build/.cache/prerendered.md
+/slidesmith:prerender    # convert placeholders → build/.cache/prerendered.md
 /slidesmith:export       # marp-cli → build/deck.pdf
 ```
 
-## 테마
+## Themes
 
-번들: `default`, `midnight-tech`, `editorial`. 사용 가능한 테마 보기:
+Bundled: `default`, `midnight-tech`, `editorial`. List available themes:
 
 ```
 /slidesmith:theme list
 ```
 
-다른 사람의 테마 추가:
+Add a third-party theme:
 
 ```
 /slidesmith:theme add https://github.com/<user>/<repo>
 ```
 
-## 문서
+## Documentation
 
-- 디자인 스펙: `docs/superpowers/specs/2026-04-30-slidesmith-design.md`
-- 구현 계획: `docs/superpowers/plans/2026-04-30-slidesmith.md`
+- Design spec: `docs/superpowers/specs/2026-04-30-slidesmith-design.md`
+- Implementation plan: `docs/superpowers/plans/2026-04-30-slidesmith.md`
 
-## 라이선스
+## License
 
-레포지토리 루트의 `LICENSE` 파일을 따릅니다.
+Follows the `LICENSE` file at the repository root.

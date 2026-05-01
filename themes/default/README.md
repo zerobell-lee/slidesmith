@@ -1,9 +1,9 @@
 # default theme
 
-slidesmith 기본 테마. 중립적이고 어떤 주제에든 잘 어울립니다.
+The slidesmith default theme. Neutral and works well for any topic.
 
-- 폰트: Inter (없으면 system-ui)
-- 색상: 화이트 배경 + 오렌지 액센트
-- 권장 사용처: 사내 발표, 정기 업데이트, 일반 강연
+- Font: Inter (falls back to system-ui)
+- Colors: white background with an orange accent
+- Recommended for: internal presentations, periodic updates, general talks
 
-특수 제약 없음. h1=제목, h2=섹션, 리스트는 3~5 항목 권장.
+No special constraints. h1 = title, h2 = section, 3–5 list items recommended.

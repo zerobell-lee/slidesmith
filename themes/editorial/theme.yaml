@@ -2,13 +2,13 @@ name: editorial
 displayName: Editorial
 version: 0.1.0
 author: slidesmith
-description: 텍스트 중심 발표 / 리포트 / 책 같은 인쇄물 톤.
+description: A text-driven theme for narrative presentations, reports, and book-style decks.
 tags: [light, text-heavy, editorial, serif]
 fits: [keynote, narrative-report, book-style]
 constraints:
-  - "h1은 표지 또는 챕터 제목 (큰 비중 차지)"
-  - "h2는 섹션 표제. 본문 단락이 핵심"
-  - "이미지보다 단락이 우선. 한 슬라이드 100~200자 권장"
+  - "Use h1 for the cover or chapter title (occupies significant space)"
+  - "Use h2 for section headings. The body paragraph is the focus"
+  - "Prefer paragraphs over images. Aim for 100–200 characters per slide"
 samples:
   default: samples/sample.md
   en: samples/sample.en.md

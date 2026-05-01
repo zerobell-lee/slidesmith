@@ -4,22 +4,22 @@ description: Verify slidesmith environment (marp-cli, processor binaries, env ke
 
 # /slidesmith:doctor
 
-slidesmith가 정상 동작에 필요한 모든 환경 요소를 검증합니다.
+Verifies every environment requirement slidesmith needs to run correctly.
 
 ## What you should do
 
-1. 플러그인 디렉토리에서 다음을 실행:
+1. From the plugin directory, run:
    ```bash
    cd "$CLAUDE_PLUGIN_ROOT/scripts" && npx tsx src/cli.ts doctor
    ```
-   (cwd가 사용자 프로젝트라면 `SLIDESMITH_PROJECT_DIR`를 그 경로로 두고 호출)
+   (If cwd is the user's project, set `SLIDESMITH_PROJECT_DIR` to that path before invoking.)
 
-2. 결과를 사용자에게 그대로 보여줍니다 (✅/⚠️/❌ 표).
+2. Show the result to the user as-is (the ✅/⚠️/❌ table).
 
-3. 실패 항목이 있으면 각 항목별 원인과 다음 행동을 한 줄씩 정리해서 안내합니다:
-   - `binary:marp` 실패 → "`npm i -g @marp-team/marp-cli` 실행하세요."
-   - `binary:mmdc` 실패 → "`npm i -g @mermaid-js/mermaid-cli` 실행하세요."
-   - `env:PEXELS_API_KEY` 실패 → "프로젝트의 `.env`에 `PEXELS_API_KEY=...`를 추가하거나 셸 환경변수로 설정하세요."
-   - `mcp:*` 경고 → 해당 MCP 서버가 현재 Claude Code 세션에서 활성인지 확인하세요.
+3. If any check failed, summarize each failure with its cause and the next action on a single line:
+   - `binary:marp` failed → "Run `npm i -g @marp-team/marp-cli`."
+   - `binary:mmdc` failed → "Run `npm i -g @mermaid-js/mermaid-cli`."
+   - `env:PEXELS_API_KEY` failed → "Add `PEXELS_API_KEY=...` to your project's `.env`, or set it as a shell environment variable."
+   - `mcp:*` warning → Make sure that MCP server is active in your current Claude Code session.
 
-4. 모두 ✅이면 "환경 OK. `/slidesmith:new`로 프로젝트를 시작하거나 `/slidesmith:build`로 빌드하세요." 안내.
+4. If everything is ✅, tell the user "Environment OK. Start a project with `/slidesmith:new`, or build with `/slidesmith:build`."

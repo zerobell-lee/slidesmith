@@ -2,14 +2,14 @@ name: midnight-tech
 displayName: Midnight Tech
 version: 0.1.0
 author: slidesmith
-description: 다크 톤의 기술 발표용 — 코드 블록과 다이어그램을 강조.
+description: A dark theme for technical presentations — emphasizes code blocks and diagrams.
 tags: [technical, dark, code-heavy]
 fits: [technical-talk, code-walkthrough, architecture-review]
 constraints:
-  - "h1은 슬라이드 제목으로 사용 (한 슬라이드당 1개)"
-  - "h2는 섹션 분기 — 본문이 길어지면 슬라이드를 나눌 것"
-  - "code block은 라인 넘버 자동 — 30줄 초과 시 가독성 저하"
-  - "다이어그램은 mermaid (`assets/diagrams/*.mmd`) 또는 excalidraw 권장"
+  - "Use h1 for slide titles (one per slide)"
+  - "Use h2 for section breaks — split slides when the body grows long"
+  - "Code blocks get automatic line numbers — readability suffers past 30 lines"
+  - "Use mermaid (`assets/diagrams/*.mmd`) or excalidraw for diagrams"
 samples:
   default: samples/sample.md
   en: samples/sample.en.md

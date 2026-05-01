@@ -1,9 +1,9 @@
 # editorial theme
 
-내러티브 발표 / 인쇄물 스타일 / 책 같은 톤의 슬라이드.
+Slides with a narrative, print-like, book-style tone.
 
-- 폰트: Source Serif Pro (없으면 Georgia)
-- 따뜻한 페이퍼 톤 배경 (#fbf8f1) + 빈티지 레드 액센트 (#8c1c13)
-- 한 슬라이드에 본문 단락 1~3개. 비주얼은 보조.
+- Font: Source Serif Pro (falls back to Georgia)
+- Warm paper-tone background (#fbf8f1) with a vintage red accent (#8c1c13)
+- 1–3 body paragraphs per slide. Visuals play a supporting role.
 
-리스트보다 단락을 권장. 발표자가 읽어내려가며 천천히 풀어가는 형식에 적합.
+Paragraphs are preferred over lists. Suitable for a slow, read-aloud delivery where the speaker walks through the text.
