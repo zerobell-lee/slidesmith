@@ -67,7 +67,23 @@ JSON 배열을 받습니다. 각 항목은 `{id, kind, line, ...}`.
           ```
        2. 결과 JSON 읽고 `photos[0].src.large` URL 추출.
        3. 그 URL을 다운로드 (Bash `curl -L "$URL" -o build/.cache/img/<id>.jpg` 또는 별도 fetch). 인증 헤더는 다운로드엔 불필요.
-     - `image.generate` (gemini-image): `--http-method POST --input "<prompt>"` + 응답 디코딩.
+     - `image.generate` via gemini-image:
+       1. POST 요청 페이로드를 LLM이 구성 (Gemini 이미지 생성 API 스펙 따라 — Imagen 또는 Gemini 2.x image preview 모델):
+          ```json
+          {"contents":[{"parts":[{"text":"<alt 자연어>"}]}]}
+          ```
+       2. 호출:
+          ```bash
+          cd "$CLAUDE_PLUGIN_ROOT/scripts" && \
+            SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts run-processor \
+              --name gemini-image \
+              --http-method POST \
+              --http-path "/models/<model>:generateContent" \
+              --input '<위 JSON>' \
+              --out "/tmp/gemini-<id>.json"
+          ```
+       3. 응답 JSON에서 base64 이미지 데이터 디코딩 → `build/.cache/img/<id>.png` 저장 (디코딩은 Bash 또는 LLM이 처리).
+       4. 호출 실패 시 retry 1회 후 placeholder 보존 (스펙 §10.1).
      - `diagram.*` (mermaid-cli): 먼저 LLM이 mermaid 소스 문자열을 만들어 `assets/diagrams/auto-<id>.mmd`에 저장 → 그 다음 file-ref와 동일한 흐름으로 SVG 변환. 사용자가 나중에 output.md에서 `![alt](assets/diagrams/auto-<id>.mmd)`로 락인할 수 있음.
   5. 호출 결과(이미지 또는 SVG)를 `build/.cache/img/<id>.<ext>` 또는 `build/.cache/svg/<id>.svg`에 저장.
   6. replacement: 원래 `![alt]()`를 `![alt](build/.cache/img/<id>.<ext>)`로 바꿈.

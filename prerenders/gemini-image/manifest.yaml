@@ -1,0 +1,10 @@
+name: gemini-image
+provides: [image.generate]
+matches: {}
+backend:
+  type: http
+  base: https://generativelanguage.googleapis.com/v1beta
+  auth: header:x-goog-api-key:{env.GEMINI_API_KEY}
+requires:
+  env: [GEMINI_API_KEY]
+priority: 50
