@@ -62,6 +62,17 @@ JSON 배열을 받습니다. 각 항목은 `{id, kind, line, ...}`.
   5. 호출 결과(이미지 또는 SVG)를 `build/.cache/img/<id>.<ext>` 또는 `build/.cache/svg/<id>.svg`에 저장.
   6. replacement: 원래 `![alt]()`를 `![alt](build/.cache/img/<id>.<ext>)`로 바꿈.
 
+### MCP 백엔드 특수 처리
+
+`backend.type: mcp`인 프로세서가 매칭되면 (예: excalidraw-mcp) `run-processor` 스크립트는 그 호출을 처리하지 못합니다. 대신 LLM이 Claude Code의 해당 MCP 도구를 직접 호출:
+
+1. `dispatch-file-ref` 결과의 `backend` 필드 확인.
+2. `backend.type === 'mcp'`이면 → 그 `server`/`tool`을 Claude Code의 MCP 도구로 직접 호출 (예: excalidraw 서버의 `render_to_svg` 도구).
+3. 결과 SVG 바이트를 `build/.cache/svg/<id>.svg`에 저장.
+4. 이후 흐름은 cli 백엔드와 동일 (replacement 추가).
+
+MCP 서버가 현재 세션에 떠있지 않으면 doctor가 ⚠️로 경고했을 것이므로 그 경고를 사용자에게 환기하고 해당 placeholder는 보존(스킵).
+
 ### 4. Inject
 
 성공한 replacement들을 모아 JSON 배열로 만든 뒤:

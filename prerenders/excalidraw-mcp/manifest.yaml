@@ -1,0 +1,11 @@
+name: excalidraw-mcp
+provides: [diagram.excalidraw]
+matches:
+  extensions: [.excalidraw]
+backend:
+  type: mcp
+  server: excalidraw
+  tool: render_to_svg
+requires:
+  mcp: [excalidraw]
+priority: 50
