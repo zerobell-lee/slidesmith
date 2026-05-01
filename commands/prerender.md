@@ -50,10 +50,12 @@ Read `/tmp/placeholders.json` (JSON parse) and handle each entry by these rules:
 - **`kind: semantic`** → LLM-judgment dispatch:
   1. Check the `list-capabilities` results (already verified by doctor in step 1).
   2. Inspect the placeholder's `alt` text and pick a suitable capability:
-     - "차트" / "그래프" / "chart" / "graph" → `chart.*`
-     - "다이어그램" / "플로우" / "diagram" / "flow" → `diagram.*`
-     - "고양이/사진/실사" / "cat / photo / realistic" → `stock.photo`
-     - "일러스트/생성/추상" / "illustration / generated / abstract" → `image.generate`
+     - "chart" / "graph" → `chart.*`
+     - "diagram" / "flow" → `diagram.*`
+     - "photo" / "realistic" / concrete subjects (e.g. "cat by the window") → `stock.photo`
+     - "illustration" / "generated" / "abstract" → `image.generate`
+
+     The LLM is multilingual — alt text in any language (Korean, Japanese, etc.) maps to the same capabilities by meaning, not by literal keyword.
   3. Pick one of the capability's registered processors (recommend `providers[0]` from `list-capabilities`).
   4. Build the call arguments per capability:
      - `stock.photo` via pexels:
