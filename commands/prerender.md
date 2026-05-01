@@ -6,13 +6,16 @@ description: Detect placeholders in output.md, dispatch processors, write build/
 
 The prerender stage from spec §6.3. `output.md` → `build/.cache/prerendered.md` (with placeholders converted).
 
+!`SLIDESMITH_ROOT="$(cd "${CLAUDE_SKILL_DIR}/../.." && pwd)"; [ -d "$SLIDESMITH_ROOT/scripts/node_modules" ] || (cd "$SLIDESMITH_ROOT/scripts" && npm install --silent 2>&1 | tail -5); echo "SLIDESMITH_ROOT=$SLIDESMITH_ROOT"`
+
+The line above prints `SLIDESMITH_ROOT=<path>`. **In all bash commands below, replace `<SLIDESMITH_ROOT>` with that absolute path.** Each bash call should also pass `SLIDESMITH_PROJECT_DIR="$PWD"` to point cli at the user's current project.
+
 ## Process
 
 ### 1. Pre-flight check
 
 ```bash
-cd "$CLAUDE_PLUGIN_ROOT/scripts" && \
-  SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts doctor
+cd <SLIDESMITH_ROOT>/scripts && SLIDESMITH_PLUGIN_DIR="<SLIDESMITH_ROOT>" SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts doctor
 ```
 
 If any check is at `fail`, stop immediately and tell the user. `warn` items (e.g. MCP) can proceed, but notify the user.
@@ -20,8 +23,7 @@ If any check is at `fail`, stop immediately and tell the user. `warn` items (e.g
 ### 2. Detect placeholders
 
 ```bash
-cd "$CLAUDE_PLUGIN_ROOT/scripts" && \
-  SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts detect output.md > /tmp/placeholders.json
+cd <SLIDESMITH_ROOT>/scripts && SLIDESMITH_PLUGIN_DIR="<SLIDESMITH_ROOT>" SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts detect output.md > /tmp/placeholders.json
 ```
 
 You'll receive a JSON array. Each entry is `{id, kind, line, ...}`.
@@ -34,16 +36,14 @@ Read `/tmp/placeholders.json` (JSON parse) and handle each entry by these rules:
 
 - **`kind: file-ref`** → deterministic dispatch:
   ```bash
-  cd "$CLAUDE_PLUGIN_ROOT/scripts" && \
-    SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts dispatch-file-ref "<ext>"
+  cd <SLIDESMITH_ROOT>/scripts && SLIDESMITH_PLUGIN_DIR="<SLIDESMITH_ROOT>" SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts dispatch-file-ref "<ext>"
   ```
   If the result JSON is `null`, no processor matched → print a warning and preserve the placeholder (don't add a replacement). If the result is an object, invoke that processor by name:
   ```bash
-  cd "$CLAUDE_PLUGIN_ROOT/scripts" && \
-    SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts run-processor \
-      --name <processor-name> \
-      --input-file "<placeholder.path>" \
-      --out "build/.cache/svg/<placeholder.id>.svg"
+  cd <SLIDESMITH_ROOT>/scripts && SLIDESMITH_PLUGIN_DIR="<SLIDESMITH_ROOT>" SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts run-processor \
+    --name <processor-name> \
+    --input-file "<placeholder.path>" \
+    --out "build/.cache/svg/<placeholder.id>.svg"
   ```
   On success, the replacement rewrites the original `![alt](path)` to `![alt](build/.cache/svg/<id>.svg)`.
 
@@ -61,11 +61,10 @@ Read `/tmp/placeholders.json` (JSON parse) and handle each entry by these rules:
      - `stock.photo` via pexels:
        1. Search:
           ```bash
-          cd "$CLAUDE_PLUGIN_ROOT/scripts" && \
-            SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts run-processor \
-              --name pexels \
-              --http-path "/search?query=$(echo '<alt natural language>' | jq -sRr @uri)&per_page=1" \
-              --out "/tmp/pexels-<id>.json"
+          cd <SLIDESMITH_ROOT>/scripts && SLIDESMITH_PLUGIN_DIR="<SLIDESMITH_ROOT>" SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts run-processor \
+            --name pexels \
+            --http-path "/search?query=$(echo '<alt natural language>' | jq -sRr @uri)&per_page=1" \
+            --out "/tmp/pexels-<id>.json"
           ```
        2. Read the result JSON and extract the `photos[0].src.large` URL.
        3. Download that URL (Bash `curl -L "$URL" -o build/.cache/img/<id>.jpg` or a separate fetch). The download itself doesn't need an auth header.
@@ -76,13 +75,12 @@ Read `/tmp/placeholders.json` (JSON parse) and handle each entry by these rules:
           ```
        2. Invoke:
           ```bash
-          cd "$CLAUDE_PLUGIN_ROOT/scripts" && \
-            SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts run-processor \
-              --name gemini-image \
-              --http-method POST \
-              --http-path "/models/<model>:generateContent" \
-              --input '<JSON above>' \
-              --out "/tmp/gemini-<id>.json"
+          cd <SLIDESMITH_ROOT>/scripts && SLIDESMITH_PLUGIN_DIR="<SLIDESMITH_ROOT>" SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts run-processor \
+            --name gemini-image \
+            --http-method POST \
+            --http-path "/models/<model>:generateContent" \
+            --input '<JSON above>' \
+            --out "/tmp/gemini-<id>.json"
           ```
        3. Decode the base64 image data from the response JSON → save to `build/.cache/img/<id>.png` (decoding can be done in Bash or by the LLM).
        4. On call failure, retry once and then preserve the placeholder (spec §10.1).
@@ -106,10 +104,9 @@ If the MCP server isn't running in the current session, doctor will have already
 Collect all successful replacements into a JSON array, then:
 
 ```bash
-cd "$CLAUDE_PLUGIN_ROOT/scripts" && \
-  SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts inject output.md \
-    --replacements "/tmp/replacements.json" \
-    --out "build/.cache/prerendered.md"
+cd <SLIDESMITH_ROOT>/scripts && SLIDESMITH_PLUGIN_DIR="<SLIDESMITH_ROOT>" SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts inject output.md \
+  --replacements "/tmp/replacements.json" \
+  --out "build/.cache/prerendered.md"
 ```
 
 ### 5. Report

@@ -7,6 +7,10 @@ argument-hint: [--from plan|prerender|export]
 
 Run `/slidesmith:plan` → `/slidesmith:prerender` → `/slidesmith:export` in order.
 
+!`SLIDESMITH_ROOT="$(cd "${CLAUDE_SKILL_DIR}/../.." && pwd)"; [ -d "$SLIDESMITH_ROOT/scripts/node_modules" ] || (cd "$SLIDESMITH_ROOT/scripts" && npm install --silent 2>&1 | tail -5); echo "SLIDESMITH_ROOT=$SLIDESMITH_ROOT"`
+
+The line above prints `SLIDESMITH_ROOT=<path>`. **In all bash commands below, replace `<SLIDESMITH_ROOT>` with that absolute path.** Each bash call should also pass `SLIDESMITH_PROJECT_DIR="$PWD"` to point cli at the user's current project.
+
 ## Arguments
 
 - `--from <stage>` (optional): which stage to restart from. Default is `plan`. Values: `plan`, `prerender`, `export`.

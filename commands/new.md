@@ -7,6 +7,10 @@ argument-hint: <project-name> [--theme <theme>] [--lang <ko|en|jp>]
 
 Creates a new slidesmith project directory (spec §5.3).
 
+!`SLIDESMITH_ROOT="$(cd "${CLAUDE_SKILL_DIR}/../.." && pwd)"; [ -d "$SLIDESMITH_ROOT/scripts/node_modules" ] || (cd "$SLIDESMITH_ROOT/scripts" && npm install --silent 2>&1 | tail -5); echo "SLIDESMITH_ROOT=$SLIDESMITH_ROOT"`
+
+The line above prints `SLIDESMITH_ROOT=<path>`. **In all bash commands below, replace `<SLIDESMITH_ROOT>` with that absolute path.** Each bash call should also pass `SLIDESMITH_PROJECT_DIR="$PWD"` to point cli at the user's current project.
+
 ## Arguments
 
 - `<project-name>` (required): The directory name to create. Relative to the current cwd.
@@ -19,14 +23,13 @@ Creates a new slidesmith project directory (spec §5.3).
 
 2. Verify the theme is available before proceeding:
    ```bash
-   cd "$CLAUDE_PLUGIN_ROOT/scripts" && npx tsx src/cli.ts theme-info <theme>
+   cd <SLIDESMITH_ROOT>/scripts && SLIDESMITH_PLUGIN_DIR="<SLIDESMITH_ROOT>" SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts theme-info <theme>
    ```
    If this fails, point the user at the list of available themes (`/slidesmith:theme list`) and stop.
 
 3. Bootstrap the project:
    ```bash
-   cd "$CLAUDE_PLUGIN_ROOT/scripts" && \
-     SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts new-project <name> --theme <theme> --lang <lang>
+   cd <SLIDESMITH_ROOT>/scripts && SLIDESMITH_PLUGIN_DIR="<SLIDESMITH_ROOT>" SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts new-project <name> --theme <theme> --lang <lang>
    ```
 
 4. On success, tell the user:

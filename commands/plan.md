@@ -7,21 +7,23 @@ argument-hint: [--no-blueprint] [--from "raw text"]
 
 The plan stage from spec §6.2. Combines the blueprint, assets, and conversation context into Marp markdown (`output.md`).
 
+!`SLIDESMITH_ROOT="$(cd "${CLAUDE_SKILL_DIR}/../.." && pwd)"; [ -d "$SLIDESMITH_ROOT/scripts/node_modules" ] || (cd "$SLIDESMITH_ROOT/scripts" && npm install --silent 2>&1 | tail -5); echo "SLIDESMITH_ROOT=$SLIDESMITH_ROOT"`
+
+The line above prints `SLIDESMITH_ROOT=<path>`. **In all bash commands below, replace `<SLIDESMITH_ROOT>` with that absolute path.** Each bash call should also pass `SLIDESMITH_PROJECT_DIR="$PWD"` to point cli at the user's current project.
+
 ## Pre-flight
 
 Gather this information first:
 
 1. **Prerender capabilities available in the current environment**:
    ```bash
-   cd "$CLAUDE_PLUGIN_ROOT/scripts" && \
-     SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts list-capabilities
+   cd <SLIDESMITH_ROOT>/scripts && SLIDESMITH_PLUGIN_DIR="<SLIDESMITH_ROOT>" SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts list-capabilities
    ```
    From the resulting JSON, see which capabilities (e.g. `diagram.mermaid`, `stock.photo`) are available.
 
 2. **Theme information**:
    ```bash
-   cd "$CLAUDE_PLUGIN_ROOT/scripts" && \
-     SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts theme-info "$(cat deck.yaml | grep '^theme:' | awk '{print $2}')"
+   cd <SLIDESMITH_ROOT>/scripts && SLIDESMITH_PLUGIN_DIR="<SLIDESMITH_ROOT>" SLIDESMITH_PROJECT_DIR="$PWD" npx tsx src/cli.ts theme-info "$(cat deck.yaml | grep '^theme:' | awk '{print $2}')"
    ```
    You must follow every entry in `manifest.constraints`. Use `manifest.samples.default` as a format reference.
 
