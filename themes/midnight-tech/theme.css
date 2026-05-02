@@ -302,6 +302,8 @@ section tbody tr:last-child td {
 /* ----- Images / diagrams ---------------------------------------------- */
 
 section img {
+  display: block;
+  margin: 16px auto;
   max-width: 100%;
   border-radius: 10px;
   background: var(--color-bg-elev);

@@ -65,7 +65,7 @@ th, td {
 }
 th { background: #f6f8fa; font-weight: 600; }
 
-img { max-width: 100%; border-radius: 8px; }
+img { display: block; margin: 16px auto; max-width: 100%; border-radius: 8px; }
 
 footer {
   position: absolute;
