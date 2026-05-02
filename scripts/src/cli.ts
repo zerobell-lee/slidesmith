@@ -153,10 +153,20 @@ const commands: Record<string, (args: string[]) => Promise<void>> = {
       themeNames.push(entry);
     }
 
+    // Sample assets directory — copy into each theme's gallery output so the
+    // file-ref images in sample.md resolve correctly when deck.html is opened
+    // (browser resolves relative paths against the html's location).
+    const sampleAssetsDir = path.join(pluginDir, 'gallery', 'assets');
+    const hasSampleAssets = await fs.pathExists(sampleAssetsDir);
+
     for (const name of themeNames) {
       const themeCss = path.join(themesDir, name, 'theme.css');
       const outDir = path.join(galleryDir, name);
       await fs.ensureDir(outDir);
+
+      if (hasSampleAssets) {
+        await fs.copy(sampleAssetsDir, path.join(outDir, 'assets'), { overwrite: true });
+      }
 
       const htmlOut = path.join(outDir, 'deck.html');
       await execa(
