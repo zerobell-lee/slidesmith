@@ -1,7 +1,9 @@
 #!/usr/bin/env tsx
 import { argv, env, exit, cwd } from 'node:process';
 import path from 'node:path';
+import os from 'node:os';
 import fs from 'fs-extra';
+import { execa } from 'execa';
 import { listCapabilities, loadProcessors, matchFileRef, type UserConfig } from './dispatch.ts';
 import { parseThemeManifest } from './lib/manifest.ts';
 import { resolveThemePath, type PathContext } from './lib/paths.ts';
@@ -129,6 +131,89 @@ const commands: Record<string, (args: string[]) => Promise<void>> = {
       default:
         throw new Error(`unknown theme subcommand: ${sub}`);
     }
+  },
+  gallery: async (args) => {
+    const flags = parseFlags(args);
+    const { paths, pluginDir } = context();
+    const galleryDir = flags.out ?? path.join(pluginDir, 'gallery');
+    const samplePath = path.join(pluginDir, 'gallery', 'sample.md');
+
+    if (!(await fs.pathExists(samplePath))) {
+      throw new Error(`gallery sample missing: ${samplePath}`);
+    }
+
+    const themesDir = path.join(pluginDir, 'themes');
+    const themeNames: string[] = [];
+    for (const entry of await fs.readdir(themesDir)) {
+      if (entry.startsWith('_')) continue;
+      const themeDir = path.join(themesDir, entry);
+      const stat = await fs.stat(themeDir);
+      if (!stat.isDirectory()) continue;
+      if (!(await fs.pathExists(path.join(themeDir, 'theme.yaml')))) continue;
+      themeNames.push(entry);
+    }
+
+    for (const name of themeNames) {
+      const themeCss = path.join(themesDir, name, 'theme.css');
+      const outDir = path.join(galleryDir, name);
+      await fs.ensureDir(outDir);
+      const out = path.join(outDir, 'deck.html');
+      await execa(
+        'marp',
+        [samplePath, '--theme', themeCss, '--html', '--allow-local-files', '-o', out],
+        { stdio: 'inherit' },
+      );
+    }
+
+    console.log(JSON.stringify({ ok: true, themes: themeNames, galleryDir }));
+  },
+  'theme-preview': async (args) => {
+    const themeName = args[0];
+    if (!themeName) throw new Error('theme-preview requires a theme name');
+    const { paths, pluginDir } = context();
+    const found = resolveThemePath(themeName, paths);
+    if (!found) throw new Error(`theme not found: ${themeName}`);
+
+    // Bundled theme with pre-built gallery? Use it.
+    if (found.location === 'bundled') {
+      const galleryHtml = path.join(pluginDir, 'gallery', themeName, 'deck.html');
+      if (await fs.pathExists(galleryHtml)) {
+        console.log(JSON.stringify({ ok: true, source: 'gallery', path: galleryHtml }));
+        return;
+      }
+    }
+
+    // Build on the fly
+    const samplePath = path.join(pluginDir, 'gallery', 'sample.md');
+    if (!(await fs.pathExists(samplePath))) {
+      throw new Error(`gallery sample missing: ${samplePath}`);
+    }
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'slidesmith-preview-'));
+    const out = path.join(tmpDir, `${themeName}.html`);
+    const themeCss = path.join(found.path, 'theme.css');
+    await execa(
+      'marp',
+      [samplePath, '--theme', themeCss, '--html', '--allow-local-files', '-o', out],
+      { stdio: 'inherit' },
+    );
+    console.log(JSON.stringify({ ok: true, source: 'on-the-fly', path: out }));
+  },
+  'theme-build-preview': async (args) => {
+    const flags = parseFlags(args);
+    if (!flags['theme-css']) throw new Error('theme-build-preview requires --theme-css <path>');
+    if (!flags.out) throw new Error('theme-build-preview requires --out <output-html>');
+    const { pluginDir } = context();
+    const samplePath = flags.sample ?? path.join(pluginDir, 'gallery', 'sample.md');
+    if (!(await fs.pathExists(samplePath))) {
+      throw new Error(`gallery sample missing: ${samplePath}`);
+    }
+    await fs.ensureDir(path.dirname(flags.out));
+    await execa(
+      'marp',
+      [samplePath, '--theme', flags['theme-css'], '--html', '--allow-local-files', '-o', flags.out],
+      { stdio: 'inherit' },
+    );
+    console.log(JSON.stringify({ ok: true, out: flags.out }));
   },
   doctor: async () => {
     const { paths, pluginDir } = context();

@@ -42,21 +42,33 @@ The plugin exposes 5 slash commands:
 - `/slidesmith:new` — bootstrap a new project directory.
 - `/slidesmith:plan` — interactive brainstorm; Claude asks questions and updates `blueprint.md` (the spec). Does NOT generate slides.
 - `/slidesmith:build` — runs the full pipeline (draft → prerender → export). Use `--from <output|prerendered>` or `--to <output|prerendered>` for partial runs.
-- `/slidesmith:theme` — manage themes (`list`, `add`, `update`, `remove`, `info`).
+- `/slidesmith:theme` — manage themes (`list`, `info`, `add`, `update`, `remove`, `preview`, `create`).
 - `/slidesmith:doctor` — verify the environment.
 
 ## Themes
 
-Bundled: `default`, `midnight-tech`, `editorial`. List available themes:
+Bundled themes ship with the plugin. Each one has a pre-rendered preview under `gallery/<theme>/deck.html` that you can open directly on GitHub or locally.
+
+| Theme | Preview | Description |
+|---|---|---|
+| `default` | [gallery/default/deck.html](gallery/default/deck.html) | Clean, neutral, light. Works for any topic. |
+| `midnight-tech` | [gallery/midnight-tech/deck.html](gallery/midnight-tech/deck.html) | Dark theme tuned for code-heavy technical talks. |
+| `editorial` | [gallery/editorial/deck.html](gallery/editorial/deck.html) | Serif, text-driven theme for narrative reports and book-style decks. |
+
+Manage themes via the slash command:
 
 ```
-/slidesmith:theme list
+/slidesmith:theme list                 # show all installed themes
+/slidesmith:theme info <name>          # show theme metadata
+/slidesmith:theme preview <name>       # print path to a rendered preview HTML
+/slidesmith:theme add <git-url>        # install a third-party theme
+/slidesmith:theme create <name>        # interactive: design a new theme via Q&A + preview iteration
 ```
 
-Add a third-party theme:
+To regenerate the gallery after editing a bundled theme:
 
-```
-/slidesmith:theme add https://github.com/<user>/<repo>
+```bash
+cd scripts && SLIDESMITH_PLUGIN_DIR="$(pwd)/.." npx tsx src/cli.ts gallery
 ```
 
 ## Documentation

@@ -80,3 +80,51 @@ samples: { default: samples/sample.md }
     expect(info.location).toBe('bundled');
   });
 });
+
+describe('cli theme-preview', () => {
+  it('returns the prebuilt gallery path for a bundled theme when one exists', async () => {
+    const themeDir = path.join(tmp, 'plugin', 'themes', 'midnight');
+    await fs.ensureDir(themeDir);
+    await fs.writeFile(
+      path.join(themeDir, 'theme.yaml'),
+      `name: midnight
+displayName: Midnight
+version: 0.1.0
+description: dark
+samples: { default: samples/sample.md }
+`,
+    );
+    await fs.writeFile(path.join(themeDir, 'theme.css'), '/* @theme midnight */');
+    const galleryDeck = path.join(tmp, 'plugin', 'gallery', 'midnight', 'deck.html');
+    await fs.ensureDir(path.dirname(galleryDeck));
+    await fs.writeFile(galleryDeck, '<html>cached gallery</html>');
+    await fs.writeFile(path.join(tmp, 'plugin', 'gallery', 'sample.md'), '# x');
+
+    const { stdout } = await execa('npx', ['tsx', cliPath, 'theme-preview', 'midnight'], {
+      env: {
+        ...process.env,
+        SLIDESMITH_PLUGIN_DIR: path.join(tmp, 'plugin'),
+        SLIDESMITH_PROJECT_DIR: tmp,
+        SLIDESMITH_USER_HOME: tmp,
+      },
+    });
+    const result = JSON.parse(stdout);
+    expect(result.ok).toBe(true);
+    expect(result.source).toBe('gallery');
+    expect(path.normalize(result.path)).toBe(path.normalize(galleryDeck));
+  });
+
+  it('errors when the theme cannot be resolved', async () => {
+    await fs.ensureDir(path.join(tmp, 'plugin', 'themes'));
+    await expect(
+      execa('npx', ['tsx', cliPath, 'theme-preview', 'nonexistent'], {
+        env: {
+          ...process.env,
+          SLIDESMITH_PLUGIN_DIR: path.join(tmp, 'plugin'),
+          SLIDESMITH_PROJECT_DIR: tmp,
+          SLIDESMITH_USER_HOME: tmp,
+        },
+      }),
+    ).rejects.toMatchObject({ exitCode: 1 });
+  });
+});
