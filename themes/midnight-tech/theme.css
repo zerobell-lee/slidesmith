@@ -252,9 +252,11 @@ section blockquote p {
  * Our overrides must use the `section table` prefix to outrank them. */
 
 section table {
+  display: table;
   border-collapse: collapse;
   margin: 24px auto;
   width: 100%;
+  max-width: 100%;
   font-size: 0.95em;
   color: var(--color-fg);
   background: transparent;
