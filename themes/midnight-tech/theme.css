@@ -246,6 +246,10 @@ section blockquote p {
 }
 
 /* ----- Tables --------------------------------------------------------- */
+/* Specificity note: Marp's bundled default theme sets
+ * `section table tr { background: var(--bgColor-default) }` (white) and
+ * `section table thead th { background: var(--color-foreground) }`.
+ * Our overrides must use the `section table` prefix to outrank them. */
 
 section table {
   border-collapse: collapse;
@@ -253,26 +257,48 @@ section table {
   width: 100%;
   font-size: 0.95em;
   color: var(--color-fg);
+  background: transparent;
 }
 
-section th {
+section table tr,
+section table tr:nth-child(odd),
+section table tr:nth-child(even),
+section table tr:nth-child(2n) {
+  background: transparent;
+  border: none;
+}
+
+section table thead th {
+  background: transparent;
   color: var(--color-accent);
   font-weight: 600;
   text-align: left;
   padding: 12px 18px;
+  border: none;
   border-bottom: 2px solid var(--color-accent);
   font-size: 0.85em;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
-section td {
+section table tbody tr:nth-child(odd) td,
+section table tbody tr:nth-child(odd) th,
+section table tbody tr:nth-child(even) td,
+section table tbody tr:nth-child(even) th {
+  background: transparent;
+}
+
+section table tbody td,
+section table tbody th {
   color: var(--color-fg);
+  background: transparent;
   padding: 12px 18px;
+  border: none;
   border-bottom: 1px solid var(--color-border);
 }
 
-section tbody tr:last-child td {
+section table tbody tr:last-child td,
+section table tbody tr:last-child th {
   border-bottom: none;
 }
 
