@@ -47,13 +47,25 @@ The plugin exposes 5 slash commands:
 
 ## Themes
 
-Bundled themes ship with the plugin. Each one has a pre-rendered preview under `gallery/<theme>/deck.html` that you can open directly on GitHub or locally.
+Bundled themes ship with the plugin. Each preview below is the title slide of the theme's standard showcase sample. For all 7 slides as a flippable HTML deck or to see how every Markdown element renders, follow the deck link.
 
-| Theme | Preview | Description |
-|---|---|---|
-| `default` | [gallery/default/deck.html](gallery/default/deck.html) | Clean, neutral, light. Works for any topic. |
-| `midnight-tech` | [gallery/midnight-tech/deck.html](gallery/midnight-tech/deck.html) | Dark theme tuned for code-heavy technical talks. |
-| `editorial` | [gallery/editorial/deck.html](gallery/editorial/deck.html) | Serif, text-driven theme for narrative reports and book-style decks. |
+### `default`
+
+Clean, neutral, light. Works for any topic.
+
+[![default](gallery/default/slide.001.png)](gallery/default/deck.html)
+
+### `midnight-tech`
+
+Dark theme tuned for code-heavy technical talks. Editor-window code blocks, electric-violet accents.
+
+[![midnight-tech](gallery/midnight-tech/slide.001.png)](gallery/midnight-tech/deck.html)
+
+### `editorial`
+
+Serif, text-driven theme for narrative reports and book-style decks.
+
+[![editorial](gallery/editorial/slide.001.png)](gallery/editorial/deck.html)
 
 Manage themes via the slash command:
 

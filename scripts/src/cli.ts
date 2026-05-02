@@ -157,10 +157,19 @@ const commands: Record<string, (args: string[]) => Promise<void>> = {
       const themeCss = path.join(themesDir, name, 'theme.css');
       const outDir = path.join(galleryDir, name);
       await fs.ensureDir(outDir);
-      const out = path.join(outDir, 'deck.html');
+
+      const htmlOut = path.join(outDir, 'deck.html');
       await execa(
         'marp',
-        [samplePath, '--theme', themeCss, '--html', '--allow-local-files', '-o', out],
+        [samplePath, '--theme', themeCss, '--html', '--allow-local-files', '-o', htmlOut],
+        { stdio: 'inherit' },
+      );
+
+      // Per-slide PNGs at 2x for crisp README thumbnails.
+      const pngOut = path.join(outDir, 'slide.png');
+      await execa(
+        'marp',
+        [samplePath, '--theme', themeCss, '--images', 'png', '--image-scale', '2', '--allow-local-files', '-o', pngOut],
         { stdio: 'inherit' },
       );
     }
