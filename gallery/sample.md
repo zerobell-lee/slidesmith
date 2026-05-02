@@ -71,9 +71,22 @@ export function debounce<T extends (...args: unknown[]) => void>(
 
 ## 이미지 슬라이드
 
-![sample diagram](data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'><defs><linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='%237c5cff'/><stop offset='1' stop-color='%234ade80'/></linearGradient></defs><rect width='400' height='200' rx='12' fill='url(%23g)' opacity='0.15'/><circle cx='100' cy='100' r='40' fill='%237c5cff' opacity='0.7'/><circle cx='200' cy='100' r='40' fill='%234ade80' opacity='0.7'/><circle cx='300' cy='100' r='40' fill='%23fb7185' opacity='0.7'/><line x1='140' y1='100' x2='160' y2='100' stroke='%23333' stroke-width='2'/><line x1='240' y1='100' x2='260' y2='100' stroke='%23333' stroke-width='2'/></svg>)
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" width="100%" style="max-width:560px;display:block;margin:24px auto;">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1">
+      <stop offset="0" stop-color="#7c5cff"/>
+      <stop offset="1" stop-color="#4ade80"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="200" rx="12" fill="url(#g)" opacity="0.18"/>
+  <circle cx="100" cy="100" r="40" fill="#7c5cff" opacity="0.85"/>
+  <circle cx="200" cy="100" r="40" fill="#4ade80" opacity="0.85"/>
+  <circle cx="300" cy="100" r="40" fill="#fb7185" opacity="0.85"/>
+  <line x1="140" y1="100" x2="160" y2="100" stroke="#888" stroke-width="2"/>
+  <line x1="240" y1="100" x2="260" y2="100" stroke="#888" stroke-width="2"/>
+</svg>
 
-이미지 코너 처리, 외곽선, 그림자 같은 디테일을 확인합니다.
+가운데 정렬된 다이어그램. 색 대비와 둥근 모서리가 테마와 잘 맞는지 확인합니다.
 
 ---
 
