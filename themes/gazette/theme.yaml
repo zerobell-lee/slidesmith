@@ -1,0 +1,21 @@
+name: gazette
+displayName: Gazette
+version: 0.1.0
+author: slidesmith
+description: Newspaper-broadsheet theme for journalism, market reports, data-heavy talks. Newsprint cream + ink + a single deep red, condensed serif headlines, drop caps, hairline rules, masthead bar.
+tags: [light, serif, journalism, report, broadsheet]
+fits: [market-report, journalism, quarterly-review, data-talk]
+constraints:
+  - "Use h1 for the lead headline (rendered in big condensed serif)"
+  - "Use h2 for slide titles; first paragraph after h2 gets a drop cap automatically"
+  - "Use h3 for kicker labels (rendered as mono caps with underline)"
+  - "Use <!-- _class: hero --> for the cover (front-page masthead)"
+  - "Use <!-- _class: section --> for chapter dividers (centered)"
+  - "Use <!-- _class: stat --> for big-number / KPI slides (deep-red number)"
+  - "Use <!-- _class: manifesto --> for single-statement slides (italic serif)"
+  - "Use <!-- _class: quote --> for pull quotes (centered with rules)"
+  - "Wrap multi-paragraph body in <div class=\"cols\">…</div> for two-column flow"
+  - "Emphasis: **bold** = weight contrast (700 ink), *italic* = italic display serif in deep red"
+samples:
+  default: samples/sample.md
+recommendedPrerenders: []

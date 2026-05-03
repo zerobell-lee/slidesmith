@@ -1,0 +1,20 @@
+name: noir
+displayName: Noir
+version: 0.1.0
+author: slidesmith
+description: Refined dark theme for executive briefings, strategy keynotes, leadership talks. Warm near-black canvas, single gold accent, large display type, generous whitespace. Anti-tech, anti-glow.
+tags: [dark, keynote, executive, strategy, refined]
+fits: [executive-briefing, strategy-keynote, leadership-talk, board-presentation]
+constraints:
+  - "Use h1 for the cover headline or chapter title (one per slide)"
+  - "Use h2 for slide titles and stat captions"
+  - "Use h3 for kicker labels above titles (rendered in mono uppercase)"
+  - "Use <!-- _class: hero --> for the cover (large display type, mono kicker top-left)"
+  - "Use <!-- _class: section --> for chapter dividers"
+  - "Use <!-- _class: stat --> for big-number / KPI slides (h1 = number in gold)"
+  - "Use <!-- _class: manifesto --> for single-statement slides (light weight, em in gold)"
+  - "Use <!-- _class: quote --> for testimonials"
+  - "Emphasis: **bold** = weight contrast (800), *italic* = warm gold accent (no slant)"
+samples:
+  default: samples/sample.md
+recommendedPrerenders: []

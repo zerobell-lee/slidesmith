@@ -3,22 +3,41 @@ marp: true
 paginate: true
 ---
 
+<!-- _class: hero -->
+<!-- _paginate: false -->
+
+![bg](assets/hero.svg)
+
 # 슬라이드 테마 쇼케이스
 
-테마 미리보기 — 일반적인 마크다운/Marp 요소를 한 자리에서
+타이포그래피, 색, 레이아웃 — 같은 콘텐츠를 어떻게 다르게 말할 수 있는가
+
+---
+
+<!-- _class: section -->
+<!-- _paginate: false -->
+
+## 01
+
+# Foundations
+
+슬라이드의 기본 단위들 — 제목, 본문, 인용, 강조
 
 ---
 
 ## 목차
 
-1. 도입 — 테마가 어떤 분위기를 만드는지
-2. 핵심 메시지 — 본문 + 인용
-3. 기술 슬라이드 — 인라인 코드 + 코드 블록
-4. 데이터 슬라이드 — 표
-5. 이미지 슬라이드 — 그래픽 표현
-6. 마무리 — 다음 단계
+1. Hero & section divider — 분위기 잡기
+2. 본문 — 텍스트 + 인용
+3. Split & grid — 시각 자료
+4. Code & data — 기술 슬라이드
+5. 마무리 — 다음 단계
 
 ---
+
+<!-- _class: split -->
+
+![bg right:40%](assets/portrait.svg)
 
 ## 핵심 메시지
 
@@ -26,11 +45,16 @@ paginate: true
 
 본문 단락은 두세 줄이 적당합니다. 청중이 읽기 전에 발표자가 먼저 말을 시작할 수 있을 만큼만.
 
-> 좋은 테마는 보이지 않는다 — 메시지가 먼저 보인다.
+오른쪽 이미지가 split의 절반을 채우고, 왼쪽에 본문이 흐릅니다.
 
-### 보조 헤딩 (h3)
+---
 
-세부 항목을 묶을 때 쓰는 작은 제목.
+<!-- _class: quote -->
+
+> 좋은 테마는 보이지 않는다.
+> 메시지가 먼저 보인다.
+
+— attributed to a designer, somewhere
 
 ---
 
@@ -52,8 +76,6 @@ export function debounce<T extends (...args: unknown[]) => void>(
 }
 ```
 
-코드 블록의 가독성, 줄 간격, 컬러 토큰을 확인하세요.
-
 ---
 
 ## 데이터 슬라이드
@@ -69,11 +91,23 @@ export function debounce<T extends (...args: unknown[]) => void>(
 
 ---
 
-## 이미지 슬라이드
+<!-- _class: stat -->
 
-![showcase diagram](assets/showcase.svg)
+# +47%
 
-이미지 코너 처리, 외곽선, 그림자 같은 디테일을 확인합니다.
+## QoQ 활성 사용자 성장
+
+12.4K → 18.2K, 전환율과 NPS가 함께 오르며 견인.
+
+---
+
+<!-- _class: grid -->
+
+## 시각 자료 — 3-up
+
+![card 1](assets/card-1.svg) ![card 2](assets/card-2.svg) ![card 3](assets/card-3.svg)
+
+이미지 카드를 가로로 배치 — 간격, 정렬, 비율 확인.
 
 ---
 

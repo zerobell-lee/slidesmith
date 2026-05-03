@@ -1,80 +1,523 @@
 /* @theme editorial */
 
 @import 'default';
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
   --color-bg: #fbf8f1;
-  --color-fg: #2b2826;
-  --color-accent: #8c1c13;
-  --color-muted: #7a6f64;
-  --font-serif: 'Source Serif Pro', 'Noto Serif KR', Georgia, serif;
+  --color-bg-soft: #f3eede;
+  --color-fg: #1a1714;
+  --color-fg-muted: #6b5e51;
+  --color-fg-subtle: #a89c8d;
+  --color-rule: #d8cfbf;
+  --color-rule-strong: #1a1714;
+  --color-accent: #8c1c13;        /* deep editorial red */
+  --color-accent-soft: rgba(140, 28, 19, 0.08);
+  --font-serif: 'Source Serif Pro', 'Noto Serif KR', Georgia, 'Times New Roman', serif;
   --font-sans: 'Inter', 'Noto Sans KR', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
+
+/* ----- Page ----------------------------------------------------------- */
 
 section {
   background: var(--color-bg);
   color: var(--color-fg);
   font-family: var(--font-serif);
-  padding: 80px 120px;
-  font-size: 26px;
-  line-height: 1.7;
+  padding: 72px 104px 80px;
+  font-size: 25px;
+  line-height: 1.55;
 }
 
-h1 {
+/* ----- Title slide (H1) ---------------------------------------------- */
+
+section h1 {
   font-family: var(--font-serif);
   color: var(--color-fg);
-  font-size: 60px;
+  font-size: 84px;
   font-weight: 700;
-  margin: 0 0 16px;
+  margin: 0 0 24px;
   letter-spacing: -0.02em;
+  line-height: 1.05;
 }
 
-h1 + p,
-h1 + .subtitle {
-  color: var(--color-muted);
-  font-style: italic;
-  font-size: 28px;
-  margin-top: 0;
+section h1::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 4px;
+  border-top: 1px solid var(--color-rule-strong);
+  border-bottom: 1px solid var(--color-rule-strong);
+  background: transparent;
+  margin-bottom: 36px;
 }
 
-h2 {
+section h1 + p,
+section h1 + .subtitle {
   font-family: var(--font-serif);
-  color: var(--color-accent);
-  font-size: 36px;
-  font-weight: 600;
-  margin: 32px 0 16px;
-}
-
-p { margin: 12px 0; }
-
-a { color: var(--color-accent); text-decoration: underline; }
-
-blockquote {
-  border-left: 3px solid var(--color-accent);
-  color: var(--color-fg);
+  color: var(--color-fg-muted);
   font-style: italic;
-  margin: 24px 0;
-  padding: 0 24px;
+  font-size: 30px;
+  font-weight: 400;
+  margin-top: 0;
+  max-width: 80%;
+  line-height: 1.45;
+  border-top: 1px solid var(--color-rule);
+  padding-top: 24px;
+}
+
+/* ----- Slide title (H2) ----------------------------------------------- */
+
+section h2 {
+  font-family: var(--font-serif);
+  color: var(--color-fg);
+  font-size: 42px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  position: relative;
+}
+
+section h2::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: var(--color-accent);
+  margin-bottom: 14px;
+}
+
+section h2::after {
+  content: '';
+  display: block;
+  border-bottom: 1px solid var(--color-rule);
+  margin: 14px 0 18px;
+}
+
+section h3 {
+  font-family: var(--font-serif);
+  color: var(--color-fg);
   font-size: 28px;
-  line-height: 1.6;
+  font-weight: 700;
+  font-style: italic;
+  margin: 28px 0 10px;
 }
 
-code, pre {
-  font-family: 'JetBrains Mono', monospace;
-  background: #f0eadc;
-  border-radius: 4px;
+/* ----- Body / inline -------------------------------------------------- */
+
+section p {
+  margin: 10px 0;
+  color: var(--color-fg);
 }
 
-img { display: block; margin: 16px auto; max-width: 100%; }
+section a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+section strong {
+  font-weight: 700;
+  color: var(--color-fg);
+}
+
+section em {
+  font-style: italic;
+  color: var(--color-fg);
+}
+
+/* ----- Lists ---------------------------------------------------------- */
+
+section ul,
+section ol {
+  margin: 18px 0;
+  padding-left: 0;
+}
+
+section ul {
+  list-style: none;
+}
+
+section ul li {
+  position: relative;
+  padding-left: 28px;
+  margin: 10px 0;
+}
+
+section ul li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+section ol {
+  list-style: none;
+  counter-reset: ol-counter;
+  padding-left: 0;
+}
+
+section ol li {
+  counter-increment: ol-counter;
+  position: relative;
+  padding-left: 56px;
+  margin: 14px 0;
+  min-height: 36px;
+}
+
+section ol li::before {
+  content: counter(ol-counter);
+  position: absolute;
+  left: 0;
+  top: -4px;
+  font-family: var(--font-serif);
+  font-size: 1.5em;
+  font-weight: 700;
+  color: var(--color-accent);
+  font-feature-settings: 'lnum';
+  line-height: 1.2;
+}
+
+/* ----- Inline code ---------------------------------------------------- */
+
+section code {
+  font-family: var(--font-mono);
+  background: var(--color-bg-soft);
+  color: var(--color-fg);
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 0.82em;
+  font-weight: 500;
+}
+
+/* ----- Code block ----------------------------------------------------- */
+
+section pre {
+  font-family: var(--font-mono);
+  background: var(--color-bg-soft);
+  border: 1px solid var(--color-rule);
+  border-left: 3px solid var(--color-accent);
+  border-radius: 0;
+  padding: 0;
+  font-size: 17px;
+  line-height: 1.5;
+  margin: 16px 0;
+  overflow: hidden;
+}
+
+section pre code {
+  display: block;
+  background: transparent;
+  border: none;
+  padding: 14px 18px;
+  color: var(--color-fg);
+  font-size: 1em;
+}
+
+/* ----- Blockquote — pull quote with hanging mark --------------------- */
+
+section blockquote {
+  border: none;
+  border-top: 1px solid var(--color-rule);
+  border-bottom: 1px solid var(--color-rule);
+  margin: 32px 0;
+  padding: 28px 24px 28px 64px;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-fg);
+  font-size: 32px;
+  line-height: 1.45;
+  position: relative;
+  background: transparent;
+}
+
+section blockquote::before {
+  content: '\201C';
+  position: absolute;
+  top: 18px;
+  left: 16px;
+  font-family: var(--font-serif);
+  font-size: 84px;
+  line-height: 1;
+  color: var(--color-accent);
+  font-style: normal;
+}
+
+section blockquote p {
+  margin: 0;
+}
+
+/* ----- Tables (horizontal rules only) -------------------------------- */
+
+section table {
+  display: table;
+  border-collapse: collapse;
+  margin: 24px auto;
+  width: 100%;
+  max-width: 100%;
+  font-size: 0.92em;
+  color: var(--color-fg);
+  background: transparent;
+  font-family: var(--font-serif);
+}
+
+section table tr,
+section table tr:nth-child(odd),
+section table tr:nth-child(even),
+section table tr:nth-child(2n) {
+  background: transparent;
+  border: none;
+}
+
+section table thead th {
+  background: transparent;
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  text-align: left;
+  padding: 10px 14px;
+  border: none;
+  border-top: 2px solid var(--color-rule-strong);
+  border-bottom: 1px solid var(--color-rule-strong);
+  font-size: 0.7em;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+section table tbody tr:nth-child(odd) td,
+section table tbody tr:nth-child(odd) th,
+section table tbody tr:nth-child(even) td,
+section table tbody tr:nth-child(even) th {
+  background: transparent;
+}
+
+section table tbody td,
+section table tbody th {
+  color: var(--color-fg);
+  background: transparent;
+  padding: 14px 14px;
+  border: none;
+  border-bottom: 1px solid var(--color-rule);
+}
+
+section table tbody tr:last-child td,
+section table tbody tr:last-child th {
+  border-bottom: 2px solid var(--color-rule-strong);
+}
+
+/* ----- Images --------------------------------------------------------- */
+
+section img {
+  display: block;
+  margin: 16px auto;
+  max-width: 100%;
+}
+
+/* ----- Footer / pagination ------------------------------------------- */
 
 footer {
   position: absolute;
-  bottom: 32px;
-  left: 120px;
-  right: 120px;
+  bottom: 36px;
+  left: 112px;
+  right: 112px;
   font-family: var(--font-sans);
-  font-size: 16px;
-  color: var(--color-muted);
-  border-top: 1px solid var(--color-muted);
-  padding-top: 8px;
+  font-size: 13px;
+  color: var(--color-fg-subtle);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border-top: 1px solid var(--color-rule);
+  padding-top: 10px;
+}
+
+section::after {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  color: var(--color-fg-muted);
+  font-style: italic;
+  bottom: 36px;
+  right: 40px;
+}
+
+/* ===== Slide-type classes ============================================= */
+
+/* ----- _class: hero --------------------------------------------------- */
+
+section.hero {
+  color: #fbf8f1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 88px 104px 96px;
+}
+
+section.hero h1 {
+  font-family: var(--font-serif);
+  font-size: 100px;
+  color: #fbf8f1;
+  margin: 0 0 28px;
+  letter-spacing: -0.022em;
+  line-height: 1.02;
+  font-weight: 700;
+  max-width: 90%;
+  text-shadow: 0 4px 28px rgba(0, 0, 0, 0.45);
+}
+
+section.hero h1::before {
+  display: block;
+  width: 50%;
+  height: 0;
+  background: transparent;
+  border-top: 1px solid rgba(255, 255, 255, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+  margin-bottom: 32px;
+}
+
+section.hero h1 + p {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 30px;
+  color: rgba(255, 255, 255, 0.88);
+  border-top: none;
+  padding-top: 0;
+  max-width: 78%;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.4);
+}
+
+/* ----- _class: section (magazine chapter) ---------------------------- */
+
+section.section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 96px 112px;
+  background: var(--color-bg);
+}
+
+section.section h2 {
+  font-family: var(--font-serif);
+  font-size: 280px;
+  font-weight: 700;
+  color: var(--color-accent);
+  margin: 0 0 16px;
+  line-height: 0.85;
+  letter-spacing: -0.05em;
+  position: static;
+  padding: 0;
+}
+
+section.section h2::before,
+section.section h2::after {
+  display: none;
+}
+
+section.section h1 {
+  font-family: var(--font-serif);
+  font-size: 88px;
+  font-style: italic;
+  font-weight: 400;
+  margin: 0 0 28px;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+
+section.section h1::before {
+  display: none;
+}
+
+section.section p {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--color-fg-muted);
+  font-size: 26px;
+  max-width: 60%;
+  border-top: 1px solid var(--color-rule);
+  padding-top: 18px;
+  margin: 0;
+}
+
+/* ----- _class: split -------------------------------------------------- */
+
+section.split {
+  padding-right: 60px;
+}
+
+section.split h2 {
+  font-size: 46px;
+  margin-top: 0;
+}
+
+/* ----- _class: quote (pull quote, full page) ------------------------- */
+
+section.quote {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 96px 144px;
+}
+
+section.quote blockquote {
+  border-top: none;
+  border-bottom: none;
+  background: transparent;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 56px;
+  line-height: 1.18;
+  margin: 0 0 36px;
+  padding: 0 0 0 96px;
+  position: relative;
+  color: var(--color-fg);
+}
+
+section.quote blockquote::before {
+  content: '\201C';
+  position: absolute;
+  top: -56px;
+  left: 0;
+  font-family: var(--font-serif);
+  font-size: 220px;
+  color: var(--color-accent);
+  font-style: normal;
+  line-height: 1;
+}
+
+section.quote blockquote p {
+  margin: 0 0 16px;
+}
+
+section.quote > p {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--color-fg-muted);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin: 0 0 0 96px;
+  font-style: normal;
+}
+
+/* ----- _class: grid (image row) -------------------------------------- */
+
+section.grid p:has(img) {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 24px 0;
+  align-items: stretch;
+}
+
+section.grid p img {
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 0;
+  border: 1px solid var(--color-rule);
 }

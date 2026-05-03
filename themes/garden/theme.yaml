@@ -1,0 +1,20 @@
+name: garden
+displayName: Garden
+version: 0.1.0
+author: slidesmith
+description: Soft natural-light theme for lifestyle, wellness, sustainability talks. Warm cream paper, sage primary, terracotta secondary, deep botanical ink. Light weights, generous leading.
+tags: [light, lifestyle, wellness, sustainability, natural]
+fits: [brand-book, sustainability-report, wellness-talk, lifestyle-launch]
+constraints:
+  - "Use h1 for cover or chapter title (light weight, italic Latin allowed)"
+  - "Use h2 for slide titles"
+  - "Use h3 for kicker labels (rendered in mono uppercase, terracotta)"
+  - "Use <!-- _class: hero --> for the cover"
+  - "Use <!-- _class: section --> for chapter dividers (softer surface)"
+  - "Use <!-- _class: stat --> for key numbers (italic serif, sage)"
+  - "Use <!-- _class: manifesto --> for single-statement slides"
+  - "Use <!-- _class: quote --> for testimonials"
+  - "Emphasis: **bold** = weight contrast (600), *italic* = serif italic in sage (Latin only — Korean is never slanted)"
+samples:
+  default: samples/sample.md
+recommendedPrerenders: []

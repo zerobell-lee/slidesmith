@@ -1,0 +1,20 @@
+name: brutalist
+displayName: Brutalist
+version: 0.1.0
+author: slidesmith
+description: Raw, asymmetric design-zine theme. Concrete cream + alarm yellow + black. Heavy display, oversized mono labels, halftone dots, thick rules. For design portfolios, art talks, makerspace launches.
+tags: [light, design, zine, brutalist, raw]
+fits: [design-portfolio, zine-launch, art-talk, makerspace, manifesto]
+constraints:
+  - "Use h1 for cover headline or chapter title (rendered uppercase, heavy weight)"
+  - "Use h2 for slide titles"
+  - "Use h3 for kicker labels (rendered as alarm-yellow tag)"
+  - "Use <!-- _class: hero --> for the cover (full alarm-yellow with halftone)"
+  - "Use <!-- _class: section --> for chapter dividers (black inverse)"
+  - "Use <!-- _class: stat --> for big-number / KPI slides"
+  - "Use <!-- _class: manifesto --> for single-statement slides"
+  - "Use <!-- _class: quote --> for testimonials (thick yellow rule)"
+  - "Emphasis: **bold** = highlighter alarm-yellow background, *italic* = uppercase mono in danger red"
+samples:
+  default: samples/sample.md
+recommendedPrerenders: []

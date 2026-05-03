@@ -1,0 +1,20 @@
+name: dossier
+displayName: Dossier
+version: 0.1.0
+author: slidesmith
+description: Case-file theme for research presentations, investigations, case studies. Manila folder cream + typewriter ink + file-stamp red. Mono labels, redaction bars, typewriter accents, folder tab.
+tags: [light, mono, research, investigation, case-study]
+fits: [case-study, research-findings, investigation, audit-report, retrospective]
+constraints:
+  - "Use h1 for cover headline or chapter title"
+  - "Use h2 for slide titles (sans)"
+  - "Use h3 for kicker labels (rendered as bordered mono tag)"
+  - "Use <!-- _class: hero --> for the cover (case-file front)"
+  - "Use <!-- _class: section --> for chapter dividers"
+  - "Use <!-- _class: stat --> for big-number / KPI slides (stamp-red mono number)"
+  - "Use <!-- _class: manifesto --> for single-statement slides (typewriter declaration)"
+  - "Use <!-- _class: quote --> for testimony / source quotes"
+  - "Emphasis: **bold** = stamp-red underline, *italic* = redaction-style mono on ink (Latin italic via mono)"
+samples:
+  default: samples/sample.md
+recommendedPrerenders: []

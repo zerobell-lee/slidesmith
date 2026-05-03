@@ -1,0 +1,744 @@
+/* @theme pitch */
+
+/*
+ * pitch — bold deck for proposals, opinionated talks, investor pitches.
+ * Warm paper + ink + a single committed orange accent.
+ * Highlighter em, dark lead, full-bleed hero, oversized stat numbers.
+ * Korean-first typography (word-break: keep-all, no wide tracking on Korean).
+ */
+
+@import 'default';
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --bg: oklch(0.985 0.005 70);
+  --bg-soft: oklch(0.96 0.008 70);
+  --ink: oklch(0.18 0.005 60);
+  --ink-soft: oklch(0.42 0.008 70);
+  --ink-mute: oklch(0.62 0.010 70);
+  --accent: oklch(0.69 0.197 32);
+  --accent-soft: oklch(0.94 0.025 32);
+  --rule: oklch(0.91 0.014 78);
+  --font-sans: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* ===== Page =========================================================== */
+
+section {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -0.015em;
+  padding: 80px 100px 110px;
+  word-break: keep-all;
+  line-break: strict;
+  position: relative;
+}
+
+/* ===== Headings ======================================================= */
+
+section h1,
+section h2,
+section h3 {
+  margin: 0 0 0.5em;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+section h1 {
+  font-size: 3em;
+  font-weight: 800;
+}
+
+section h2 {
+  font-size: 1.9em;
+  font-weight: 800;
+}
+
+section h2::after {
+  content: none;
+}
+
+section h3 {
+  font-size: 0.85em;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+  margin-bottom: 0.3em;
+}
+
+/* ===== Body inline ==================================================== */
+
+section p {
+  margin: 0 0 0.7em;
+  max-width: 30ch;
+}
+
+/* When a paragraph is the body under a list/heading, allow wider */
+section h1 + p,
+section h2 + p,
+section ul,
+section ol,
+section blockquote,
+section pre,
+section table {
+  max-width: none;
+}
+
+section h1 + p,
+section h2 + p {
+  color: var(--ink-soft);
+  font-weight: 500;
+  margin-top: -0.2em;
+  max-width: 26ch;
+}
+
+section strong {
+  color: var(--accent);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+section em {
+  font-style: normal;
+  font-weight: 700;
+  background: var(--accent-soft);
+  padding: 0 0.18em;
+  border-radius: 2px;
+  color: var(--ink);
+}
+
+/* Override Marp default theme's h1/h2 strong/em color leak (light-blue link) */
+section h1 strong,
+section h2 strong,
+section h3 strong {
+  color: var(--accent);
+  background: transparent;
+  font-weight: 800;
+}
+
+section h1 em,
+section h2 em,
+section h3 em {
+  background: var(--accent-soft);
+  color: var(--ink);
+  font-weight: 800;
+  padding: 0 0.18em;
+  border-radius: 4px;
+}
+
+section del {
+  color: var(--ink-soft);
+  text-decoration-thickness: 2px;
+}
+
+section a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+/* ===== Lists ========================================================== */
+
+section ul,
+section ol {
+  padding-left: 1.2em;
+  margin: 0.4em 0 0.6em;
+}
+
+section li {
+  margin: 0.3em 0;
+  max-width: 28ch;
+}
+
+section li::marker {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ===== Hr ============================================================= */
+
+section hr {
+  border: 0;
+  border-top: 3px solid var(--ink);
+  margin: 0.6em 0 1em;
+  width: 60px;
+}
+
+/* ===== Blockquote ===================================================== */
+
+section blockquote {
+  font-size: 1.5em;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  border: 0;
+  padding: 0 0 0 0.7em;
+  margin: 0.4em 0;
+  color: var(--ink);
+  position: relative;
+  max-width: 22ch;
+}
+
+section blockquote::before {
+  content: '\201C';
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 2.5em;
+  color: var(--accent);
+  line-height: 0.8;
+  position: absolute;
+  top: -0.05em;
+  left: -0.4em;
+}
+
+section blockquote p {
+  margin: 0;
+  max-width: none;
+}
+
+/* ===== Inline code ==================================================== */
+
+section code {
+  font-family: var(--font-mono);
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: 4px;
+  padding: 0.05em 0.4em;
+  font-size: 0.85em;
+  font-weight: 600;
+}
+
+/* ===== Code block ===================================================== */
+
+section pre {
+  background: var(--ink);
+  color: oklch(0.95 0.005 70);
+  border-radius: 10px;
+  padding: 1em 1.2em;
+  font-size: 0.62em;
+  line-height: 1.6;
+  margin: 0.6em 0;
+  overflow: hidden;
+}
+
+section pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  font-size: inherit;
+  font-weight: 400;
+}
+
+section pre code .hljs-comment,
+section pre code .hljs-quote {
+  color: oklch(0.65 0.010 70);
+  font-style: italic;
+}
+section pre code .hljs-keyword,
+section pre code .hljs-selector-tag,
+section pre code .hljs-literal,
+section pre code .hljs-section,
+section pre code .hljs-link {
+  color: var(--accent);
+}
+section pre code .hljs-string,
+section pre code .hljs-regexp,
+section pre code .hljs-addition,
+section pre code .hljs-attribute {
+  color: oklch(0.85 0.10 110);
+}
+section pre code .hljs-number,
+section pre code .hljs-symbol,
+section pre code .hljs-bullet,
+section pre code .hljs-attr,
+section pre code .hljs-meta {
+  color: oklch(0.78 0.10 200);
+}
+section pre code .hljs-title,
+section pre code .hljs-title.function_,
+section pre code .hljs-function .hljs-title,
+section pre code .hljs-name {
+  color: oklch(0.95 0.005 70);
+  font-weight: 600;
+}
+
+/* ===== Tables ========================================================= */
+
+section table {
+  display: table;
+  border-collapse: collapse;
+  font-size: 0.85em;
+  margin: 0.5em 0;
+  width: 100%;
+}
+
+section table tr,
+section table tr:nth-child(odd),
+section table tr:nth-child(even),
+section table tr:nth-child(2n) {
+  background: transparent;
+  border: none;
+}
+
+section table th,
+section table td {
+  padding: 0.55em 0.95em;
+  border: none;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+  background: transparent;
+  font-feature-settings: 'tnum' 1;
+}
+
+section table thead th {
+  font-weight: 700;
+  border-bottom: 2px solid var(--ink);
+  color: var(--ink);
+}
+
+section table tbody tr:last-child td,
+section table tbody tr:last-child th {
+  border-bottom: 1px solid var(--ink);
+}
+
+/* ===== Images ========================================================= */
+
+section img {
+  border-radius: 8px;
+  max-width: 100%;
+  max-height: 380px;
+  object-fit: contain;
+  display: block;
+  margin: 0.4em auto;
+}
+
+/* Inline sketch SVGs flow in text */
+section img[src*="/sketch/"] {
+  display: inline-block;
+  height: 1em;
+  width: auto;
+  vertical-align: -0.12em;
+  margin: 0 0.18em;
+  border-radius: 0;
+  max-height: none;
+}
+
+section .cols img {
+  max-height: 280px;
+}
+
+/* ===== Header / Footer / Pagination =================================== */
+
+header {
+  position: absolute;
+  top: 32px;
+  left: 100px;
+  right: 100px;
+  margin: 0;
+  padding: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: right;
+  font-family: var(--font-mono);
+}
+
+footer {
+  position: absolute;
+  bottom: 36px;
+  left: 100px;
+  right: 100px;
+  margin: 0;
+  padding: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  font-family: var(--font-sans);
+}
+
+footer p {
+  margin: 0;
+  max-width: none;
+}
+
+section::after {
+  position: absolute;
+  color: var(--ink-soft);
+  font-size: 13px;
+  right: 100px;
+  bottom: 36px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  line-height: 1;
+  padding: 0;
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+
+/* ===== Two-column layout (.cols, .cols.compare) ======================= */
+
+section .cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+section .cols > div > *:first-child {
+  margin-top: 0;
+}
+
+section .cols > div p {
+  max-width: 22ch;
+}
+
+section .cols.compare > div:first-child {
+  color: var(--ink-soft);
+  position: relative;
+}
+
+section .cols.compare > div::before {
+  content: 'BEFORE';
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--ink-soft);
+  margin-bottom: 0.8em;
+}
+
+section .cols.compare > div:last-child::before {
+  content: 'AFTER';
+  color: var(--accent);
+}
+
+section .cols.compare > div:first-child h2,
+section .cols.compare > div:first-child h3,
+section .cols.compare > div:first-child p {
+  color: var(--ink-soft);
+}
+
+
+/* ===================================================================== */
+/* ===== Slide-type modulations ======================================== */
+/* ===================================================================== */
+
+
+/* ===== _class: hero — DARK opening cover (mapped from original .lead) = */
+
+section.hero {
+  background: var(--ink);
+  color: var(--bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+section.hero h1,
+section.hero h2 {
+  color: var(--bg);
+}
+
+section.hero h1 {
+  font-size: 4em;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  max-width: 16ch;
+}
+
+section.hero h1 strong {
+  color: var(--accent);
+  background: transparent;
+}
+
+section.hero h1 em {
+  background: transparent;
+  color: var(--accent);
+  font-weight: 800;
+  padding: 0;
+  border-radius: 0;
+}
+
+section.hero h2 {
+  font-size: 1em;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: none;
+  color: oklch(0.85 0.005 70 / 0.65);
+  margin-bottom: 1.4em;
+  max-width: none;
+}
+
+section.hero h2::after {
+  content: none;
+}
+
+section.hero p {
+  color: oklch(0.95 0.005 70 / 0.7);
+  font-size: 0.85em;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  margin-top: 0.6em;
+  max-width: 36ch;
+}
+
+section.hero hr {
+  border-color: var(--accent);
+}
+
+section.hero footer,
+section.hero header,
+section.hero::after {
+  color: oklch(0.95 0.005 70 / 0.5);
+}
+
+
+/* ===== _class: section — ORANGE chapter divider (from original .accent) */
+
+section.section {
+  background: var(--accent);
+  color: var(--bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+section.section h1,
+section.section h2,
+section.section h3 {
+  color: var(--bg);
+}
+
+section.section h1 {
+  font-size: 4.5em;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.0;
+  max-width: 14ch;
+  margin: 0 0 0.3em;
+}
+
+section.section h1 strong {
+  color: var(--ink);
+  background: var(--bg);
+  padding: 0 0.18em;
+  border-radius: 4px;
+}
+
+section.section h1 em {
+  background: var(--bg);
+  color: var(--accent);
+  padding: 0 0.18em;
+  border-radius: 4px;
+  font-weight: 800;
+}
+
+section.section h2 {
+  font-family: var(--font-mono);
+  font-size: 0.5em;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: oklch(0.99 0.005 70 / 0.75);
+  margin: 0 0 1.4em;
+  max-width: none;
+}
+
+section.section h2::after {
+  content: none;
+}
+
+section.section p {
+  color: oklch(0.99 0.005 70 / 0.85);
+  font-size: 0.85em;
+  font-weight: 500;
+  margin-top: 0.6em;
+  max-width: 32ch;
+}
+
+section.section hr {
+  border-color: var(--bg);
+}
+
+section.section footer,
+section.section header,
+section.section::after {
+  color: oklch(0.99 0.005 70 / 0.55);
+}
+
+
+/* ===== _class: manifesto — single statement on warm paper ============= */
+
+section.manifesto {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+section.manifesto h1 {
+  font-size: 2.6em;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -0.035em;
+  line-height: 1.18;
+  max-width: 18ch;
+  margin: 0 0 0.25em;
+}
+
+section.manifesto h1 + h1 {
+  margin-top: 0.1em;
+}
+
+section.manifesto p {
+  margin-top: 1.4em;
+}
+
+section.manifesto h1 strong {
+  color: var(--accent);
+}
+
+section.manifesto h1 em {
+  background: var(--accent-soft);
+  font-weight: 800;
+  padding: 0 0.18em;
+  border-radius: 4px;
+}
+
+section.manifesto p {
+  font-size: 0.6em;
+  font-weight: 600;
+  color: var(--ink-soft);
+  letter-spacing: 0.02em;
+  margin-top: 0.8em;
+  max-width: 36ch;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+}
+
+
+/* ===== _class: stat — huge orange number ============================== */
+
+section.stat {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+section.stat h1 {
+  font-size: 9em;
+  color: var(--accent);
+  margin: 0;
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+  font-weight: 900;
+  font-feature-settings: 'tnum' 1;
+  max-width: none;
+}
+
+section.stat h1 em {
+  background: transparent;
+  color: var(--accent);
+  font-weight: 900;
+  padding: 0;
+}
+
+section.stat h2 {
+  font-size: 1.3em;
+  font-weight: 600;
+  color: var(--ink-soft);
+  margin: 0.5em auto 0;
+  max-width: 26ch;
+  letter-spacing: -0.01em;
+}
+
+section.stat h2::after {
+  content: none;
+}
+
+section.stat p {
+  font-size: 0.7em;
+  color: var(--ink-soft);
+  margin: 0.35em auto 0;
+  max-width: 36ch;
+}
+
+
+/* ===== _class: quote — pull-out quote ================================= */
+
+section.quote {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+section.quote blockquote {
+  font-size: 2em;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  max-width: 22ch;
+  margin: 0;
+  padding-left: 0.8em;
+}
+
+section.quote blockquote::before {
+  font-size: 3em;
+  top: -0.15em;
+  left: -0.2em;
+}
+
+section.quote > p {
+  font-family: var(--font-mono);
+  font-size: 0.55em;
+  font-weight: 600;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  margin-top: 1.2em;
+  max-width: 36ch;
+}
+
+
+/* ===== _class: split — image on the right via Marp bg directive ======= */
+
+section.split h2 {
+  font-size: 1.6em;
+}
+
+
+/* ===== _class: grid — 3-up image row ================================== */
+
+section.grid p:has(img) {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 0.6em 0;
+  align-items: stretch;
+}
+
+section.grid p img {
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  max-height: none;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid var(--rule);
+}

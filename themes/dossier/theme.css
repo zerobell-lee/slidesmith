@@ -1,0 +1,593 @@
+/* @theme dossier */
+
+/*
+ * dossier — case-file theme for research presentations, investigations, case studies.
+ * Manila folder cream + typewriter ink + file-stamp red. Mono for Latin/labels (typewriter feel),
+ * Pretendard for Korean body. Folder tab labels, redaction bars, stamped accents.
+ * Korean-first typography. Latin italic via mono only.
+ */
+
+@import 'default';
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Special+Elite&display=swap');
+
+:root {
+  --bg: oklch(0.88 0.025 85);
+  --bg-soft: oklch(0.82 0.030 80);
+  --bg-folder: oklch(0.74 0.045 75);
+  --ink: oklch(0.22 0.010 55);
+  --ink-soft: oklch(0.40 0.012 60);
+  --ink-mute: oklch(0.55 0.015 60);
+  --stamp: oklch(0.50 0.20 25);
+  --stamp-soft: oklch(0.86 0.045 25);
+  --rule: oklch(0.40 0.010 55);
+  --rule-soft: oklch(0.70 0.012 70);
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-typed: 'Special Elite', 'JetBrains Mono', ui-monospace, monospace;
+  --font-sans: 'Pretendard Variable', 'Pretendard', -apple-system, system-ui, sans-serif;
+}
+
+/* ===== Page ============================================================ */
+
+section {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.55;
+  letter-spacing: -0.005em;
+  padding: 110px 110px 96px;
+  word-break: keep-all;
+  line-break: strict;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-image:
+    linear-gradient(180deg, var(--bg-folder) 0, var(--bg-folder) 56px, transparent 56px),
+    repeating-linear-gradient(0deg, transparent 0, transparent 33px, oklch(0.20 0.010 55 / 0.04) 33px, oklch(0.20 0.010 55 / 0.04) 34px);
+}
+
+section > * {
+  margin: 0;
+}
+section > * + * {
+  margin-top: 0.7em;
+}
+
+/* Folder tab top-right */
+section::before {
+  content: "FILE";
+  position: absolute;
+  top: 0;
+  right: 110px;
+  width: 120px;
+  height: 56px;
+  background: var(--bg-folder);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-align: center;
+  padding-top: 22px;
+  border-bottom: 1px solid var(--rule);
+  border-radius: 0 0 8px 8px;
+}
+
+/* Folder header bar */
+section::after {
+  content: "";
+  position: absolute;
+  top: 56px;
+  left: 110px;
+  right: 110px;
+  height: 1px;
+  background: var(--rule);
+}
+
+/* ===== Headings ======================================================== */
+
+h1 {
+  font-family: var(--font-sans);
+  font-size: 64px;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  color: var(--ink);
+}
+
+h2 {
+  font-family: var(--font-sans);
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.18;
+  color: var(--ink);
+  margin-bottom: 0.6em;
+}
+
+h3 {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--bg-soft);
+  padding: 6px 12px 4px;
+  border: 1px solid var(--rule);
+  display: inline-block;
+  margin-bottom: 1.2em;
+}
+
+/* ===== Body ============================================================ */
+
+p {
+  font-size: 24px;
+  color: var(--ink);
+  line-height: 1.6;
+  max-width: 62ch;
+}
+
+ul, ol {
+  padding-left: 0;
+  list-style: none;
+}
+ul li {
+  font-size: 23px;
+  color: var(--ink);
+  padding-left: 1.6em;
+  position: relative;
+  margin-top: 0.45em;
+  max-width: 62ch;
+  line-height: 1.55;
+}
+ul li::before {
+  content: "□";
+  position: absolute;
+  left: 0;
+  top: -0.05em;
+  color: var(--ink);
+  font-size: 1em;
+  font-weight: 700;
+}
+ol {
+  counter-reset: nlist;
+}
+ol li {
+  font-size: 21px;
+  color: var(--ink);
+  counter-increment: nlist;
+  padding-left: 2.4em;
+  position: relative;
+  margin-top: 0.45em;
+  max-width: 42ch;
+  line-height: 1.55;
+}
+ol li::before {
+  content: "[" counter(nlist, decimal-leading-zero) "]";
+  position: absolute;
+  left: 0;
+  top: 0.05em;
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  font-weight: 700;
+  color: var(--stamp);
+}
+
+strong {
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--stamp);
+}
+
+em {
+  font-style: normal;
+  background: var(--ink);
+  color: var(--bg);
+  padding: 0 0.3em;
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+a {
+  color: var(--stamp);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--bg-soft);
+  padding: 0.1em 0.4em;
+  border: 1px solid var(--rule-soft);
+  border-radius: 2px;
+}
+
+pre {
+  background: var(--bg-soft);
+  padding: 22px 26px;
+  font-family: var(--font-mono);
+  font-size: 17px;
+  color: var(--ink);
+  line-height: 1.55;
+  border: 1px solid var(--rule);
+}
+pre code {
+  background: transparent;
+  padding: 0;
+  border: 0;
+  color: inherit;
+}
+
+blockquote {
+  border: 0;
+  padding: 0 0 0 1.2em;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  max-width: 32ch;
+  border-left: 3px solid var(--stamp);
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background: var(--rule);
+  margin: 1.4em 0;
+}
+
+section table {
+  display: table !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  border-collapse: collapse;
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  margin: 0;
+}
+section table th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--ink);
+  padding: 14px 22px;
+  border: 0;
+}
+section table td {
+  padding: 14px 22px;
+  border-top: 1px solid var(--rule-soft);
+  border-bottom: 0;
+  background: transparent;
+}
+section table tr {
+  background: transparent !important;
+}
+section table tr:nth-child(2n) {
+  background: transparent !important;
+}
+
+/* ===== Vertical timeline ============================================== */
+
+.timeline {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 40px;
+  row-gap: 0;
+  align-items: baseline;
+  margin-top: 24px;
+  border-top: 1px solid var(--rule);
+}
+.timeline > .t {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--stamp);
+  letter-spacing: 0.02em;
+  padding: 22px 0 22px 8px;
+  border-bottom: 1px solid var(--rule-soft);
+  position: relative;
+}
+.timeline > .t::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background: var(--stamp);
+  border-radius: 50%;
+}
+.timeline > .e {
+  font-family: var(--font-sans);
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--ink);
+  padding: 22px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  line-height: 1.35;
+}
+.timeline > .e em {
+  background: var(--ink);
+  color: var(--bg);
+  font-style: normal;
+  font-weight: 600;
+  padding: 0 0.3em;
+}
+
+img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+  filter: grayscale(1) sepia(0.2) contrast(0.95);
+  border: 1px solid var(--rule);
+}
+
+/* ===== Footer + pagination =========================================== */
+
+footer {
+  position: absolute;
+  left: 110px;
+  top: 24px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+/* Override section::after for pagination — but we used ::after for header rule.
+   Use a different mechanism: pagination via Marp's data-marpit-pagination attribute won't work
+   without ::after. Instead, drop the header rule and use ::after for pagination with custom format. */
+
+section::after {
+  content: "PAGE " attr(data-marpit-pagination);
+  position: absolute;
+  top: 24px;
+  right: 248px;
+  height: auto;
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: var(--ink);
+  left: auto;
+}
+
+/* ===== Slide: hero (case file front) ================================== */
+
+section.hero {
+  padding: 96px 110px;
+  justify-content: flex-end;
+  background-image:
+    linear-gradient(180deg, var(--bg-folder) 0, var(--bg-folder) 56px, transparent 56px),
+    repeating-linear-gradient(0deg, transparent 0, transparent 33px, oklch(0.20 0.010 55 / 0.04) 33px, oklch(0.20 0.010 55 / 0.04) 34px);
+}
+section.hero h3 {
+  position: absolute;
+  top: 96px;
+  left: 110px;
+  margin: 0;
+  background: var(--stamp);
+  color: var(--bg);
+  border-color: var(--stamp);
+}
+section.hero h1 {
+  font-size: 96px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+  max-width: 14ch;
+  margin: 0 0 0.3em;
+}
+section.hero h1 em {
+  background: var(--ink);
+  color: var(--bg);
+  font-family: var(--font-sans);
+  font-size: 1em;
+  padding: 0 0.18em;
+  font-weight: 800;
+}
+section.hero p {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  max-width: 60ch;
+  margin-top: 1em;
+}
+
+/* ===== Slide: section ================================================= */
+
+section.section {
+  background: var(--bg-soft);
+  background-image:
+    linear-gradient(180deg, var(--bg-folder) 0, var(--bg-folder) 56px, transparent 56px),
+    repeating-linear-gradient(0deg, transparent 0, transparent 33px, oklch(0.20 0.010 55 / 0.04) 33px, oklch(0.20 0.010 55 / 0.04) 34px);
+  justify-content: center;
+}
+section.section h3 {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+section.section h1 {
+  font-size: 88px;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.0;
+  max-width: 16ch;
+}
+section.section h1 em {
+  background: var(--stamp);
+  color: var(--bg);
+  font-family: var(--font-sans);
+  padding: 0 0.18em;
+  font-weight: 800;
+}
+section.section p {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink-soft);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-top: 1.2em;
+}
+
+/* ===== Slide: stat ==================================================== */
+
+section.stat {
+  align-items: flex-start;
+  justify-content: center;
+}
+section.stat h3 {
+  margin-bottom: 0.6em;
+}
+section.stat h1 {
+  font-family: var(--font-mono);
+  font-size: 220px;
+  font-weight: 700;
+  color: var(--stamp);
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+}
+section.stat h2 {
+  font-family: var(--font-sans);
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+  text-transform: none;
+  max-width: 32ch;
+  margin-top: 0.6em;
+}
+section.stat p {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink-mute);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-top: 1em;
+}
+
+/* ===== Slide: manifesto =============================================== */
+
+section.manifesto {
+  justify-content: center;
+}
+section.manifesto h1 {
+  font-family: var(--font-sans);
+  font-size: 60px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+  max-width: 22ch;
+}
+section.manifesto h1 em {
+  background: var(--stamp);
+  color: var(--bg);
+  font-family: var(--font-sans);
+  padding: 0 0.18em;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 1em;
+  letter-spacing: -0.025em;
+}
+section.manifesto p {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-mute);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-top: 2.4em;
+}
+
+/* ===== Slide: quote =================================================== */
+
+section.quote {
+  justify-content: center;
+}
+section.quote blockquote {
+  font-size: 36px;
+  max-width: 30ch;
+  border-left-width: 4px;
+}
+section.quote p {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-mute);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-top: 1.6em;
+  padding-left: 1.4em;
+}
+
+/* ===== Blockquote inner P reset (defeat section-class p rules) ======== */
+
+blockquote p {
+  font-family: inherit !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  font-style: inherit !important;
+  line-height: inherit !important;
+  color: inherit !important;
+  letter-spacing: inherit !important;
+  word-spacing: inherit !important;
+  text-transform: inherit !important;
+  text-align: inherit !important;
+  padding: 0 !important;
+  max-width: none !important;
+  margin: 0 !important;
+}
+
+/* ===== Defeat default theme color leaks =============================== */
+
+section h1 strong,
+section h2 strong,
+section h3 strong {
+  color: var(--ink);
+  background: transparent;
+  font-weight: 800;
+  text-decoration: underline;
+  text-decoration-color: var(--stamp);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 6px;
+}
+section h1 em,
+section h2 em {
+  background: var(--ink);
+  color: var(--bg);
+  font-style: normal;
+  padding: 0 0.18em;
+  font-family: var(--font-sans);
+  font-weight: 800;
+}

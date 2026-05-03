@@ -1,0 +1,21 @@
+name: pitch
+displayName: Pitch
+version: 0.1.0
+author: slidesmith
+description: A refined investor-pitch theme — Pretendard, paper-and-ink palette, weight-contrast emphasis, generous whitespace. Stripe/Linear-style restraint, no decorative effects.
+tags: [pitch, startup, investor, refined, light]
+fits: [investor-pitch, demo-day, sales-deck, product-launch]
+constraints:
+  - "Use h1 for the title or the BIG NUMBER on a stat slide; one per slide"
+  - "Use h2 for slide titles and stat captions"
+  - "Use <!-- _class: hero --> for the cover (pure black field, white display type)"
+  - "Use <!-- _class: section --> for chapter dividers (h2 = mono section tag like '02', h1 = chapter title)"
+  - "Use <!-- _class: stat --> for big-number / KPI slides (h1 = number, h2 = mono label)"
+  - "Use <!-- _class: manifesto --> for single-statement slides (h1 = the statement, p = mono attribution)"
+  - "Use <!-- _class: quote --> for testimonials"
+  - "Emphasis: **bold** = weight contrast (900), *italic* = deep amber accent (no slant)"
+samples:
+  default: samples/sample.md
+  en: samples/sample.en.md
+recommendedPrerenders:
+  - mermaid-cli
