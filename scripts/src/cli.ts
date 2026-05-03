@@ -314,11 +314,15 @@ const commands: Record<string, (args: string[]) => Promise<void>> = {
       };
     }
 
+    await fs.ensureDir(path.dirname(flags.out));
     const result = await invokeBackend({
       backend,
       input,
       env,
       cwd: paths.projectDir,
+      pluginDir,
+      inputFile: flags['input-file'],
+      outputFile: flags.out,
       httpRequestPath: flags['http-path'],
       httpMethod: (flags['http-method'] as 'GET' | 'POST') ?? 'GET',
     });
@@ -328,9 +332,8 @@ const commands: Record<string, (args: string[]) => Promise<void>> = {
       exit(2);
     }
 
-    await fs.ensureDir(path.dirname(flags.out));
-    if (outputTokenUsed) {
-      // CLI tool wrote the file directly via {output} token; don't overwrite.
+    if (outputTokenUsed || backend.type === 'internal') {
+      // Backend wrote the file directly; don't overwrite.
     } else if (result.bytes) {
       await fs.writeFile(flags.out, result.bytes);
     } else {

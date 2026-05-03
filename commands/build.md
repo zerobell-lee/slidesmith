@@ -95,14 +95,15 @@ For each placeholder in the resulting JSON:
   ```
   - Result `null` → no processor matched; warn the user and preserve the placeholder.
   - Result is an object with `backend.type === 'cli'` or `'http'`:
+    Determine output extension: use `output_ext` from the manifest if present (e.g. `excalidraw-cli` → `png`), otherwise default to `svg`. SVG outputs go to `build/html/svg/`, PNG/JPG to `build/html/img/`.
     ```bash
     cd <SLIDESMITH_ROOT>/scripts && SLIDESMITH_PLUGIN_DIR="<SLIDESMITH_ROOT>" SLIDESMITH_PROJECT_DIR="<USER_DIR>" npx tsx src/cli.ts run-processor \
       --name <processor-name> \
       --input-file "<USER_DIR>/<placeholder.path>" \
-      --out "<USER_DIR>/build/html/svg/<placeholder.id>.svg"
+      --out "<USER_DIR>/build/html/<svg|img>/<placeholder.id>.<ext>"
     ```
-    Replacement: rewrite `![alt](<placeholder.path>)` → `![alt](svg/<id>.svg)` (path relative to prerendered.md, which lives in build/html/ — same dir as svg/).
-  - Result has `backend.type === 'mcp'`: invoke the MCP tool directly via Claude Code (don't use `run-processor`). Save SVG to `<USER_DIR>/build/html/svg/<id>.svg`. Same replacement pattern.
+    Replacement: rewrite `![alt](<placeholder.path>)` → `![alt](<svg|img>/<id>.<ext>)` (path relative to prerendered.md, which lives in build/html/).
+  - Result has `backend.type === 'mcp'`: invoke the MCP tool directly via Claude Code (don't use `run-processor`). Save output to `<USER_DIR>/build/html/svg/<id>.svg` (or `img/<id>.<ext>` if the MCP tool returns raster). Same replacement pattern.
 
 - `kind: semantic` (LLM-judgment dispatch):
   1. Inspect alt text, pick a capability:

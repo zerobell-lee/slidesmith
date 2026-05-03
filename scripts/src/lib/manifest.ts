@@ -17,6 +17,10 @@ const BackendSchema = z.discriminatedUnion('type', [
     server: z.string(),
     tool: z.string().optional(),
   }),
+  z.object({
+    type: z.literal('internal'),
+    module: z.string(),
+  }),
 ]);
 
 const ProcessorManifestSchema = z.object({
@@ -26,6 +30,7 @@ const ProcessorManifestSchema = z.object({
     extensions: z.array(z.string()).optional(),
   }).default({}),
   backend: BackendSchema,
+  output_ext: z.string().optional(),
   requires: z.object({
     binaries: z.array(z.string()).optional(),
     env: z.array(z.string()).optional(),

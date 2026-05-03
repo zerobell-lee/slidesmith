@@ -1,0 +1,9 @@
+name: excalidraw-cli
+provides: [diagram.excalidraw]
+matches:
+  extensions: [.excalidraw]
+backend:
+  type: internal
+  module: excalidraw-render
+output_ext: svg
+priority: 60

@@ -10,6 +10,9 @@ export interface BackendInvocation {
   input: string;
   env: Env;
   cwd: string;
+  pluginDir?: string;
+  inputFile?: string;
+  outputFile?: string;
   httpRequestPath?: string;
   httpMethod?: 'GET' | 'POST';
   httpHeaders?: Record<string, string>;
@@ -31,6 +34,35 @@ export async function invokeBackend(invocation: BackendInvocation): Promise<Back
         kind: 'error',
         message: 'mcp backend not yet wired in this adapter; orchestrate via Claude Code MCP tools.',
       };
+    case 'internal':
+      return runInternal(invocation, backend);
+  }
+}
+
+async function runInternal(
+  inv: BackendInvocation,
+  backend: Extract<Backend, { type: 'internal' }>,
+): Promise<BackendResult> {
+  if (!inv.pluginDir) {
+    return { kind: 'error', message: 'internal backend requires pluginDir' };
+  }
+  if (!inv.inputFile || !inv.outputFile) {
+    return { kind: 'error', message: 'internal backend requires inputFile and outputFile' };
+  }
+  try {
+    const path = await import('node:path');
+    const { pathToFileURL } = await import('node:url');
+    const moduleFile = path.join(inv.pluginDir, 'scripts', 'src', 'processors', `${backend.module}.ts`);
+    const mod = (await import(pathToFileURL(moduleFile).href)) as {
+      run: (input: string, output: string, env: Env) => Promise<void>;
+    };
+    await mod.run(inv.inputFile, inv.outputFile, inv.env);
+    return { kind: 'ok', stdout: '' };
+  } catch (err) {
+    return {
+      kind: 'error',
+      message: err instanceof Error ? err.message : String(err),
+    };
   }
 }
 
