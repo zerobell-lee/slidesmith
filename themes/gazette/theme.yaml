@@ -19,3 +19,23 @@ constraints:
 samples:
   default: samples/sample.md
 recommendedPrerenders: []
+prerender:
+  mermaid:
+    theme: base
+    backgroundColor: transparent
+    themeVariables:
+      primaryColor: "#e1d6c0"
+      primaryTextColor: "#2b271f"
+      primaryBorderColor: "#2b271f"
+      lineColor: "#2b271f"
+      secondaryColor: "#e8dec8"
+      tertiaryColor: "#ece3d0"
+      mainBkg: "#e1d6c0"
+      clusterBkg: "#e8dec8"
+      clusterBorder: "#2b271f"
+      edgeLabelBackground: "#ece3d0"
+      textColor: "#2b271f"
+      noteBkgColor: "#e1d6c0"
+      noteTextColor: "#a3251a"
+      noteBorderColor: "#2b271f"
+      fontFamily: "Noto Serif KR, Playfair Display, Georgia, serif"

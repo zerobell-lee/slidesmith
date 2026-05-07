@@ -79,48 +79,37 @@ Then:
 
 Skip if `--from prerendered`.
 
-Detect placeholders:
+Run the batch command — it detects placeholders, dispatches all CLI/HTTP/internal-backed processors in parallel, writes a partial `replacements.json`, and reports anything that needs LLM judgment:
 
 ```bash
-mkdir -p <USER_DIR>/build/html/svg <USER_DIR>/build/html/img
-cd <SLIDESMITH_ROOT>/scripts && SLIDESMITH_PLUGIN_DIR="<SLIDESMITH_ROOT>" SLIDESMITH_PROJECT_DIR="<USER_DIR>" npx tsx src/cli.ts detect <USER_DIR>/output.md
+cd <SLIDESMITH_ROOT>/scripts && SLIDESMITH_PLUGIN_DIR="<SLIDESMITH_ROOT>" SLIDESMITH_PROJECT_DIR="<USER_DIR>" npx tsx src/cli.ts prerender-all \
+  --theme "<theme-name from deck.yaml>" \
+  --concurrency 4
 ```
 
-For each placeholder in the resulting JSON:
+The output JSON has four sections:
 
-- `kind: image` → pass through (no replacement entry).
-- `kind: file-ref`:
-  ```bash
-  cd <SLIDESMITH_ROOT>/scripts && SLIDESMITH_PLUGIN_DIR="<SLIDESMITH_ROOT>" SLIDESMITH_PROJECT_DIR="<USER_DIR>" npx tsx src/cli.ts dispatch-file-ref "<ext>"
-  ```
-  - Result `null` → no processor matched; warn the user and preserve the placeholder.
-  - Result is an object with `backend.type === 'cli'` or `'http'`:
-    Determine output extension: use `output_ext` from the manifest if present (e.g. `excalidraw-cli` → `png`), otherwise default to `svg`. SVG outputs go to `build/html/svg/`, PNG/JPG to `build/html/img/`.
-    ```bash
-    cd <SLIDESMITH_ROOT>/scripts && SLIDESMITH_PLUGIN_DIR="<SLIDESMITH_ROOT>" SLIDESMITH_PROJECT_DIR="<USER_DIR>" npx tsx src/cli.ts run-processor \
-      --name <processor-name> \
-      --input-file "<USER_DIR>/<placeholder.path>" \
-      --out "<USER_DIR>/build/html/<svg|img>/<placeholder.id>.<ext>"
-    ```
-    Replacement: rewrite `![alt](<placeholder.path>)` → `![alt](<svg|img>/<id>.<ext>)` (path relative to prerendered.md, which lives in build/html/).
-  - Result has `backend.type === 'mcp'`: invoke the MCP tool directly via Claude Code (don't use `run-processor`). Save output to `<USER_DIR>/build/html/svg/<id>.svg` (or `img/<id>.<ext>` if the MCP tool returns raster). Same replacement pattern.
+- `resolved` — placeholders the batch command handled. Each has `{id, processor, ext, out, replacement}`. Already added to `replacements.json`.
+- `passthrough` — `kind: image` placeholders that need no rewrite.
+- `externals` — placeholders that need YOU to handle:
+  - `kind: file-ref-mcp` — file-ref dispatched to an MCP-backed processor. Invoke the MCP tool directly, save the output to `<USER_DIR>/build/html/<svg|img>/<id>.<ext>`.
+  - `kind: semantic` — alt text describes what's needed. Pick a capability:
+    - chart / graph → `chart.*`
+    - diagram / flow → `diagram.*`
+    - photo / realistic / concrete subjects → `stock.photo`
+    - illustration / generated / abstract → `image.generate`
+    Then call `run-processor` (or invoke the MCP tool) for the highest-priority registered provider. Save the result to `build/html/<svg|img>/<id>.<ext>`.
+  - `kind: unmatched` — no processor available; warn the user and preserve the placeholder.
+- `failures` — soft failures from the batch run. Retry once; if still failing, preserve the placeholder.
 
-- `kind: semantic` (LLM-judgment dispatch):
-  1. Inspect alt text, pick a capability:
-     - chart / graph → `chart.*`
-     - diagram / flow → `diagram.*`
-     - photo / realistic / concrete subjects → `stock.photo`
-     - illustration / generated / abstract → `image.generate`
-     - The LLM is multilingual — alt text in Korean, Japanese, etc. maps the same way by meaning.
-  2. Pick the highest-priority registered processor (use `list-capabilities` from the preamble).
-  3. Invoke it. Result goes to `<USER_DIR>/build/html/img/<id>.<ext>` (or `svg/<id>.svg` for diagrams).
-  4. Replacement: `![alt](img/<id>.<ext>)` or `![alt](svg/<id>.svg)`.
-  5. On failure, retry once. If still failing, preserve the placeholder.
+For each `external` you handle, append an entry to `<USER_DIR>/build/html/replacements.json`:
+```json
+{"id": "<id>", "original": "<raw from externals[]>", "replacement": "![<alt>](<svg|img>/<id>.<ext>)"}
+```
 
-After all placeholders are processed, write replacements.json and inject:
+Then inject:
 
 ```bash
-# write <USER_DIR>/build/html/replacements.json with the JSON array of {id, original, replacement}
 cd <SLIDESMITH_ROOT>/scripts && SLIDESMITH_PLUGIN_DIR="<SLIDESMITH_ROOT>" SLIDESMITH_PROJECT_DIR="<USER_DIR>" npx tsx src/cli.ts inject \
   <USER_DIR>/output.md \
   --replacements <USER_DIR>/build/html/replacements.json \
@@ -128,6 +117,18 @@ cd <SLIDESMITH_ROOT>/scripts && SLIDESMITH_PLUGIN_DIR="<SLIDESMITH_ROOT>" SLIDES
 ```
 
 Stop here if `--to prerendered`. Otherwise continue.
+
+### Single-placeholder fallback
+
+If you need to handle a single placeholder manually (e.g. an MCP-backed external), `run-processor` still works the same as before:
+
+```bash
+cd <SLIDESMITH_ROOT>/scripts && SLIDESMITH_PLUGIN_DIR="<SLIDESMITH_ROOT>" SLIDESMITH_PROJECT_DIR="<USER_DIR>" npx tsx src/cli.ts run-processor \
+  --name <processor-name> \
+  --input-file "<USER_DIR>/<placeholder.path>" \
+  --out "<USER_DIR>/build/html/<svg|img>/<id>.<ext>" \
+  --theme "<theme-name from deck.yaml>"
+```
 
 ## Stage 3 — Export
 

@@ -15,3 +15,23 @@ samples:
   jp: samples/sample.jp.md
 recommendedPrerenders:
   - mermaid-cli
+prerender:
+  mermaid:
+    theme: base
+    backgroundColor: transparent
+    themeVariables:
+      primaryColor: "#fff7ed"
+      primaryTextColor: "#0a0a0a"
+      primaryBorderColor: "#ea580c"
+      lineColor: "#525b66"
+      secondaryColor: "#fafafa"
+      tertiaryColor: "#ffffff"
+      mainBkg: "#fff7ed"
+      clusterBkg: "#fafafa"
+      clusterBorder: "#9ca3af"
+      edgeLabelBackground: "#ffffff"
+      textColor: "#0a0a0a"
+      noteBkgColor: "#fff7ed"
+      noteTextColor: "#0a0a0a"
+      noteBorderColor: "#ea580c"
+      fontFamily: "Inter, system-ui, sans-serif"

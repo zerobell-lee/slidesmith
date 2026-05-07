@@ -19,3 +19,23 @@ samples:
   en: samples/sample.en.md
 recommendedPrerenders:
   - mermaid-cli
+prerender:
+  mermaid:
+    theme: base
+    backgroundColor: transparent
+    themeVariables:
+      primaryColor: "#f6e9d2"
+      primaryTextColor: "#2b271f"
+      primaryBorderColor: "#d76a25"
+      lineColor: "#5d564a"
+      secondaryColor: "#f1ebd7"
+      tertiaryColor: "#fbf6e8"
+      mainBkg: "#f6e9d2"
+      clusterBkg: "#f1ebd7"
+      clusterBorder: "#a89e85"
+      edgeLabelBackground: "#fbf6e8"
+      textColor: "#2b271f"
+      noteBkgColor: "#f6e9d2"
+      noteTextColor: "#d76a25"
+      noteBorderColor: "#a89e85"
+      fontFamily: "Pretendard Variable, Pretendard, system-ui, sans-serif"

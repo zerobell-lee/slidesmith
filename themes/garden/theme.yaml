@@ -18,3 +18,23 @@ constraints:
 samples:
   default: samples/sample.md
 recommendedPrerenders: []
+prerender:
+  mermaid:
+    theme: base
+    backgroundColor: transparent
+    themeVariables:
+      primaryColor: "#dde8d8"
+      primaryTextColor: "#283c2e"
+      primaryBorderColor: "#5a8765"
+      lineColor: "#5a8765"
+      secondaryColor: "#f0d2b9"
+      tertiaryColor: "#f7f1de"
+      mainBkg: "#dde8d8"
+      clusterBkg: "#ece3cd"
+      clusterBorder: "#9d9272"
+      edgeLabelBackground: "#f7f1de"
+      textColor: "#283c2e"
+      noteBkgColor: "#f0d2b9"
+      noteTextColor: "#283c2e"
+      noteBorderColor: "#bd6f3e"
+      fontFamily: "Pretendard Variable, Pretendard, system-ui, sans-serif"

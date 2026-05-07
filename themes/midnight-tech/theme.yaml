@@ -17,3 +17,26 @@ samples:
 recommendedPrerenders:
   - mermaid-cli
   - excalidraw-mcp
+prerender:
+  mermaid:
+    theme: base
+    backgroundColor: transparent
+    themeVariables:
+      primaryColor: "#11161e"
+      primaryTextColor: "#e8edf2"
+      primaryBorderColor: "#7c5cff"
+      lineColor: "#5b6473"
+      secondaryColor: "#1b2230"
+      tertiaryColor: "#0f1620"
+      mainBkg: "#11161e"
+      secondBkg: "#1b2230"
+      tertiaryBkg: "#0f1620"
+      nodeBorder: "#7c5cff"
+      clusterBkg: "#11161e"
+      clusterBorder: "#2f3744"
+      edgeLabelBackground: "#0a0e14"
+      textColor: "#e8edf2"
+      noteBkgColor: "#1b2230"
+      noteTextColor: "#4ade80"
+      noteBorderColor: "#2f3744"
+      fontFamily: "Inter, Pretendard, 'Noto Sans KR', system-ui, sans-serif"

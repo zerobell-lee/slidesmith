@@ -11,6 +11,8 @@ backend:
     - "-o"
     - "{output}"
     - "--quiet"
+    - "{theme-config-args}"
+theme_config: mermaid
 requires:
   binaries: [mmdc]
 priority: 50

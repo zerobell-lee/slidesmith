@@ -14,3 +14,23 @@ samples:
   en: samples/sample.en.md
   jp: samples/sample.jp.md
 recommendedPrerenders: []
+prerender:
+  mermaid:
+    theme: base
+    backgroundColor: transparent
+    themeVariables:
+      primaryColor: "#f3eede"
+      primaryTextColor: "#1a1714"
+      primaryBorderColor: "#8c1c13"
+      lineColor: "#6b5e51"
+      secondaryColor: "#f7f1e3"
+      tertiaryColor: "#fbf8f1"
+      mainBkg: "#f3eede"
+      clusterBkg: "#f7f1e3"
+      clusterBorder: "#a89c8d"
+      edgeLabelBackground: "#fbf8f1"
+      textColor: "#1a1714"
+      noteBkgColor: "#f3eede"
+      noteTextColor: "#8c1c13"
+      noteBorderColor: "#a89c8d"
+      fontFamily: "Pretendard Variable, Pretendard, system-ui, sans-serif"

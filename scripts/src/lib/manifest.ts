@@ -36,10 +36,23 @@ const ProcessorManifestSchema = z.object({
     env: z.array(z.string()).optional(),
     mcp: z.array(z.string()).optional(),
   }).optional(),
+  theme_config: z.string().optional(),
   priority: z.number().int().default(50),
 });
 
 export type ProcessorManifest = z.infer<typeof ProcessorManifestSchema>;
+
+const MermaidPrerenderConfigSchema = z.object({
+  theme: z.string().optional(),
+  backgroundColor: z.string().optional(),
+  themeVariables: z.record(z.union([z.string(), z.number()])).optional(),
+  themeCSS: z.string().optional(),
+  fontFamily: z.string().optional(),
+}).passthrough();
+
+const PrerenderConfigSchema = z.object({
+  mermaid: MermaidPrerenderConfigSchema.optional(),
+}).passthrough();
 
 const ThemeManifestSchema = z.object({
   name: z.string().min(1),
@@ -57,6 +70,7 @@ const ThemeManifestSchema = z.object({
     ko: z.string().optional(),
   }).passthrough(),
   recommendedPrerenders: z.array(z.string()).default([]),
+  prerender: PrerenderConfigSchema.optional(),
 });
 
 export type ThemeManifest = z.infer<typeof ThemeManifestSchema>;

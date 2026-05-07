@@ -5,7 +5,7 @@ import os from 'node:os';
 import fs from 'fs-extra';
 import { execa } from 'execa';
 import { listCapabilities, loadProcessors, matchFileRef, type UserConfig } from './dispatch.ts';
-import { parseThemeManifest } from './lib/manifest.ts';
+import { parseThemeManifest, type ProcessorManifest } from './lib/manifest.ts';
 import { resolveThemePath, type PathContext } from './lib/paths.ts';
 import { runDoctorChecks, defaultWhich } from './doctor.ts';
 import { loadEnv } from './lib/env.ts';
@@ -44,12 +44,125 @@ function parseFlags(args: string[]): Record<string, string> {
   return out;
 }
 
+interface ThemeConfigArgs {
+  args: string[];
+  cleanup?: () => Promise<void>;
+}
+
+async function resolveThemeConfigArgs(
+  proc: ProcessorManifest,
+  themeName: string | undefined,
+  paths: PathContext,
+): Promise<ThemeConfigArgs> {
+  if (!proc.theme_config || !themeName) return { args: [] };
+  const info = resolveThemePath(themeName, paths);
+  if (!info) return { args: [] };
+  const yamlPath = path.join(info.path, 'theme.yaml');
+  if (!(await fs.pathExists(yamlPath))) return { args: [] };
+  const manifest = parseThemeManifest(await fs.readFile(yamlPath, 'utf-8'));
+  const config = manifest.prerender?.[proc.theme_config];
+  if (!config || typeof config !== 'object') return { args: [] };
+  // backgroundColor is a CLI-only flag in mmdc; the JSON config field is
+  // ignored. Strip it from the JSON and emit `-b <color>` instead.
+  const { backgroundColor, ...rest } = config as Record<string, unknown>;
+  const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'slidesmith-themecfg-'));
+  const tmpFile = path.join(tmpDir, `${proc.theme_config}.json`);
+  await fs.writeFile(tmpFile, JSON.stringify(rest));
+  const args = ['-c', tmpFile];
+  if (typeof backgroundColor === 'string' && backgroundColor.length > 0) {
+    args.push('-b', backgroundColor);
+  }
+  return {
+    args,
+    cleanup: async () => {
+      try {
+        await fs.remove(tmpDir);
+      } catch {
+        /* best-effort */
+      }
+    },
+  };
+}
+
 function processorRoots(ctx: PathContext, pluginDir: string): string[] {
   return [
     path.join(ctx.projectDir, '.slidesmith', 'prerenders'),
     path.join(ctx.userHome, '.slidesmith', 'prerenders'),
     path.join(pluginDir, 'prerenders'),
   ];
+}
+
+interface RunOneArgs {
+  proc: ProcessorManifest;
+  inputFile?: string;
+  rawInput?: string;
+  outputFile: string;
+  themeName?: string;
+  paths: PathContext;
+  pluginDir: string;
+  envValues: ReturnType<typeof loadEnv>;
+  httpPath?: string;
+  httpMethod?: 'GET' | 'POST';
+}
+
+async function runOneProcessor(opts: RunOneArgs): Promise<{ ok: true; out: string } | { ok: false; error: string }> {
+  const themeConfigArgs = await resolveThemeConfigArgs(opts.proc, opts.themeName, opts.paths);
+  let backend = opts.proc.backend;
+  let outputTokenUsed = false;
+  if (backend.type === 'cli' && backend.args) {
+    const singleTokens: Record<string, string> = {
+      '{input-file}': opts.inputFile ?? '',
+      '{output}': opts.outputFile,
+      '{input}': opts.rawInput ?? '',
+    };
+    const listTokens: Record<string, string[]> = {
+      '{theme-config-args}': themeConfigArgs.args,
+    };
+    outputTokenUsed = backend.args.includes('{output}');
+    backend = {
+      ...backend,
+      args: backend.args.flatMap((a) => {
+        if (listTokens[a] !== undefined) return listTokens[a];
+        if (singleTokens[a] !== undefined) return [singleTokens[a]];
+        return [a];
+      }),
+    };
+  }
+  await fs.ensureDir(path.dirname(opts.outputFile));
+  let inputForBackend = '';
+  if (opts.inputFile) inputForBackend = await fs.readFile(opts.inputFile, 'utf-8');
+  else if (opts.rawInput) inputForBackend = opts.rawInput;
+  try {
+    const result = await invokeBackend({
+      backend,
+      input: inputForBackend,
+      env: opts.envValues,
+      cwd: opts.paths.projectDir,
+      pluginDir: opts.pluginDir,
+      inputFile: opts.inputFile,
+      outputFile: opts.outputFile,
+      httpRequestPath: opts.httpPath,
+      httpMethod: opts.httpMethod ?? 'GET',
+    });
+    if (result.kind === 'error') return { ok: false, error: result.message };
+    if (outputTokenUsed || backend.type === 'internal') {
+      // backend wrote file
+    } else if (result.bytes) {
+      await fs.writeFile(opts.outputFile, result.bytes);
+    } else {
+      await fs.writeFile(opts.outputFile, result.stdout);
+    }
+    return { ok: true, out: opts.outputFile };
+  } finally {
+    if (themeConfigArgs.cleanup) await themeConfigArgs.cleanup();
+  }
+}
+
+async function loadUserConfig(paths: PathContext): Promise<UserConfig> {
+  const userConfigPath = path.join(paths.userHome, '.slidesmith', 'config.yaml');
+  if (!(await fs.pathExists(userConfigPath))) return {};
+  const { parse } = await import('yaml');
+  return (parse(await fs.readFile(userConfigPath, 'utf-8')) ?? {}) as UserConfig;
 }
 
 const commands: Record<string, (args: string[]) => Promise<void>> = {
@@ -290,56 +403,164 @@ const commands: Record<string, (args: string[]) => Promise<void>> = {
     const procs = loadProcessors(processorRoots(paths, pluginDir));
     const proc = procs.find((p) => p.name === procName);
     if (!proc) throw new Error(`processor not found: ${procName}`);
-    const env = loadEnv(paths.projectDir, process.env);
-
-    let input = '';
-    if (flags['input-file']) {
-      input = await fs.readFile(flags['input-file'], 'utf-8');
-    } else if (flags.input) {
-      input = flags.input;
-    }
-
-    let backend = proc.backend;
-    let outputTokenUsed = false;
-    if (backend.type === 'cli' && backend.args) {
-      const tokens: Record<string, string> = {
-        '{input-file}': flags['input-file'] ?? '',
-        '{output}': flags.out,
-        '{input}': flags.input ?? '',
-      };
-      outputTokenUsed = backend.args.includes('{output}');
-      backend = {
-        ...backend,
-        args: backend.args.map((a) => (tokens[a] !== undefined ? tokens[a] : a)),
-      };
-    }
-
-    await fs.ensureDir(path.dirname(flags.out));
-    const result = await invokeBackend({
-      backend,
-      input,
-      env,
-      cwd: paths.projectDir,
-      pluginDir,
+    const envValues = loadEnv(paths.projectDir, process.env);
+    const result = await runOneProcessor({
+      proc,
       inputFile: flags['input-file'],
+      rawInput: flags.input,
       outputFile: flags.out,
-      httpRequestPath: flags['http-path'],
+      themeName: flags.theme,
+      paths,
+      pluginDir,
+      envValues,
+      httpPath: flags['http-path'],
       httpMethod: (flags['http-method'] as 'GET' | 'POST') ?? 'GET',
     });
-
-    if (result.kind === 'error') {
-      console.error(`run-processor error: ${result.message}`);
+    if (!result.ok) {
+      console.error(`run-processor error: ${result.error}`);
       exit(2);
     }
+    console.log(JSON.stringify({ ok: true, out: result.out }));
+  },
+  'prerender-all': async (args) => {
+    const flags = parseFlags(args);
+    const { paths, pluginDir } = context();
+    const inputMd = flags.input ?? path.join(paths.projectDir, 'output.md');
+    const outDir = flags['out-dir'] ?? path.join(paths.projectDir, 'build', 'html');
+    const themeName = flags.theme;
+    const concurrency = Math.max(1, Number(flags.concurrency ?? 4));
 
-    if (outputTokenUsed || backend.type === 'internal') {
-      // Backend wrote the file directly; don't overwrite.
-    } else if (result.bytes) {
-      await fs.writeFile(flags.out, result.bytes);
-    } else {
-      await fs.writeFile(flags.out, result.stdout);
+    const md = await fs.readFile(inputMd, 'utf-8');
+    const placeholders = detectPlaceholders(md);
+
+    const procs = loadProcessors(processorRoots(paths, pluginDir));
+    const userConfig = await loadUserConfig(paths);
+    const envValues = loadEnv(paths.projectDir, process.env);
+
+    interface Job {
+      id: string;
+      proc: ProcessorManifest;
+      ph: ReturnType<typeof detectPlaceholders>[number];
+      ext: string;
+      subdir: 'svg' | 'img';
+      out: string;
+      inputFile?: string;
+      httpInput?: string;
     }
-    console.log(JSON.stringify({ ok: true, out: flags.out }));
+    const jobs: Job[] = [];
+    const externals: Array<Record<string, unknown>> = [];
+    const passthrough: Array<Record<string, unknown>> = [];
+
+    for (const ph of placeholders) {
+      if (ph.kind === 'image') {
+        passthrough.push({ id: ph.id, kind: 'image', path: ph.path });
+        continue;
+      }
+      if (ph.kind === 'file-ref') {
+        const proc = matchFileRef(ph.ext, procs, userConfig);
+        if (!proc) {
+          externals.push({ id: ph.id, kind: 'unmatched', ext: ph.ext, alt: ph.alt, raw: ph.raw, line: ph.line });
+          continue;
+        }
+        if (proc.backend.type === 'mcp') {
+          externals.push({
+            id: ph.id,
+            kind: 'file-ref-mcp',
+            processor: proc.name,
+            ext: ph.ext,
+            alt: ph.alt,
+            path: ph.path,
+            raw: ph.raw,
+            line: ph.line,
+          });
+          continue;
+        }
+        const ext = proc.output_ext ?? 'svg';
+        const subdir: 'svg' | 'img' = ext === 'svg' ? 'svg' : 'img';
+        const outFile = path.join(outDir, subdir, `${ph.id}.${ext}`);
+        jobs.push({
+          id: ph.id,
+          proc,
+          ph,
+          ext,
+          subdir,
+          out: outFile,
+          inputFile: path.join(paths.projectDir, ph.path),
+        });
+        continue;
+      }
+      // semantic — needs LLM judgment, dispatched externally
+      externals.push({ id: ph.id, kind: 'semantic', alt: ph.alt, raw: ph.raw, line: ph.line });
+    }
+
+    interface Resolved {
+      id: string;
+      processor: string;
+      ext: string;
+      out: string;
+      replacement: string;
+    }
+    const resolved: Resolved[] = [];
+    const failures: Array<{ id: string; error: string }> = [];
+
+    let cursor = 0;
+    const workers = Array.from({ length: Math.min(concurrency, jobs.length) || 1 }, async () => {
+      while (true) {
+        const idx = cursor;
+        cursor += 1;
+        if (idx >= jobs.length) return;
+        const job = jobs[idx];
+        const r = await runOneProcessor({
+          proc: job.proc,
+          inputFile: job.inputFile,
+          rawInput: job.httpInput,
+          outputFile: job.out,
+          themeName,
+          paths,
+          pluginDir,
+          envValues,
+          httpMethod: 'GET',
+        });
+        if (r.ok) {
+          const altText = job.ph.kind === 'image' || job.ph.kind === 'file-ref' || job.ph.kind === 'semantic'
+            ? job.ph.alt : '';
+          resolved.push({
+            id: job.id,
+            processor: job.proc.name,
+            ext: job.ext,
+            out: job.out,
+            replacement: `![${altText}](${job.subdir}/${job.id}.${job.ext})`,
+          });
+        } else {
+          failures.push({ id: job.id, error: r.error });
+        }
+      }
+    });
+    await Promise.all(workers);
+
+    // Restore document order so replacements apply left-to-right (matters when
+    // originals collide, e.g. duplicate `![]()` placeholders).
+    const idOrder = new Map(placeholders.map((p, i) => [p.id, i]));
+    resolved.sort((a, b) => (idOrder.get(a.id) ?? 0) - (idOrder.get(b.id) ?? 0));
+
+    await fs.ensureDir(outDir);
+    const replacements: Replacement[] = resolved.map((r) => {
+      const ph = placeholders.find((p) => p.id === r.id)!;
+      return { id: r.id, original: ph.raw, replacement: r.replacement };
+    });
+    const replacementsPath = path.join(outDir, 'replacements.json');
+    await fs.writeFile(replacementsPath, JSON.stringify(replacements, null, 2));
+
+    console.log(JSON.stringify({
+      ok: failures.length === 0,
+      input: inputMd,
+      outDir,
+      resolved,
+      externals,
+      passthrough,
+      failures,
+      replacementsPath,
+    }, null, 2));
   },
   export: async (args) => {
     const flags = parseFlags(args);
