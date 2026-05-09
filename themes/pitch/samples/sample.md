@@ -2,107 +2,43 @@
 marp: true
 theme: pitch
 paginate: true
-footer: 'No Meet OS  ·  비동기 의사결정 OS'
 ---
 
 <!-- _class: hero -->
 <!-- _paginate: false -->
-<!-- _footer: '' -->
 
-## A PROPOSAL FOR FOUNDERS
+# We're killing *meetings*
 
-# 회의를
-# **없앤다**.
-
-― 매주 12시간을 돌려드리는 비동기 의사결정 OS
+Get 12 hours back every week — an async decision OS
 
 ---
 
-<!-- _class: stat -->
+<!-- _class: manifesto -->
 
-# 18h
+# The average PM spends **18 hours a week** in meetings.
 
-## 한국 SaaS PM 한 명이 한 주에 회의로만 쓰는 시간
-
-직접 측정 14개 팀, 6주 평균  ·  *Atlassian 2024 보고서와 일치*
-
----
-
-<!-- _class: hero -->
-<!-- _backgroundImage: "linear-gradient(180deg, oklch(0.18 0.005 60 / 0.55), oklch(0.18 0.005 60 / 0.92)), url('https://picsum.photos/seed/standup/1280/720')" -->
-
-### A TYPICAL TUESDAY
-
-# 캘린더는 회의로 가득,
-# **결정**은 어디에도 없다.
-
----
-
-# 무엇이 망가졌는가
-
-> "스탠드업이 끝나면 이미 오전이 사라져 있다."
-
-- *어제 한 일* 을 너무 자세히 설명한다
-- 막히는 부분 얘기 중 **즉석 디버깅**이 시작된다
-- "그건 나중에 싱크하시죠" 가 안 일어나고 *지금* 한다
-- 결과: **회의가 회의를 부른다**
+— Atlassian, 2024 Workplace Report
 
 ---
 
 <!-- _class: section -->
+<!-- _paginate: false -->
 
-## CHAPTER 02
+## 02
 
-# 제안 **3가지**
+# Insight
 
-이번 주부터 시도
-
----
-
-# 1. **타임박스**, 진짜로
-
-<div class="cols compare">
-<div>
-
-## 자유 발언
-
-평균 4–6분 / 인
-주제 이탈 빈번
-*공유* 와 *논의* 가 섞인다
-
-</div>
-<div>
-
-## 90초 / 인
-
-타이머 켜고 시작
-넘어가면 다음 사람
-디테일은 후속 채널
-
-</div>
-</div>
+The problem isn't that there are too many meetings. The problem is that most of them *could be async*.
 
 ---
 
-# 2. 의사결정은 **분리**
+## How it works
 
-스탠드업은 *상태 공유*, 결정은 *비동기 합의*. 즉석 토론은 **메모만**.
+1. Auto-track decision flow across Slack and Notion
+2. Convert meeting agendas into async discussions
+3. On quorum, resolve automatically or call a vote
 
-- 한 자리에서 둘 다 하려 하면 둘 다 못한다
-- 결정 안건은 채널에 올려 24시간 의견 수렴
-- 임계점 도달하면 자동 합의, 아니면 30분 화상 회의로
-
----
-
-# 3. 목표 시간을 **선언**한다
-
-매일 시작할 때:
-
-> "오늘 우리는 **12분 안에** 끝냅니다."
-
-- 사람이 의식하면 시간은 줄어든다 (*Parkinson's law*)
-- 못 끝내면 내일 회고 1줄
-- 4주 뒤 평균 측정, 목표 재조정
+No code changes. Works on top of the tools you already use.
 
 ---
 
@@ -110,26 +46,22 @@ footer: 'No Meet OS  ·  비동기 의사결정 OS'
 
 # −58%
 
-## 파일럿 14개 팀의 6주 평균 회의 시간 감소
+## Reduction in meeting hours
 
-`27분 → 12분`  ·  *팀당 주 75분 회수*  ·  의사결정 NPS **+12pt**
+In six weeks. 14 pilot teams, avg 7 people each. All Korean SaaS startups.
 
 ---
 
 <!-- _class: manifesto -->
 
-# 회의는 *마지막* 도구입니다.
-# 첫 도구가 되어선 **안 됩니다**.
+# Meetings should be the *last* tool. Not the first one.
 
-NO MEET OS  ·  OUR POSITION
+— Our position
 
 ---
 
-<!-- _class: hero -->
+## Next 12 months
 
-## NEXT 12 MONTHS
-
-# 시드 12억,
-# 18개월 **런웨이**.
-
-같이 가설을 시험할 분: `hello@nomeet.kr`  ·  다음 미팅은 비동기로 `nomeet.kr/seed`
+- Seed round KRW 1.2B, 18-month runway
+- Core KPIs: active teams, hours saved, 6-month retention
+- Start the next conversation with one email — `hello@nomeet.kr`

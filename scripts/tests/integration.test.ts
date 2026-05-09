@@ -109,14 +109,14 @@ describe('fixture: multilang — bootstrap seeds spec template + readme referenc
     expect(blueprint).toMatch(/spec, not slides/);
   });
 
-  it('readme references the en sample when --lang en', async () => {
-    const target = path.join(workDir, 'newproj-en');
-    await execa('npx', ['tsx', cliPath, 'new-project', 'newproj-en', '--theme', 'default', '--lang', 'en'], {
+  it('readme references the ko sample when --lang ko', async () => {
+    const target = path.join(workDir, 'newproj-ko');
+    await execa('npx', ['tsx', cliPath, 'new-project', 'newproj-ko', '--theme', 'default', '--lang', 'ko'], {
       cwd: workDir,
       env: { ...process.env, SLIDESMITH_PLUGIN_DIR: pluginDir, SLIDESMITH_PROJECT_DIR: workDir, SLIDESMITH_USER_HOME: workDir },
     });
     const readme = await fs.readFile(path.join(target, 'README.md'), 'utf-8');
-    expect(readme).toMatch(/sample\.en\.md/);
+    expect(readme).toMatch(/sample\.ko\.md/);
   });
 
   it('readme falls back to default sample when --lang has no mapping', async () => {

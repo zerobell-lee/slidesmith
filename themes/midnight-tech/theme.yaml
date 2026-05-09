@@ -12,7 +12,7 @@ constraints:
   - "Use mermaid (`assets/diagrams/*.mmd`) or excalidraw for diagrams"
 samples:
   default: samples/sample.md
-  en: samples/sample.en.md
+  ko: samples/sample.ko.md
   jp: samples/sample.jp.md
 recommendedPrerenders:
   - mermaid-cli

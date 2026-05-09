@@ -18,6 +18,7 @@ constraints:
   - "Emphasis: **bold** = weight contrast (700 ink), *italic* = italic display serif in deep red"
 samples:
   default: samples/sample.md
+  ko: samples/sample.ko.md
 recommendedPrerenders: []
 prerender:
   mermaid:

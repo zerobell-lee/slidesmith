@@ -11,7 +11,7 @@ constraints:
   - "Recommend 3–5 list items (avoid text overload)"
 samples:
   default: samples/sample.md
-  en: samples/sample.en.md
+  ko: samples/sample.ko.md
   jp: samples/sample.jp.md
 recommendedPrerenders:
   - mermaid-cli

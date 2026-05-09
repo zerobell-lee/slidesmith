@@ -4,39 +4,39 @@ theme: default
 paginate: true
 ---
 
-# 발표 제목
+# Presentation Title
 
-부제 또는 발표자 소개
-
----
-
-## 목차
-
-1. 도입 — 문제 제기
-2. 본론 — 해결 아이디어
-3. 결론 — 다음 단계
+Subtitle or speaker bio
 
 ---
 
-## 핵심 메시지
+## Agenda
 
-이 한 문장이 청중에게 남아야 합니다.
-
-> 인용으로 강조하면 시선이 모입니다.
+1. Setup — the problem
+2. Body — the idea
+3. Wrap — next steps
 
 ---
 
-## 데이터 한 장
+## Core Message
 
-| 지표 | Q3 | Q4 |
+One sentence the audience should remember.
+
+> Quote it for emphasis.
+
+---
+
+## One Chart
+
+| Metric | Q3 | Q4 |
 |---|---:|---:|
-| 사용자 | 12k | 18k |
-| 전환율 | 2.1% | 3.4% |
+| Users | 12k | 18k |
+| Conv. | 2.1% | 3.4% |
 
 ---
 
-## 다음 단계
+## Next Steps
 
-- 가까운 행동 1
-- 가까운 행동 2
-- 의사결정이 필요한 항목 1개
+- Near action 1
+- Near action 2
+- One decision needed

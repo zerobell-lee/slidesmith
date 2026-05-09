@@ -17,6 +17,7 @@ constraints:
   - "Emphasis: **bold** = highlighter alarm-yellow background, *italic* = uppercase mono in danger red"
 samples:
   default: samples/sample.md
+  ko: samples/sample.ko.md
 recommendedPrerenders: []
 prerender:
   mermaid:

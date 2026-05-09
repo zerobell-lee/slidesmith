@@ -17,6 +17,7 @@ constraints:
   - "Emphasis: **bold** = weight contrast (800), *italic* = warm gold accent (no slant)"
 samples:
   default: samples/sample.md
+  ko: samples/sample.ko.md
 recommendedPrerenders: []
 prerender:
   mermaid:

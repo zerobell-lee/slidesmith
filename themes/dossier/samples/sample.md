@@ -11,20 +11,20 @@ footer: 'CASE FILE 047  ·  INTERNAL REVIEW  ·  CONFIDENTIAL'
 
 ### CASE FILE 047  ·  CLOSED
 
-# 결제 시스템
-# *장애* 사후 조사
+# Payments
+# *outage* postmortem
 
 INCIDENT 2026-04-22  ·  AUTHOR ENG-PLATFORM  ·  REVIEWED 2026-05-01  ·  CIRCULATION INTERNAL
 
 ---
 
-## 사건 개요
+## Summary
 
-2026년 4월 22일 14:08 KST, 결제 처리 큐의 *지연 발생*. 14:14 부터 일부 트랜잭션이 사용자 단에 *실패로 노출*되기 시작.
+On 2026-04-22 at 14:08 UTC, the payment processing queue began to *back up*. Starting at 14:14, a subset of transactions surfaced as *failures* to end users.
 
-복구는 14:53. 영향 범위: **신용카드 결제의 약 17%**, 약 47분간. 자체 SLA 99.9% 위반 (월간 다운타임 허용량 초과).
+Recovery at 14:53. Blast radius: **roughly 17% of credit-card transactions** over 47 minutes. Internal SLA of 99.9% breached (monthly downtime budget exceeded).
 
-본 보고서는 사후 조사를 정리하고, 재발 방지를 위한 조치 다섯 가지를 제안한다.
+This report documents the postmortem and proposes five remediations to prevent recurrence.
 
 ---
 
@@ -34,51 +34,51 @@ INCIDENT 2026-04-22  ·  AUTHOR ENG-PLATFORM  ·  REVIEWED 2026-05-01  ·  CIRCU
 
 # 47
 
-## 분간의 *부분 장애*
+## minutes of *partial outage*
 
-영향 트랜잭션 12,840건  ·  완전 실패 2,170건  ·  자동 복원 10,670건
+12,840 transactions affected  ·  2,170 hard failures  ·  10,670 auto-recovered
 
 ---
 
-# 타임라인 ― 47분
+# Timeline ― 47 minutes
 
 <div class="timeline">
 
-<div class="t">14:08</div><div class="e">큐 처리 시간 평소의 <em>4배</em>로 증가</div>
-<div class="t">14:14</div><div class="e">사용자 단 결제 실패 노출 시작</div>
-<div class="t">14:31</div><div class="e">진단: 워커 1대가 <em>큐의 30%</em> 점유</div>
-<div class="t">14:42</div><div class="e">워커 격리, 큐 재할당</div>
-<div class="t">14:53</div><div class="e">큐 처리 시간 정상 복귀</div>
+<div class="t">14:08</div><div class="e">queue dwell time spikes to <em>4×</em> baseline</div>
+<div class="t">14:14</div><div class="e">user-facing payment failures begin</div>
+<div class="t">14:31</div><div class="e">diagnosis: one worker holds <em>30% of the queue</em></div>
+<div class="t">14:42</div><div class="e">worker fenced, queue rebalanced</div>
+<div class="t">14:53</div><div class="e">queue dwell time returns to baseline</div>
 
 </div>
 
 ---
 
-## 직접 원인
+## Direct cause
 
-응답 없는 워커는 *4월 22일 새벽 배포된 패치*에서 도입된 메모리 누수 코드 경로를 통해 메모리를 모두 소진했다. 이 경로는 특정 카드사의 응답 형식에서만 트리거됐다.
+The unresponsive worker exhausted memory through a leak introduced in the *patch deployed earlier that morning*. The leak only triggered against one specific card-issuer response shape.
 
-직접 원인은 분명하다. 더 중요한 것은 *왜 우리가 이것을 사전에 잡지 못했는가* 다.
+The direct cause is clear. The more important question is *why we didn't catch this beforehand*.
 
 ---
 
-# 근본 원인 ― 다섯 가지
+# Root causes ― five of them
 
-1. *카드사별 응답 형식*에 대한 통합 테스트 부재
-2. 큐 워커 메모리 사용량의 *알림 임계값이 너무 헐거움* (95% 도달 시점에야 알림)
-3. *부분 워커 장애*에 대한 자동 격리 로직 없음
-4. 카나리 배포가 *결제 트래픽 0% 노출*에서만 운용됨
-5. *문서화된 롤백 절차*는 있었으나 한 번도 훈련되지 않음
+1. No integration test against *issuer-specific response shapes*
+2. Queue-worker memory alerts *too lax* (only fired at 95% utilization)
+3. No automatic *fencing* for partial-worker degradation
+4. Canary deploys ran with *0% real payment traffic*
+5. Rollback runbook *existed* but had never been rehearsed
 
-다섯 중 어느 하나만 잡았어도 사용자 노출은 *없었을 것*이다.
+Catching any one of the five would have *prevented user-visible impact*.
 
 ---
 
 <!-- _class: quote -->
 
-> 시스템이 무너질 때, *놀라움*은 가장 비싼 비용이다.
+> When systems fail, *surprise* is the most expensive line item.
 
-JOHN ALLSPAW  ·  *INCIDENT REVIEW*, 2018
+JOHN ALLSPAW  ·  *Incident Review*, 2018
 
 ---
 
@@ -86,39 +86,39 @@ JOHN ALLSPAW  ·  *INCIDENT REVIEW*, 2018
 
 ### CHAPTER 02
 
-# 다섯 가지
-# *조치*.
+# Five
+# *actions*.
 
-각 항목은 책임자와 기한을 가진다
+each with an owner and a deadline
 
 ---
 
-# 조치 항목
+# Action items
 
-1. *카드사별 응답 형식 회귀 스위트* — 책임 ENG-PAY, 기한 2026-05-15
-2. *워커 메모리 알림*을 70%/85%/95% 3단계로 — 책임 SRE, 기한 2026-05-08
-3. *부분 워커 자동 격리* 도입 (Karma rule) — 책임 ENG-PLATFORM, 기한 2026-05-22
-4. *결제 카나리*를 1% → 5% → 25% 단계로 — 책임 RELEASE, 기한 2026-05-29
-5. *분기 1회 롤백 훈련* 일정화 — 책임 ENG-LEAD, 다음 회: 2026-06-15
+1. *Issuer-specific response regression suite* — owner ENG-PAY, due 2026-05-15
+2. *Worker memory alerts* at 70%/85%/95% (three-tier) — owner SRE, due 2026-05-08
+3. *Auto-fencing* for partial-worker degradation (Karma rule) — owner ENG-PLATFORM, due 2026-05-22
+4. *Payment canary* at 1% → 5% → 25% steps — owner RELEASE, due 2026-05-29
+5. *Quarterly rollback drill* on the calendar — owner ENG-LEAD, next: 2026-06-15
 
-진행 상황은 격주 인시던트 리뷰에서 공유된다.
+Progress is reviewed at the bi-weekly incident review.
 
 ---
 
 <!-- _class: manifesto -->
 
-# 같은 사건이
-# *두 번* 일어나면,
-# 그건 사고가 아니다.
+# If the same incident
+# happens *twice*,
+# it is not an accident.
 
 INTERNAL REVIEW BOARD  ·  POSITION
 
 ---
 
-# 회람 + 후속
+# Distribution + follow-up
 
-본 보고서는 ENG 전체 + 경영지원 + 보안에 회람. 외부 공개 없음.
+Circulation: ENG, Operations, Security. No external publication.
 
-질의:  `incident-review@company.kr`  ·  내부 채널 `#incident-047`
+Questions:  `incident-review@company.example`  ·  internal channel `#incident-047`
 
-다음 정기 인시던트 리뷰는 2026-05-15 (목) 14:00, B관 회의실 3.
+Next regular incident review: 2026-05-15 (Thu) 14:00, Building B Room 3.

@@ -196,7 +196,7 @@ const commands: Record<string, (args: string[]) => Promise<void>> = {
       name,
       targetDir,
       themeName: flags.theme ?? 'default',
-      lang: flags.lang ?? 'ko',
+      lang: flags.lang ?? 'en',
       pluginDir,
       userHome: paths.userHome,
     });

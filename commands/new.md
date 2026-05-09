@@ -1,6 +1,6 @@
 ---
 description: Bootstrap a new slidesmith project directory
-argument-hint: <project-name> [--theme <theme>] [--lang <ko|en|jp>]
+argument-hint: <project-name> [--theme <theme>] [--lang <en|ko|jp>]
 ---
 
 # /slidesmith:new
@@ -11,7 +11,7 @@ Creates a new slidesmith project directory (spec §5.3).
 
 - `<project-name>` (required): The directory name to create. Relative to the current cwd.
 - `--theme <name>` (optional, default `default`): The theme to use.
-- `--lang <code>` (optional, default `ko`): The sample language used to seed the blueprint.
+- `--lang <code>` (optional, default `en`): The sample language used to seed the blueprint.
 
 ## What you should do
 

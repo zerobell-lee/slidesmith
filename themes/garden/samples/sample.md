@@ -11,10 +11,10 @@ footer: 'MAEUM RETREAT  ·  SPRING 2026'
 
 ### A SEASONAL FIELD GUIDE
 
-# 천천히
-# *돌아오는* 봄.
+# Spring,
+# *slowly* returning.
 
-MAEUM RETREAT  ·  강원도 인제  ·  3월 ― 5월
+MAEUM RETREAT  ·  Inje, Gangwon  ·  March ― May
 
 ---
 
@@ -22,17 +22,17 @@ MAEUM RETREAT  ·  강원도 인제  ·  3월 ― 5월
 
 # 11
 
-## 머무는 이가 하루에 마주치는 *식물의 종류*
+## kinds of *plants* a guest meets in a single day
 
-뜰, 텃밭, 산책로 합산  ·  3월 둘째 주 기준
+across the courtyard, the kitchen garden, and the trail  ·  early March
 
 ---
 
-## 우리가 바꾼 것 한 가지
+## The one thing we changed
 
-작년 봄, 우리는 객실 안의 *디지털 시계를 모두 치웠습니다*. 햇빛이 창에 닿는 각도와, 새소리의 결로 시간을 가늠하는 일을 손님께 돌려드리기 위해서.
+Last spring, we *removed every digital clock* from our guest rooms. So that the angle of light at the window, and the weave of birdsong, could once again do the work of telling time.
 
-처음엔 불편하다는 메모가 종종 남았습니다. 두 달이 지난 지금, 그 메모는 사라졌습니다.
+For a while, guests left small notes saying it was strange. Two months in, the notes had stopped.
 
 ---
 
@@ -40,43 +40,43 @@ MAEUM RETREAT  ·  강원도 인제  ·  3월 ― 5월
 
 ### CHAPTER 02
 
-# *흙*과 시간.
+# *Soil*, and time.
 
-봄을 맞이하는 세 가지 작은 의식
+three small rituals for welcoming the season
 
 ---
 
-# 아침의 순서
+# A morning, in order
 
-깨어나면 먼저 창을 엽니다. 차를 끓이기 전에 마당을 한 바퀴.
+We open the windows before we boil the water. Before we boil the water, we walk the yard once.
 
-1. 어제 비가 닿았는지 흙을 만져 본다
-2. 새로 올라온 잎이 있는지 *세 군데*를 확인한다
-3. 그날의 한 송이를 골라 식탁에 둔다
+1. Touch the soil — did the rain reach yesterday?
+2. Find *three places* where a new leaf has come up
+3. Choose a single bloom for the table
 
-이 세 가지를 마치고 나서야, 우리는 손님을 맞을 준비를 시작합니다.
+Only after these three do we begin preparing for guests.
 
 ---
 
 <!-- _class: quote -->
 
-> 정원은 결국 우리가 *기다리는 법*을 배우는 자리다.
+> A garden is, in the end, the place where we learn *how to wait*.
 
 PENELOPE LIVELY  ·  *Life in the Garden*, 2017
 
 ---
 
-# 봄 식단
+# The spring table
 
-3월의 식탁은 *겨울이 남기고 간 것*에서 시작합니다.
+The March table starts with *what winter left behind*.
 
-| 주 | 들어오는 재료 | 빠지는 재료 |
+| Week | Coming in | Going out |
 |---|---|---|
-| 1 | 봄동, 냉이, 두릅 | 갓김치, 시래기 |
-| 2 | 달래, 산마늘 | 무말랭이 |
-| 3 | 머위, 곰취 | 묵은 호박 |
+| 1 | spring cabbage, shepherd's purse, fatsia shoots | aged kimchi, dried radish greens |
+| 2 | wild chive, mountain garlic | dried daikon |
+| 3 | butterbur, hairy aster | last winter's pumpkin |
 
-매주 화요일, 우리는 마을 어르신과 한 시간 동안 *무엇이 들어와야 할지* 의논합니다.
+Every Tuesday, we sit for an hour with the village elders to decide *what should come in*.
 
 ---
 
@@ -84,25 +84,25 @@ PENELOPE LIVELY  ·  *Life in the Garden*, 2017
 
 # 0
 
-## 객실 안에 두지 않는 *플라스틱*의 개수
+## pieces of *plastic* in any guest room
 
-세면구, 다과, 침구 포장 모두 종이 또는 면
+toiletries, snacks, linens — paper or cotton, every one
 
 ---
 
 <!-- _class: manifesto -->
 
-# 빠르게 걸으면
-# 봄은 *지나갈 뿐입니다*.
+# Walk too quickly
+# and spring will *just pass through*.
 
 MAEUM RETREAT  ·  HOUSE PRINCIPLE
 
 ---
 
-# 머무시려면
+# To stay with us
 
-3월 ~ 5월 예약은 2월 1일에 열립니다. 한 번에 5박 이상, 하루 최대 다섯 팀.
+Reservations for March – May open on February 1st. Five-night minimum, no more than five parties per day.
 
-연락:  `stay@maeum.kr`  ·  `maeum.kr/spring`
+Reach us:  `stay@maeum.example`  ·  `maeum.example/spring`
 
-매주 일요일 저녁, 함께 차를 마시는 시간이 있습니다. 자유롭게 들러주세요.
+Sunday evenings, we share tea together. Drop in if you'd like.

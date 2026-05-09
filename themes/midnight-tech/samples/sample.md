@@ -4,29 +4,29 @@ theme: midnight-tech
 paginate: true
 ---
 
-# 시스템 아키텍처 리뷰
+# System Architecture Review
 
-플랫폼 팀 / 2026 Q1
-
----
-
-## 컨텍스트
-
-- 트래픽 4배 증가 → 기존 모놀리스가 한계
-- 결제 모듈에서 p99 지연 8s 관측
-- 목표: p99 < 1s, 무중단 배포
+Platform Team / 2026 Q1
 
 ---
 
-## 현재 흐름
+## Context
+
+- Traffic up 4× — monolith hitting limits
+- p99 latency 8s on payments
+- Goal: p99 < 1s, zero-downtime deploys
+
+---
+
+## Current Flow
 
 ![signup flow](assets/diagrams/signup-flow.mmd)
 
-병목: 모듈 간 동기 호출 체인.
+Bottleneck: synchronous chains across modules.
 
 ---
 
-## 제안: 비동기 분리
+## Proposal: Async Split
 
 ```typescript
 // before
@@ -38,22 +38,22 @@ await queue.publish('order.charged', orderId);
 // receipt is consumed elsewhere
 ```
 
-이벤트 큐를 통한 fire-and-forget.
+Fire-and-forget via event queue.
 
 ---
 
-## 트레이드오프
+## Trade-offs
 
-| 측면 | 현재 | 제안 |
+| Aspect | Now | Proposed |
 |---|---|---|
-| 일관성 | 강 | 결과적 |
-| 지연 | 느림 | 빠름 |
-| 운영 부하 | 낮음 | 중간 |
+| Consistency | Strong | Eventual |
+| Latency | Slow | Fast |
+| Ops | Low | Medium |
 
 ---
 
-## 다음 단계
+## Next Steps
 
-1. 결제 모듈만 우선 분리 (1주)
-2. 큐 SLA 정의 (3일)
-3. 단계적 rollout (5%, 25%, 100%)
+1. Split payment module first (1 week)
+2. Define queue SLA (3 days)
+3. Phased rollout (5%, 25%, 100%)

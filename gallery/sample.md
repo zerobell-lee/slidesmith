@@ -8,9 +8,9 @@ paginate: true
 
 ![bg](assets/hero.svg)
 
-# 슬라이드 테마 쇼케이스
+# Theme Showcase
 
-타이포그래피, 색, 레이아웃 — 같은 콘텐츠를 어떻게 다르게 말할 수 있는가
+Typography, color, layout — how the same content can speak in different voices
 
 ---
 
@@ -21,17 +21,17 @@ paginate: true
 
 # Foundations
 
-슬라이드의 기본 단위들 — 제목, 본문, 인용, 강조
+The building blocks of a slide — title, body, quote, emphasis
 
 ---
 
-## 목차
+## Contents
 
-1. Hero & section divider — 분위기 잡기
-2. 본문 — 텍스트 + 인용
-3. Split & grid — 시각 자료
-4. Code & data — 기술 슬라이드
-5. 마무리 — 다음 단계
+1. Hero & section divider — setting the tone
+2. Body — text and quotation
+3. Split & grid — visual material
+4. Code & data — technical slides
+5. Closing — what's next
 
 ---
 
@@ -39,31 +39,31 @@ paginate: true
 
 ![bg right:40%](assets/portrait.svg)
 
-## 핵심 메시지
+## The core message
 
-테마는 콘텐츠의 톤을 결정합니다. 같은 텍스트라도 타이포그래피와 색이 바뀌면 느낌이 완전히 달라집니다.
+A theme decides the tone of the content. The same text feels entirely different once typography and color shift around it.
 
-본문 단락은 두세 줄이 적당합니다. 청중이 읽기 전에 발표자가 먼저 말을 시작할 수 있을 만큼만.
+A body paragraph reads best at two or three lines. Just enough that the speaker can begin talking before the audience finishes reading.
 
-오른쪽 이미지가 split의 절반을 채우고, 왼쪽에 본문이 흐릅니다.
+The image fills the right half of the split; the body flows on the left.
 
 ---
 
 <!-- _class: quote -->
 
-> 좋은 테마는 보이지 않는다.
-> 메시지가 먼저 보인다.
+> A good theme is invisible.
+> The message arrives first.
 
 — attributed to a designer, somewhere
 
 ---
 
-## 기술 슬라이드
+## Technical slides
 
-런타임에서 `process.env.NODE_ENV` 같은 인라인 코드를 자연스럽게 강조하는지 확인합니다.
+Check that inline code such as `process.env.NODE_ENV` is highlighted naturally inside running prose.
 
 ```typescript
-// 간단한 디바운스 함수
+// a simple debounce
 export function debounce<T extends (...args: unknown[]) => void>(
   fn: T,
   delay: number,
@@ -78,16 +78,16 @@ export function debounce<T extends (...args: unknown[]) => void>(
 
 ---
 
-## 데이터 슬라이드
+## Data slides
 
-| 지표 | Q3 | Q4 | 변화 |
+| Metric | Q3 | Q4 | Change |
 |---|---:|---:|---:|
-| 활성 사용자 | 12,400 | 18,200 | +47% |
-| 전환율 | 2.1% | 3.4% | +1.3pt |
-| 평균 세션 | 4m 12s | 5m 03s | +20% |
+| Active users | 12,400 | 18,200 | +47% |
+| Conversion | 2.1% | 3.4% | +1.3pt |
+| Avg. session | 4m 12s | 5m 03s | +20% |
 | NPS | 38 | 46 | +8 |
 
-표가 슬라이드 폭을 자연스럽게 채우는지, 헤더 강조가 적절한지 봅니다.
+Verify the table fills the slide width and that header emphasis reads correctly.
 
 ---
 
@@ -95,26 +95,26 @@ export function debounce<T extends (...args: unknown[]) => void>(
 
 # +47%
 
-## QoQ 활성 사용자 성장
+## QoQ active-user growth
 
-12.4K → 18.2K, 전환율과 NPS가 함께 오르며 견인.
+12.4K → 18.2K, lifted by conversion and NPS moving in the same direction.
 
 ---
 
 <!-- _class: grid -->
 
-## 시각 자료 — 3-up
+## Visual material — 3-up
 
 ![card 1](assets/card-1.svg) ![card 2](assets/card-2.svg) ![card 3](assets/card-3.svg)
 
-이미지 카드를 가로로 배치 — 간격, 정렬, 비율 확인.
+Three image cards laid out horizontally — check spacing, alignment, and aspect.
 
 ---
 
-## 마무리
+## Closing
 
-- 인쇄와 화면 양쪽에서 가독성이 유지되는지 확인
-- 코드 블록과 표의 시각적 위계가 분명한지 확인
-- 색 대비가 접근성 기준을 만족하는지 확인
+- Confirm legibility holds in both print and on screen
+- Confirm the visual hierarchy of code and tables stays clear
+- Confirm color contrast meets accessibility requirements
 
-이 쇼케이스가 선명하게 보이면, 일반적인 발표 자료에서도 잘 작동합니다.
+If this showcase reads cleanly, the theme will work for typical presentation material.

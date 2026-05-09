@@ -11,10 +11,10 @@ footer: 'STUDIO HARD-EDGE  ·  PORTFOLIO 2026'
 
 ### ISSUE 04  ·  PORTFOLIO
 
-# 만든 것
-# 부숴 본 것
+# What we built
+# What we broke
 
-STUDIO HARD-EDGE  ·  서울 ·  2024―2026
+STUDIO HARD-EDGE  ·  Berlin & Seoul  ·  2024―2026
 
 ---
 
@@ -24,21 +24,21 @@ STUDIO HARD-EDGE  ·  서울 ·  2024―2026
 
 # 47
 
-## 작년 한 해 *폐기한* 디자인 시안
+## drafts we *threw out* last year
 
-채택된 시안 4건  ·  폐기율 92%
+4 shipped  ·  92% kill rate
 
 ---
 
-## 우리가 일하는 방식
+## How we work
 
-처음 떠오른 안은 **거의 항상** 가장 게으른 답이다. 두 번째 안에서야 비로소 *디자인이 시작된다*.
+The first idea is **almost always** the laziest answer. The second is where *the design starts*.
 
-- 첫 시안은 30분 안에 끝낸다
-- 그 시안을 *반드시* 부순다
-- 부순 잔해 위에서 두 번째를 시작한다
+- The first draft ships in 30 minutes
+- We *destroy* that draft, on purpose
+- The second is built on the rubble of the first
 
-빠르게 만들고, 빠르게 버린다.
+Make fast. Kill faster.
 
 ---
 
@@ -46,44 +46,44 @@ STUDIO HARD-EDGE  ·  서울 ·  2024―2026
 
 ### CHAPTER 02
 
-# **결정**의
-# 무게.
+# The weight
+# of **deciding**.
 
-세 가지 케이스로
+three cases
 
 ---
 
-# CASE 02 ― 활자 한 벌
+# CASE 02 ― a typeface
 
-지역 신문 *충북일보* 의 95년 만의 본문 활자 교체.
+A new body face for *Chungbuk Daily*, replacing 95-year-old Mincho metal.
 
-기존: 명조계 가는 획. 신규: 자체 제작 그로테스크 한벌. 0.4pt 더 굵게, 본문 줄간격 5% 좁게. 결과:
+Old: hairline strokes, brittle on cheap stock. New: an in-house grotesque, 0.4pt heavier, 5% tighter leading. Result:
 
-| 지표 | 이전 | 이후 |
+| Metric | Before | After |
 |---|---|---|
-| 가독성 (피험자 N=240) | 7.2 | 8.6 |
-| 인쇄 잉크 사용량 | 100% | 94% |
-| 발행 1면 단가 | 100% | 91% |
+| Readability (N=240 readers) | 7.2 | 8.6 |
+| Print ink consumption | 100% | 94% |
+| Cost per front page | 100% | 91% |
 
-가독성, 비용, 환경 셋 다 손에 잡혔다.
+Readability, cost, footprint — all three, in one move.
 
 ---
 
 <!-- _class: quote -->
 
-> 좋은 디자인은 *눈에 띈다*. 위대한 디자인은 눈에 띄지 않는다.
+> Good design is *noticed*. Great design is not.
 
 DIETER RAMS  ·  1980
 
 ---
 
-# CASE 03 ― 표지 *17종*
+# CASE 03 ― *17* covers
 
-한 권의 책에 표지를 17종 만들었다. 출판사 의뢰는 1종.
+Seventeen covers for one book. The publisher asked for one.
 
-이유: **확신이 없었다**. 17번째 시안에서 우리는 비로소 *왜 처음 16개가 틀렸는지* 알았다. 채택된 것은 8번째 안이었다.
+The reason: **we didn't know yet**. By the seventeenth, we finally understood *why the first sixteen were wrong*. The eighth was the one that shipped.
 
-폐기는 손해가 아니다. 폐기는 학습의 비용이다.
+Killing drafts isn't waste. It's the cost of learning.
 
 ---
 
@@ -93,25 +93,25 @@ DIETER RAMS  ·  1980
 
 # 12
 
-## 올해 *문을 두드린* 클라이언트의 수
+## clients who *knocked* this year
 
-받은 일 4건  ·  거절 8건
+Took on 4  ·  Turned down 8
 
 ---
 
 <!-- _class: manifesto -->
 
-# 만족한 디자인은
-# **다음 디자인의 적**이다.
+# A design you're happy with
+# is **the enemy of the next one**.
 
 STUDIO HARD-EDGE  ·  HOUSE RULE
 
 ---
 
-# 함께 일하시려면
+# To work with us
 
-신규 의뢰는 분기당 두 건만 받습니다. 다음 분기 (Q3) 슬롯이 한 자리 남아 있습니다.
+We take two new commissions per quarter. One slot is open for Q3.
 
-연락:  `studio@hardedge.kr`  ·  `hardedge.kr/work`
+Reach us:  `studio@hardedge.studio`  ·  `hardedge.studio/work`
 
-포트폴리오 전체는 위 주소에서. 답신은 영업일 기준 5일 안에.
+Full portfolio at the address above. We reply within 5 business days.

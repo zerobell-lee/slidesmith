@@ -17,6 +17,7 @@ constraints:
   - "Emphasis: **bold** = stamp-red underline, *italic* = redaction-style mono on ink (Latin italic via mono)"
 samples:
   default: samples/sample.md
+  ko: samples/sample.ko.md
 recommendedPrerenders: []
 prerender:
   mermaid:

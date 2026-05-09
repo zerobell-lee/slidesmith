@@ -11,23 +11,23 @@ footer: 'THE QUARTERLY  ·  VOL. XII NO. 02  ·  Q2 2026'
 
 ### THE QUARTERLY
 
-# 한국 식품 *유통*의 다음 10년.
+# The next ten years of *grocery distribution*.
 
-봄호 특집  ·  편집실  ·  2026년 5월 1일자  ·  본지 단독 12개 산지·도소매 인터뷰를 토대로 정리한 분기 보고서
+Spring issue  ·  Editorial desk  ·  May 1, 2026  ·  A quarterly report drawing on twelve original interviews with growers, wholesalers, and retail chains.
 
 ---
 
-## 무엇이 바뀌고 있는가
+## What is shifting
 
-마트 매대의 50%가 *비공급사 자체 브랜드*로 채워지는 데 6년이 걸렸다. 다음 6년은 그 매대의 30%가 *콜드체인 D2C* 로 옮겨갈 가능성이 높다.
+It took six years for *private-label SKUs* to fill half the shelf at the average supermarket. The next six will likely move 30% of that shelf to *cold-chain D2C*.
 
-본지가 이번 분기 인터뷰한 12개 산지·도소매 사업자 중 9곳이 같은 진단을 내놨다. 남은 3곳은 *시기는 더 늦다*고 봤지만, 방향에는 동의했다.
+Of the twelve growers and wholesalers we interviewed this quarter, nine arrived at the same diagnosis. The remaining three thought it would *take longer*, but agreed on the direction.
 
 <div class="cols">
 
-이 흐름이 빠르게 진행되는 배경에는 세 가지 요인이 있다. 첫째, 1인 가구가 처음으로 전체 가구의 35%를 넘었다. 둘째, 물류 자동화 단가가 5년 전의 절반이다. 셋째, 도매 대형마트의 점포당 매출이 8분기 연속 감소했다.
+Three forces are accelerating the shift. First, single-person households crossed 35% of all households for the first time. Second, logistics automation now costs half what it did five years ago. Third, sales-per-store at major wholesale chains have declined for eight consecutive quarters.
 
-세 요인은 *상호 강화* 한다. 1인 가구는 D2C 와 친하고, D2C 는 자동화로 단가를 낮추고, 단가가 낮아지면 다시 가구당 채택률이 오른다. 이 사이클은 마트 점포의 매대 회전율을 더 빨리 떨어뜨린다.
+The forces *reinforce each other*. Single-person households favor D2C, D2C lowers unit cost through automation, and a lower unit cost lifts adoption again. The cycle drains shelf turnover at brick-and-mortar stores faster than each year before.
 
 </div>
 
@@ -39,43 +39,43 @@ footer: 'THE QUARTERLY  ·  VOL. XII NO. 02  ·  Q2 2026'
 
 # −18.4%
 
-## 도매 대형마트 *점포당 매출*의 5년 누적 변화 (2021 → 2025)
+## five-year cumulative change in *sales per store* at major wholesale chains (2021 → 2025)
 
-자료: 산업통상자원부 분기 보고  ·  본지 가공  ·  표본 6대 체인
+Source: Ministry of Trade quarterly filings  ·  the Quarterly's analysis  ·  sample of six leading chains
 
 ---
 
-# 산지의 시선
+# The view from the field
 
-본지가 만난 강원·전북 6개 산지의 공통된 메시지는 분명했다. *"우리는 이미 마트가 아니라 가구로 출하한다."* 5년 전 비중 12% 이던 D2C 출하가, 올해 그들의 평균 출하의 41%다.
+Six growers we visited in Gangwon and Jeolbuk delivered the same message in different words. *"We ship to households now, not to supermarkets."* D2C, which made up 12% of their shipments five years ago, is 41% of their average shipment this year.
 
-이는 두 가지를 의미한다.
+This implies two things.
 
-1. 산지의 *가격 결정권*이 회복되고 있다
-2. 도매의 마진은 *재정의될 수밖에 없다*
+1. *Pricing power* is returning to the producer
+2. Wholesale margins *will be redefined*
 
-도매 사업자들은 후자를 잘 알고 있었다. 다만 *어떻게* 재정의되는지는 아직 누구도 답을 가지고 있지 않다.
+The wholesalers know the second point well. *How* the redefinition lands is a question no one yet has an answer to.
 
 ---
 
 <!-- _class: quote -->
 
-> 우리는 더 이상 매대를 *팔지* 않는다. 우리는 *데이터*를 판다.
+> We aren't selling shelf space anymore. We're selling *data*.
 
-대형 도매 체인 임원  ·  본지 인터뷰, 2026.04
+EXEC, MAJOR WHOLESALE CHAIN  ·  the Quarterly interview, April 2026
 
 ---
 
-# 숫자로 본 분기
+# The quarter in numbers
 
-| 지표 | 2025 Q2 | 2026 Q2 | YoY |
+| Metric | 2025 Q2 | 2026 Q2 | YoY |
 |---|---|---|---|
-| D2C 식품 매출 (조 원) | 8.2 | 11.7 | +42.7% |
-| 마트 점포당 매출 | 100 | 91 | −9.0% |
-| 산지 직출하 비중 | 28% | 41% | +13.0pt |
-| 콜드체인 평균 단가 | 100 | 84 | −16.0% |
+| D2C grocery revenue (₩ trillion) | 8.2 | 11.7 | +42.7% |
+| Sales per supermarket | 100 | 91 | −9.0% |
+| Direct-from-farm share | 28% | 41% | +13.0pt |
+| Cold-chain unit cost | 100 | 84 | −16.0% |
 
-콜드체인 단가 하락이 *모든 다른 숫자를 밀고 있다*. 이 단가가 다음 4분기에도 유사한 속도로 떨어진다면, 2027 년 말 D2C 비중은 60% 를 위협할 수 있다.
+Cold-chain unit cost is *moving every other number on this page*. If it keeps falling at this pace through the next four quarters, D2C share could threaten 60% by end-2027.
 
 ---
 
@@ -83,25 +83,25 @@ footer: 'THE QUARTERLY  ·  VOL. XII NO. 02  ·  Q2 2026'
 
 ### CHAPTER 02
 
-# 누가 *이기는가*.
+# Who *wins*.
 
-세 시나리오, 한 결론
+three scenarios, one conclusion
 
 ---
 
 <!-- _class: manifesto -->
 
-# 매대의 시대가 저문다.
-# *데이터*의 시대가 열린다.
+# The age of the shelf is ending.
+# The age of *data* begins.
 
 THE QUARTERLY  ·  EDITORIAL POSITION
 
 ---
 
-# 다음 호 예고
+# In the next issue
 
-여름호 (Q3 2026) 특집:  *제조업 자동화 ― 사람은 어디로 가는가*
+Summer issue (Q3 2026):  *Manufacturing automation — where do the people go?*
 
-기고·제보:  `editor@thequarterly.kr`  ·  `thequarterly.kr`
+Submissions and tips:  `editor@thequarterly.example`  ·  `thequarterly.example`
 
-본 보고서의 데이터 부록은 위 사이트의 `vol-xii-no-02` 페이지에 공개됩니다.
+The data appendix to this report is published at `vol-xii-no-02` on the address above.

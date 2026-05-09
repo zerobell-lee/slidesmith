@@ -16,7 +16,7 @@ constraints:
   - "Emphasis: **bold** = weight contrast (900), *italic* = deep amber accent (no slant)"
 samples:
   default: samples/sample.md
-  en: samples/sample.en.md
+  ko: samples/sample.ko.md
 recommendedPrerenders:
   - mermaid-cli
 prerender:

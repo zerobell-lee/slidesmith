@@ -4,34 +4,34 @@ theme: editorial
 paginate: true
 ---
 
-# 신뢰의 경제학
+# The Economics of Trust
 
-장기 관계가 어떻게 단기 거래를 이긴다
-
----
-
-## 거래 vs 관계
-
-거래는 한 번이고 끝나며, 관계는 반복된다.
-
-반복 게임에서 신뢰는 비용이 아니라 자본이다. 누적될수록 거래 비용이 줄고, 한 번의 실수가 갖는 무게는 커진다.
-
-> 가장 비싼 협상은 신뢰가 깨진 뒤 시작된다.
+How long relationships beat short transactions
 
 ---
 
-## 세 가지 관찰
+## Transaction vs. Relationship
 
-작은 약속을 지키는 사람은 큰 약속도 지킨다. 모든 약속이 같은 회로에서 흐르기 때문이다.
+A transaction ends. A relationship repeats.
 
-신뢰는 비대칭이다 — 쌓는 데 1년, 잃는 데 10초.
+In repeated games, trust is not a cost — it's capital. It accrues; transaction costs fall; the weight of a single mistake grows.
 
-투명성이 신뢰를 만들지 않는다. 일관성이 만든다.
+> The most expensive negotiation begins after trust is broken.
 
 ---
 
-## 적용
+## Three Observations
 
-매주의 작은 약속이 분기의 큰 거래를 결정한다.
+People who keep small promises keep big ones. All promises flow through the same circuit.
 
-이 발표가 끝나는 순간, 첫 번째 작은 약속을 정하라.
+Trust is asymmetric — built in a year, lost in ten seconds.
+
+Transparency doesn't build trust. Consistency does.
+
+---
+
+## Application
+
+The small weekly promise determines the quarterly big deal.
+
+When this talk ends, name your first small promise.

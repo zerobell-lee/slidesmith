@@ -11,10 +11,10 @@ footer: 'KAPSEL CAPITAL  ·  ANNUAL LETTER 2026'
 
 ### LETTER TO LIMITED PARTNERS
 
-# 길게
-# *기다리는* 자본.
+# Capital
+# that *waits*.
 
-2026 ANNUAL  ·  KAPSEL CAPITAL  ·  AUM ₩ 4.8T
+2026 ANNUAL  ·  KAPSEL CAPITAL  ·  AUM $4.8B
 
 ---
 
@@ -22,17 +22,17 @@ footer: 'KAPSEL CAPITAL  ·  ANNUAL LETTER 2026'
 
 # 11.4
 
-## 우리가 한 종목을 평균적으로 보유한 햇수
+## the average number of years we hold a single position
 
-지난 12년 누적, 가중평균  ·  S&P 500 평균 보유 기간의 14배
+trailing twelve years, value-weighted  ·  fourteen times the S&P 500 average
 
 ---
 
-## 작년 한 해 우리가 *하지 않은* 일
+## What we *did not* do this year
 
-올해 새로 산 종목은 둘. 정리한 종목은 하나. 운용 자산의 96%는 작년 이맘때와 같은 자리에 있다.
+Two new positions opened. One closed. Ninety-six percent of the book sits exactly where it sat a year ago.
 
-분기 미팅에서 우리가 가장 많이 한 말은 **"아직 아닙니다"** 였다.
+The phrase we said most often in quarterly meetings was **"not yet."**
 
 ---
 
@@ -40,37 +40,37 @@ footer: 'KAPSEL CAPITAL  ·  ANNUAL LETTER 2026'
 
 ### CHAPTER 02
 
-# 우리가 *바라보는* 시간
+# The time we *look* across.
 
 ---
 
-# 시간의 단위
+# Units of time
 
-대부분의 자본은 **분기**로 사고한다. 우리는 **10년**으로 사고한다.
+Most capital thinks in **quarters**. We think in **decades**.
 
-10년을 견딜 수 있는 회사는 5년에 흔들리지 않는다. 5년을 견딜 수 있는 회사는 다음 분기 보고서에 흔들리지 않는다.
+A business that survives ten years isn't shaken by five. A business that survives five isn't shaken by the next earnings report.
 
-순서는 그 반대로 작동하지 않는다.
+The order does not run in the other direction.
 
 ---
 
 <!-- _class: quote -->
 
-> 좋은 회사를 사서 가만히 두는 것이, 시장을 이기는 가장 게으른 방법이다.
+> Buy a great business and sit on your hands. The laziest way to beat the market.
 
 CHARLIE MUNGER  ·  1994
 
 ---
 
-# 우리의 거절 패턴
+# The shape of our refusals
 
-올해 들어온 신규 검토 안건 217건 가운데:
+Of the 217 new opportunities we reviewed this year, we won't take a meeting if any of these applies:
 
-1. 12개월 내 지수 편입을 약속한 안건
-2. 창업자가 이미 다음 회사를 구상하고 있는 안건
-3. 산업 자체가 5년 안에 *해체될* 가능성이 보이는 안건
+1. Founders promising index inclusion within twelve months
+2. Founders already drafting their next company in private
+3. The industry itself looks likely to *come apart* within five years
 
-이 셋 중 하나라도 해당하면, 우리는 만나지 않는다.
+Any one of the three is enough.
 
 ---
 
@@ -78,25 +78,25 @@ CHARLIE MUNGER  ·  1994
 
 # 0
 
-## 작년 한 해 우리가 진행한 분기 컨퍼런스 콜의 횟수
+## quarterly conference calls we held last year
 
-대신 한 통의 연간 서신과, 두 번의 LP 만찬
+Instead: one annual letter, two LP dinners
 
 ---
 
 <!-- _class: manifesto -->
 
-# 시장이 시끄러울수록
-# 우리는 *조용해진다*.
+# When the market is loud
+# we grow *quieter*.
 
 KAPSEL CAPITAL  ·  HOUSE PRINCIPLE NO. 1
 
 ---
 
-# 다음 12개월
+# The next twelve months
 
-신규 투자 한 건 (제조업, ₩ 1.2T 규모). 회수 계획 없음. LP 분배는 예년 수준 (4.2%).
+One new position (manufacturing, $1.2B). No exits planned. LP distribution at the usual cadence (4.2%).
 
-다음 서신은 2027년 5월에 도착합니다.
+The next letter arrives May 2027.
 
-연락이 필요하시면: `lp@kapsel.kr`
+If you need to reach us:  `lp@kapsel.example`

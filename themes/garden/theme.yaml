@@ -17,6 +17,7 @@ constraints:
   - "Emphasis: **bold** = weight contrast (600), *italic* = serif italic in sage (Latin only — Korean is never slanted)"
 samples:
   default: samples/sample.md
+  ko: samples/sample.ko.md
 recommendedPrerenders: []
 prerender:
   mermaid:
