@@ -548,3 +548,12 @@ section.grid p img {
   border-radius: 12px;
   border: 1px solid var(--color-border);
 }
+
+/* Slidesmith hygiene: clip content at slide boundary so a too-tall list,
+   table, code block, or div does not bleed past the visible slide. The
+   content is silently truncated (visible in-browser as cut-off) rather
+   than escaping into the page below. */
+section {
+  overflow: hidden;
+}
+
