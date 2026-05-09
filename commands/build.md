@@ -98,7 +98,14 @@ The output JSON has four sections:
     - diagram / flow → `diagram.*`
     - photo / realistic / concrete subjects → `stock.photo`
     - illustration / generated / abstract → `image.generate`
-    Then call `run-processor` (or invoke the MCP tool) for the highest-priority registered provider. Save the result to `build/html/<svg|img>/<id>.<ext>`.
+    Then call `run-processor` for the highest-priority registered provider. The bundled `pexels` (stock.photo) and `gemini-image` (image.generate) processors take the alt text directly via `--input` and write the final image in one call:
+    ```bash
+    cd <SLIDESMITH_ROOT>/scripts && SLIDESMITH_PLUGIN_DIR="<SLIDESMITH_ROOT>" SLIDESMITH_PROJECT_DIR="<USER_DIR>" npx tsx src/cli.ts run-processor \
+      --name pexels \
+      --input "<alt text>" \
+      --out "<USER_DIR>/build/html/img/<id>.jpg"
+    ```
+    For chart/diagram capabilities the LLM still produces source first (e.g. write a `.mmd` file under `assets/diagrams/auto-<id>.mmd`) then runs the matching CLI processor.
   - `kind: unmatched` — no processor available; warn the user and preserve the placeholder.
 - `failures` — soft failures from the batch run. Retry once; if still failing, preserve the placeholder.
 

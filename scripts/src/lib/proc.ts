@@ -39,6 +39,13 @@ export async function invokeBackend(invocation: BackendInvocation): Promise<Back
   }
 }
 
+export interface InternalRunOpts {
+  inputFile?: string;
+  rawInput?: string;
+  outputFile: string;
+  env: Env;
+}
+
 async function runInternal(
   inv: BackendInvocation,
   backend: Extract<Backend, { type: 'internal' }>,
@@ -46,17 +53,22 @@ async function runInternal(
   if (!inv.pluginDir) {
     return { kind: 'error', message: 'internal backend requires pluginDir' };
   }
-  if (!inv.inputFile || !inv.outputFile) {
-    return { kind: 'error', message: 'internal backend requires inputFile and outputFile' };
+  if (!inv.outputFile) {
+    return { kind: 'error', message: 'internal backend requires outputFile' };
   }
   try {
     const path = await import('node:path');
     const { pathToFileURL } = await import('node:url');
     const moduleFile = path.join(inv.pluginDir, 'scripts', 'src', 'processors', `${backend.module}.ts`);
     const mod = (await import(pathToFileURL(moduleFile).href)) as {
-      run: (input: string, output: string, env: Env) => Promise<void>;
+      run: (opts: InternalRunOpts) => Promise<void>;
     };
-    await mod.run(inv.inputFile, inv.outputFile, inv.env);
+    await mod.run({
+      inputFile: inv.inputFile,
+      rawInput: inv.input || undefined,
+      outputFile: inv.outputFile,
+      env: inv.env,
+    });
     return { kind: 'ok', stdout: '' };
   } catch (err) {
     return {

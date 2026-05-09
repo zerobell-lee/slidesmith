@@ -2,9 +2,9 @@ name: pexels
 provides: [stock.photo]
 matches: {}
 backend:
-  type: http
-  base: https://api.pexels.com/v1
-  auth: header:Authorization:{env.PEXELS_API_KEY}
+  type: internal
+  module: pexels
+output_ext: jpg
 requires:
   env: [PEXELS_API_KEY]
 priority: 60

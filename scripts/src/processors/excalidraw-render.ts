@@ -1,8 +1,9 @@
 import fs from 'node:fs/promises';
 import { JSDOM } from 'jsdom';
-import type { Env } from '../lib/env.ts';
+import type { InternalRunOpts } from '../lib/proc.ts';
 
-export async function run(inputFile: string, outputFile: string, _env: Env): Promise<void> {
+export async function run({ inputFile, outputFile }: InternalRunOpts): Promise<void> {
+  if (!inputFile) throw new Error('excalidraw-render requires --input-file');
   const dom = new JSDOM('<!doctype html><html><body></body></html>', { pretendToBeVisual: true });
   const define = (key: string, value: unknown) => {
     Object.defineProperty(globalThis, key, { value, writable: true, configurable: true });
