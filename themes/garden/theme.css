@@ -24,7 +24,7 @@
   --rule: oklch(0.82 0.020 110);
   --font-sans: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --font-serif: 'Cormorant Garamond', 'Pretendard Variable', serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, 'Pretendard Variable', 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', monospace;
 }
 
 /* ===== Page ============================================================ */
@@ -266,7 +266,28 @@ img {
   display: block;
   margin: 0 auto;
   max-width: 100%;
+  max-height: 360px;
   height: auto;
+  width: auto;
+  object-fit: contain;
+}
+
+/* When a paragraph wraps a standalone image (the marp-default render of
+   `![alt](path)` on its own line), defeat the body-paragraph max-width so the
+   image gets the full slide content area + centers properly. */
+section p:has(> img) {
+  max-width: none;
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  text-align: center;
+}
+
+/* Diagrams (SVG): fill the available width within their (now full-width) p. */
+section p:has(> img[src$=".svg"]) > img {
+  width: 100%;
+  max-width: 100%;
+  max-height: 440px;
 }
 
 /* ===== Footer + pagination ============================================ */

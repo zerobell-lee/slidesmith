@@ -22,7 +22,7 @@
 
   /* Type */
   --font-sans: 'Inter', 'Pretendard', 'Noto Sans KR', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, 'Pretendard Variable', 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', monospace;
 }
 
 /* ----- Section / page ------------------------------------------------- */
@@ -335,6 +335,27 @@ section img[src$=".svg"] {
   border: none;
   box-shadow: none;
   border-radius: 0;
+}
+
+/* ===== Slidesmith hygiene (image + diagram fit) ====================== */
+
+section p:has(> img) {
+  max-width: none;
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  text-align: center;
+}
+
+section img {
+  max-height: 380px;
+  object-fit: contain;
+}
+
+section p:has(> img[src$=".svg"]) > img {
+  width: 100%;
+  max-width: 100%;
+  max-height: 440px;
 }
 
 /* ----- Footer --------------------------------------------------------- */
