@@ -15,6 +15,7 @@ constraints:
   - "Use <!-- _class: manifesto --> for single-statement slides"
   - "Use <!-- _class: quote --> for testimonials"
   - "Emphasis: **bold** = weight contrast (600), *italic* = serif italic in sage (Latin only — Korean is never slanted)"
+  - "Use <!-- _class: figure-left --> or <!-- _class: figure-right --> for a character illustration / portrait / diagram paired side-by-side with body text (image fills ~42% of one column, h2/h3/p stack in the other)"
 samples:
   default: samples/sample.md
   ko: samples/sample.ko.md

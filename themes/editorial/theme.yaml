@@ -9,6 +9,7 @@ constraints:
   - "Use h1 for the cover or chapter title (occupies significant space)"
   - "Use h2 for section headings. The body paragraph is the focus"
   - "Prefer paragraphs over images. Aim for 100–200 characters per slide"
+  - "Use <!-- _class: figure-left --> or <!-- _class: figure-right --> for a character illustration / portrait / diagram paired side-by-side with body text (image fills ~42% of one column, h2/h3/p stack in the other)"
 samples:
   default: samples/sample.md
   ko: samples/sample.ko.md

@@ -559,3 +559,83 @@ section p:has(> img[src$=".svg"]) > img {
   max-height: 440px;
 }
 
+
+/* ===== _class: figure-left / figure-right ============================ */
+/* Side-by-side layout for character/illustration intros and content
+   slides where one figure pairs with body copy. The image goes in one
+   column, all other top-level children (h2/h3/p/ul/ol) stack in the
+   other.
+
+   Markdown stays linear:
+
+     <!-- _class: figure-left -->
+
+     ![cat](img/cat.png)
+
+     ## Two-Step Cat
+     One curious creature. Two clumsy steps. The city is its own kind
+     of music.
+
+   Use `figure-right` to flip sides. */
+
+section.figure-left {
+  position: relative;
+  padding-left: 50% !important;
+}
+section.figure-right {
+  position: relative;
+  padding-right: 50% !important;
+}
+
+/* The image-paragraph is pinned to its side, vertically centered as one block. */
+section.figure-left > p:has(> img) {
+  position: absolute;
+  left: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40%;
+  margin: 0;
+  max-width: none;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+section.figure-right > p:has(> img) {
+  position: absolute;
+  right: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40%;
+  margin: 0;
+  max-width: none;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The image fills its pinned column. */
+section.figure-left > p:has(> img) > img {
+  display: block;
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  max-height: 560px;
+  height: auto;
+  object-fit: contain;
+}
+section.figure-right > p:has(> img) > img {
+  display: block;
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  max-height: 560px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* In the body column, paragraphs should not be capped by global p max-width. */
+section.figure-left > p:not(:has(> img)) { max-width: none; }
+section.figure-right > p:not(:has(> img)) { max-width: none; }
+
